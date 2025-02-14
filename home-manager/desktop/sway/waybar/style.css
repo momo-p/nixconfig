@@ -1,0 +1,70 @@
+@define-color background #11111B;
+@define-color foreground #B4BEFE;
+
+* {
+  border: none;
+  background: transparent;
+  font-family: 'SFProDisplay';
+  font-size: 12px;
+}
+
+#custom-arch, #workspaces {
+  border-radius: 10px;
+  background-color: @background;
+  color: @foreground;
+  padding: 2px 0;
+}
+
+#custom-arch, #workspaces {
+  margin: 12px 0 0 15px;
+}
+
+#custom-arch {
+  font-size: 20px;
+  padding-right: 6px;
+  color: @foreground;
+}
+
+#workspaces {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#workspaces button {
+  background: transparent;
+  color: @foreground;
+}
+
+#custom-date {
+  font-size: 16px;
+  border-radius: 10px;
+  background-color: @background;
+  color: @foreground;
+  padding: 2px 16px;
+  margin: 12px 0 0 0;
+}
+
+.modules-right {
+  border-radius: 10px;
+  background-color: @background;
+  color: @foreground;
+  padding: 2px 0 2px 16px;
+  margin: 12px 15px 0 0;
+}
+
+#network, #pulseaudio {
+  margin-right: 12px;
+}
+
+#tray {
+  padding-right: 12px;
+}
+
+#network {
+  font-size: 20px;
+}
+
+#pulseaudio {
+  padding-left: 2px;
+  font-size: 15px;
+}

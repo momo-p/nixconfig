@@ -27,6 +27,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
     systems.url = "github:nix-systems/default-linux";
@@ -40,6 +45,7 @@
     home-manager,
     auto-cpufreq,
     disko,
+    lanzaboote,
     apple-fonts,
     systems,
     ...
@@ -62,6 +68,8 @@
         modules = [
           ./hosts/nagato
           disko.nixosModules.disko
+          lanzaboote.nixosModules.lanzaboote
+          ./modules/lanzaboote.nix
         ];
         specialArgs = {inherit inputs outputs;};
       };

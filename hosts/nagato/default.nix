@@ -18,11 +18,6 @@
     ./disk-config.nix
   ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.devices = ["nodev"]; 
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.efiInstallAsRemovable = true;
-
   networking = {
     hostName = "nagato";
     networkmanager = {

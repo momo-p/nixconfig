@@ -60,6 +60,7 @@
   users.users.momo_p = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    shell = pkgs.zsh;
   };
 
   stylix = {
@@ -94,6 +95,7 @@
   };
 
   programs = {
+    zsh.enable = true;
     dconf.enable = true;
     mtr.enable = true;
     gnupg.agent = {

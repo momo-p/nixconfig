@@ -1,5 +1,6 @@
 {lib, pkgs, ...}: {
   imports = [
+    ./xdg.nix
     ./rofi.nix
     ./waybar
   ];
@@ -15,22 +16,6 @@
     glib
     viewnior
   ];
-
-  xdg = {
-    portal = {
-      enable = true;
-
-      config = {
-        sway = {
-          default = [ "wlr" ];
-        };
-      };
-
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-      ];
-    };
-  };
 
   programs = {
     swaylock = {

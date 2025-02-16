@@ -3,6 +3,7 @@
     file
     ripgrep
     trash-cli
+    xdg-utils
     chafa
     pistol
   ];
@@ -33,6 +34,14 @@
         &{{
             fmt="$(STARSHIP_SHELL=${pkgs.starship}/bin/starship prompt | sed 's/\\/\\\\/g;s/"/\\"/g')"
             ${pkgs.lf}/bin/lf -remote "send $id set promptfmt \"$fmt\""
+        }}
+      '';
+      open = ''
+        &{{
+          case $(file --mime-type -Lb $f) in
+            text/*) ${pkgs.lf}/bin/lf -remote "send $id \$$EDITOR \$fx";;
+            *) ${pkgs.xdg-utils}/bin/xdg-open "$f" > /dev/null 2> /dev/null;;
+          esac
         }}
       '';
     };

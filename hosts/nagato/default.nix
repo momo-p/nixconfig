@@ -104,7 +104,13 @@
     };
   };
 
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+  environment = {
+    pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+    variables = {
+      # track https://github.com/swaywm/sway/issues/8143
+      GTK_IM_MODULE = "fcitx";
+    };
+  };
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;

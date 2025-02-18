@@ -5,7 +5,7 @@
     };
     keymaps = [
       {
-        action = ":Neotree<CR>";
+        action = ":Neotree toggle<CR>";
         key = "<leader>n";
       }
       {

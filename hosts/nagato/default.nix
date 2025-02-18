@@ -3,6 +3,7 @@
   disko,
   inputs,
   outputs,
+  username,
   ...
 }: {
   imports = [
@@ -57,7 +58,7 @@
     };
   };
 
-  users.users.momo_p = {
+  users.users."${username}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
@@ -114,9 +115,9 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {inherit inputs username;};
     backupFileExtension = "backup";
-    users.momo_p = {
+    users."${username}" = {
       imports = [./home.nix inputs.nixvim.homeManagerModules.nixvim];
     };
   };

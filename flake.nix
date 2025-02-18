@@ -76,7 +76,10 @@
           ./hosts/nagato
           disko.nixosModules.disko
         ];
-        specialArgs = {inherit inputs outputs;};
+        specialArgs = {
+          inherit inputs outputs;
+          username = "momo_p";
+        };
       };
     };
   };

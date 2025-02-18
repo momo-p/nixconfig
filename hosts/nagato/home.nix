@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, username, ...}: {
   imports = [
     ../../home-manager/1password.nix
 
@@ -7,8 +7,8 @@
     ../../home-manager/cli
   ];
 
-  home.username = "momo_p";
-  home.homeDirectory = "/home/momo_p";
+  home.username = "${username}";
+  home.homeDirectory = "/home/${username}";
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [

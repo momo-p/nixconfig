@@ -60,9 +60,9 @@
           config.allowUnfree = true;
         }
     );
-    installMode = builtins.pathExists ./.install;
+    isFreshInstall = builtins.pathExists ./.install;
     withSecureBootModules = modules: (
-      modules ++ (nixpkgs.lib.optionals (!installMode) [
+      modules ++ (nixpkgs.lib.optionals (!isFreshInstall) [
         lanzaboote.nixosModules.lanzaboote
         ./modules/lanzaboote.nix
       ])
@@ -77,8 +77,19 @@
           disko.nixosModules.disko
         ];
         specialArgs = {
-          inherit inputs outputs;
+          inherit inputs outputs isFreshInstall;
           username = "momo_p";
+        };
+      };
+
+      scarlet = nixpkgs.lib.nixosSystem {
+        modules = withSecureBootModules [
+          ./hosts/scarlet
+          disko.nixosModules.disko
+        ];
+        specialArgs = {
+          inherit inputs outputs isFreshInstall;
+          username = "flandre";
         };
       };
     };

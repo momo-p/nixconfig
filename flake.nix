@@ -60,16 +60,21 @@
           config.allowUnfree = true;
         }
     );
+    installMode = builtins.pathExists ./.install;
+    withSecureBootModules = modules: (
+      modules ++ (nixpkgs.lib.optionals (!installMode) [
+        lanzaboote.nixosModules.lanzaboote
+        ./modules/lanzaboote.nix
+      ])
+    );
   in {
     formatter = forEachSystem (pkgs: pkgs.alejandra);
 
     nixosConfigurations = {
       nagato = nixpkgs.lib.nixosSystem {
-        modules = [
+        modules = withSecureBootModules [
           ./hosts/nagato
           disko.nixosModules.disko
-          lanzaboote.nixosModules.lanzaboote
-          ./modules/lanzaboote.nix
         ];
         specialArgs = {inherit inputs outputs;};
       };

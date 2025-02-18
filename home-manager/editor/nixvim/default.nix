@@ -1,4 +1,10 @@
 {pkgs, ...}: {
+  imports = [
+    ./plugins
+
+    ./keymaps.nix
+  ];
+
   programs = {
     nixvim = {
       enable = true;
@@ -6,7 +12,6 @@
 
       opts = {
         number = true;
-        relativenumber = true;
         shiftwidth = 4;
         softtabstop = 4;
         expandtab = true;

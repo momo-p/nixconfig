@@ -14,6 +14,7 @@
     inputs.stylix.nixosModules.stylix
 
     ../../modules/1password.nix
+    ../../modules/noisetorch.nix
 
     ./hardware-configuration.nix
     ./disk-config.nix

@@ -97,6 +97,10 @@
     gnome.gnome-keyring.enable = true;
     udisks2.enable = true;
     mullvad-vpn.enable = true;
+    tailscale = {
+      enable = true;
+      useRoutingFeatures = "client";
+    };
   };
 
   programs = {

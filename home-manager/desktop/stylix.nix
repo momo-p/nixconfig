@@ -29,6 +29,7 @@
     targets = {
       rofi.enable = false;
       waybar.enable = false;
+      mangohud.enable = false;
     };
   };
 }

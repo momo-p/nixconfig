@@ -4,7 +4,8 @@
 
     ../../home-manager/editor/nixvim
     ../../home-manager/desktop
-    ../../home-manager/cli
+    ../../home-manager/cli 
+    ../../home-manager/gaming 
   ];
 
   home.username = "${username}";

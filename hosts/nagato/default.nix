@@ -14,10 +14,11 @@
     inputs.stylix.nixosModules.stylix
 
     ../../modules/1password.nix
-    ../../modules/noisetorch.nix
+    ../../modules/noisetorch.nix 
+    ../../modules/gaming  
 
-    ./hardware-configuration.nix
-    ./disk-config.nix
+    ./hardware-configuration.nix 
+    ./disk-config.nix 
   ];
 
   boot.loader.systemd-boot.enable = true;

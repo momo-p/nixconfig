@@ -9,7 +9,7 @@
   ...
 }: {
   imports = [
-    inputs.nixos-hardware.nixosModules.microsoft-surface-go
+    #    inputs.nixos-hardware.nixosModules.microsoft-surface-go
     inputs.home-manager.nixosModules.default
     inputs.stylix.nixosModules.stylix
 
@@ -22,6 +22,11 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   networking = {
     hostName = "scarlet";

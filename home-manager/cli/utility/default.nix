@@ -5,7 +5,9 @@
   ];
 
   home.packages = with pkgs; [
-    file
+    file 
+
+    alejandra
   ];
 
   programs = {

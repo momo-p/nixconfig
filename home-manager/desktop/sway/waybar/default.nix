@@ -10,7 +10,7 @@
       style = ./style.css;
       settings = {
         mainBar = {
-	  layer = "top";
+          layer = "top";
           mode = "dock";
           modules-left = [
             "custom/arch"
@@ -74,14 +74,14 @@
               "portable" = "";
               "car" = "";
               default = [
-	        "🔈"
-		"🔉"
-		"🔊"
-	      ];
+                "🔈"
+                "🔉"
+                "🔊"
+              ];
             };
             on-click = "pavucontrol";
           };
-	};
+        };
       };
     };
   };

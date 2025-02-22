@@ -1,4 +1,8 @@
-{pkgs, username, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   imports = [
     ../../home-manager/1password.nix
 

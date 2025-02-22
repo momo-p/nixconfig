@@ -1,5 +1,8 @@
-{config, pkgs, ...}:
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   browser = ["firefox.desktop"];
   associations = {
     "text/html" = browser;
@@ -36,7 +39,7 @@ in {
       extraPortals = with pkgs; [xdg-desktop-portal-wlr xdg-desktop-portal-gtk];
       config = {
         sway = {
-          default = [ "wlr" "gtk" ];
+          default = ["wlr" "gtk"];
           "org.freedesktop.impl.portal.ScreenCast" = "gtk";
         };
       };

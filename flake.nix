@@ -49,7 +49,7 @@
     apple-fonts,
     systems,
     ...
-  } @ inputs: let 
+  } @ inputs: let
     inherit (self) outputs;
 
     forEachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f pkgsFor.${system});
@@ -62,7 +62,8 @@
     );
     isFreshInstall = builtins.pathExists ./.install;
     withSecureBootModules = modules: (
-      modules ++ (nixpkgs.lib.optionals (!isFreshInstall) [
+      modules
+      ++ (nixpkgs.lib.optionals (!isFreshInstall) [
         lanzaboote.nixosModules.lanzaboote
         ./modules/lanzaboote.nix
       ])

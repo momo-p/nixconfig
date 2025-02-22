@@ -1,4 +1,4 @@
-{ 
+{
   pkgs,
   disko,
   inputs,
@@ -14,14 +14,14 @@
     inputs.stylix.nixosModules.stylix
 
     ../../modules/1password.nix
-    ../../modules/noisetorch.nix 
-    ../../modules/gaming  
+    ../../modules/noisetorch.nix
+    ../../modules/gaming
 
-    ./hardware-configuration.nix 
-    ./disk-config.nix 
+    ./hardware-configuration.nix
+    ./disk-config.nix
   ];
 
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = ["amdgpu"];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -74,7 +74,7 @@
 
   users.users."${username}" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     shell = pkgs.zsh;
   };
 
@@ -124,7 +124,7 @@
   };
 
   environment = {
-    pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+    pathsToLink = ["/share/xdg-desktop-portal" "/share/applications"];
     variables = {
       # track https://github.com/swaywm/sway/issues/8143
       GTK_IM_MODULE = "fcitx";

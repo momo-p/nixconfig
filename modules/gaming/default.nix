@@ -1,6 +1,6 @@
 {
   imports = [
     ./steam.nix
-    ./gamescope.nix 
+    ./gamescope.nix
   ];
 }

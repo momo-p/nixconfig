@@ -1,11 +1,11 @@
 {pkgs, ...}: {
   imports = [
-    ./lf.nix 
+    ./lf.nix
     ./compression.nix
   ];
 
   home.packages = with pkgs; [
-    file 
+    file
 
     alejandra
   ];

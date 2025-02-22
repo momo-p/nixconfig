@@ -1,4 +1,8 @@
-{lib, pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./xdg.nix
     ./rofi.nix
@@ -21,17 +25,17 @@
     swaylock = {
       enable = true;
       package = pkgs.swaylock-effects;
-#      settings = {
-#        clock = true;
-#	indicator = true;
-#	indicator-radius = 75;
-#	indicator-thickness = 7;
-#	ring-color = "292D3E";
-#	line-color = "2B2A3E";
-#	key-h1-color = "414863";
-#	inside-color = "717C8470";
-#	text-color = "FFFFFF";
-#      };
+      #      settings = {
+      #        clock = true;
+      #	indicator = true;
+      #	indicator-radius = 75;
+      #	indicator-thickness = 7;
+      #	ring-color = "292D3E";
+      #	line-color = "2B2A3E";
+      #	key-h1-color = "414863";
+      #	inside-color = "717C8470";
+      #	text-color = "FFFFFF";
+      #      };
     };
   };
 
@@ -55,11 +59,11 @@
       defaultWorkspace = "workspace number 1";
       focus = {
         followMouse = false;
-	mouseWarping = false;
+        mouseWarping = false;
       };
       startup = [
         {command = "exec ${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store";}
-	{command = "exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
+        {command = "exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
       ];
 
       menu = "${pkgs.rofi}/bin/rofi -show drun";
@@ -68,19 +72,19 @@
 
       output = {
         "AOC 24G2W1G4 ATNM81A001574" = {
-	  mode = "1920x1080@144Hz";
-	  scale = "1.0";
-	};
-	eDP-1 = {
-	  scale = "1.0";
-	};
+          mode = "1920x1080@144Hz";
+          scale = "1.0";
+        };
+        eDP-1 = {
+          scale = "1.0";
+        };
       };
       keybindings = {
-	"Print" = "exec grimshot copy area";
-	"Shift+Print" = "exec grimshot copy screen";
+        "Print" = "exec grimshot copy area";
+        "Shift+Print" = "exec grimshot copy screen";
 
-	"${modifier}+d" = "exec ${menu}";
-	"Ctrl+Alt+t" = "exec ${terminal}";
+        "${modifier}+d" = "exec ${menu}";
+        "Ctrl+Alt+t" = "exec ${terminal}";
 
         "${modifier}+r" = "reload";
         "${modifier}+q" = "kill";
@@ -131,16 +135,16 @@
       };
     };
     extraConfig = ''
-      default_border none 
-      default_floating_border none 
+      default_border none
+      default_floating_border none
 
-      blur enable 
-      blur_passes 1 
-      blur_radius 5 
+      blur enable
+      blur_passes 1
+      blur_radius 5
 
-      corner_radius 10 
+      corner_radius 10
 
-      gaps outer 6 
+      gaps outer 6
       gaps inner 10
 
       for_window [app_id="firefox-*" title="^Picture-in-Picture$"] \

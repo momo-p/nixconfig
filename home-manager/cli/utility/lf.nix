@@ -50,7 +50,9 @@
       icons = true;
       kitty = true;
     };
-    extraConfig = "set cleaner " + pkgs.writeShellScript "cleaner.sh" ''
+    extraConfig =
+      "set cleaner "
+      + pkgs.writeShellScript "cleaner.sh" ''
         #!/bin/sh
         exec ${pkgs.kitty}/bin/kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
       '';

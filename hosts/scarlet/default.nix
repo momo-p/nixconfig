@@ -64,7 +64,7 @@
 
   users.users."${username}" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     shell = pkgs.zsh;
   };
 
@@ -110,7 +110,7 @@
   };
 
   environment = {
-    pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+    pathsToLink = ["/share/xdg-desktop-portal" "/share/applications"];
     variables = {
       # track https://github.com/swaywm/sway/issues/8143
       GTK_IM_MODULE = "fcitx";

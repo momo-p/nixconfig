@@ -1,11 +1,15 @@
-{pkgs, username, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   imports = [
     ../../home-manager/1password.nix
 
     ../../home-manager/editor/nixvim
     ../../home-manager/desktop
-    ../../home-manager/cli 
-    ../../home-manager/gaming 
+    ../../home-manager/cli
+    ../../home-manager/gaming
   ];
 
   home.username = "${username}";

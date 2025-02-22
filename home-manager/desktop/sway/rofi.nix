@@ -46,7 +46,7 @@
       spacing = mkLiteral "0px";
       background-color = mkLiteral "transparent";
       orientation = mkLiteral "vertical";
-      children = map mkLiteral [ "inputbar" "listbox" ];
+      children = map mkLiteral ["inputbar" "listbox"];
     };
 
     # Listbox settings
@@ -55,7 +55,7 @@
       padding = mkLiteral "20px";
       background-color = mkLiteral "transparent";
       orientation = mkLiteral "vertical";
-      children = map mkLiteral [ "message" "listview" ];
+      children = map mkLiteral ["message" "listview"];
     };
 
     # Inputbar settings
@@ -67,7 +67,7 @@
       background-image = mkLiteral "url('${./momoko.png}', width)";
       text-color = mkLiteral "@foreground";
       orientation = mkLiteral "horizontal";
-      children = map mkLiteral [ "textbox-prompt-colon" "entry" "dummy" "mode-switcher" ];
+      children = map mkLiteral ["textbox-prompt-colon" "entry" "dummy" "mode-switcher"];
     };
 
     # Textbox prompt colon settings

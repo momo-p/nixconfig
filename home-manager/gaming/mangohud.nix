@@ -2,7 +2,7 @@
   programs.mangohud = {
     enable = true;
     settings = {
-      gpu_temp = true; 
+      gpu_temp = true;
       cpu_temp = true;
     };
   };

@@ -84,7 +84,7 @@
       };
 
       scarlet = nixpkgs.lib.nixosSystem {
-        modules = withSecureBootModules [
+        modules = [
           ./hosts/scarlet
           disko.nixosModules.disko
         ];

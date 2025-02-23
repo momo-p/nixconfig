@@ -31,7 +31,7 @@
             tooltip = false;
             all-outputs = true;
             format-icons = {
-              active = "";
+              focused = "";
               default = "";
             };
           };

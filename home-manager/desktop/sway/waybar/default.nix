@@ -13,7 +13,7 @@
           layer = "top";
           mode = "dock";
           modules-left = [
-            "custom/arch"
+            "custom/launcher"
             "sway/workspaces"
           ];
           modules-center = [
@@ -25,8 +25,8 @@
             "pulseaudio"
           ];
 
-          "custom/arch" = {
-            format = "  ";
+          "custom/launcher" = {
+            format = "  ";
             tooltip = false;
             on-click = "rofi -show drun";
           };
@@ -52,11 +52,23 @@
             spacing = 10;
           };
 
+          battery = {
+            states = {
+              warning = 25;
+              critical = 15;
+            };
+            format = "{icon}";
+            format-icons = ["" "" "" "" ""];
+            tooltip-format = "{capacity} ({timeTo})";
+          };
+
           network = {
-            format-wifi = "<span color='#b4befe'> </span>{essid}";
+            format-wifi = "<span color='#b4befe'> </span>";
             format-ethernet = "󰈀";
             format-disconnected = "󰖪";
-            tooltip = false;
+            tooltip-format = "{ifname}";
+            tooltip-format-wifi = "{essid} ({frequency})";
+            tooltip-format-disconnected = "Disconnected";
           };
 
           pulseaudio = {

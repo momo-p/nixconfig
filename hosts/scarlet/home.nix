@@ -24,6 +24,13 @@
     mpv
   ];
 
+  programs.waybar.settings.mainBar.modules-right = [
+    "tray"
+    "battery"
+    "network"
+    "pulseaudio"
+  ];
+
   home.sessionVariables = {
     EDITOR = "nvim";
   };

@@ -1,27 +1,43 @@
 @define-color background #11111B;
 @define-color foreground #B4BEFE;
+@define-color yellow #FFCB6C;
+@define-color red #FF5370;
 
 * {
   border: none;
   background: transparent;
-  font-family: 'SFProDisplay';
+  font-family: "SFProDisplay";
   font-size: 12px;
 }
 
-#custom-arch, #workspaces {
+tooltip {
+  border: 1px solid @foreground;
+  border-radius: 10px;
+  background-color: @background;
+}
+
+tooltip label {
+  font-size: 14px;
+  color: @foreground;
+  padding: 0 12px;
+}
+
+#custom-launcher,
+#workspaces {
   border-radius: 10px;
   background-color: @background;
   color: @foreground;
   padding: 2px 0;
 }
 
-#custom-arch, #workspaces {
+#custom-launcher,
+#workspaces {
   margin: 12px 0 0 15px;
 }
 
-#custom-arch {
+#custom-launcher {
   font-size: 20px;
-  padding-right: 6px;
+  padding-right: 7px;
   color: @foreground;
 }
 
@@ -52,12 +68,32 @@
   margin: 12px 15px 0 0;
 }
 
-#network, #pulseaudio {
+#battery,
+#network,
+#pulseaudio {
   margin-right: 12px;
 }
 
 #tray {
   padding-right: 12px;
+}
+
+#tray menu {
+  border: 1px solid @foreground;
+  background-color: @background;
+  color: @foreground;
+}
+
+#battery {
+  font-size: 20px;
+}
+
+#battery warning {
+  color: @yellow;
+}
+
+#battery critical {
+  color: @red;
 }
 
 #network {

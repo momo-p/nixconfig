@@ -1,11 +1,8 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./xdg.nix
     ./rofi.nix
+    ./mako.nix
     ./waybar
   ];
 

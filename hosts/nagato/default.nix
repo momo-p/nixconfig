@@ -1,8 +1,6 @@
 {
   pkgs,
-  disko,
   inputs,
-  outputs,
   username,
   ...
 }: {

@@ -19,11 +19,6 @@
           modules-center = [
             "custom/date"
           ];
-          modules-right = [
-            "tray"
-            "network"
-            "pulseaudio"
-          ];
 
           "custom/launcher" = {
             format = "  ";
@@ -59,15 +54,15 @@
             };
             format = "{icon}";
             format-icons = ["" "" "" "" ""];
-            tooltip-format = "{capacity} ({timeTo})";
+            tooltip-format = "{capacity}% ({timeTo})";
           };
 
           network = {
-            format-wifi = "<span color='#b4befe'> </span>";
+            format-wifi = "";
             format-ethernet = "󰈀";
             format-disconnected = "󰖪";
             tooltip-format = "{ifname}";
-            tooltip-format-wifi = "{essid} ({frequency})";
+            tooltip-format-wifi = "{essid} ({frequency}GHz)";
             tooltip-format-disconnected = "Disconnected";
           };
 

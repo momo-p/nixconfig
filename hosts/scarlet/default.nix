@@ -1,10 +1,6 @@
 {
-  nixpkgs,
   pkgs,
-  disko,
   inputs,
-  outputs,
-  isFreshInstall,
   username,
   ...
 }: {

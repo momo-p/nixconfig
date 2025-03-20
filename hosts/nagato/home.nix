@@ -23,6 +23,7 @@
     firefox-devedition-bin
 
     mpv
+    jellyfin-mpv-shim
   ];
 
   programs.waybar.settings.mainBar.modules-right = [

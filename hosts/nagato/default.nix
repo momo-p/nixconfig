@@ -77,6 +77,7 @@
     pam = {
       services = {
         login.enableGnomeKeyring = true;
+        swaylock = {};
       };
     };
   };

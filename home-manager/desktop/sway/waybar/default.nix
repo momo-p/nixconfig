@@ -23,7 +23,7 @@
           "custom/launcher" = {
             format = "  ";
             tooltip = false;
-            on-click = "rofi -show drun";
+            on-click = "${pkgs.tmux}/bin/tmux new-session -s sway -d || ${pkgs.tmux}/bin/tmux send-keys -t sway C-z Enter '${pkgs.rofi}/bin/rofi -show drun' Enter";
           };
 
           "sway/workspaces" = {

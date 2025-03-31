@@ -7,6 +7,8 @@
   ];
 
   home.packages = with pkgs; [
+    tmux
+
     sway-contrib.grimshot
     slurp
 

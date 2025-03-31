@@ -20,6 +20,7 @@
     anki
 
     discord
+    vesktop
     firefox-devedition-bin
 
     mpv

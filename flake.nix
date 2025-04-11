@@ -93,6 +93,17 @@
           username = "flandre";
         };
       };
+
+      sajou = nixpkgs.lib.nixosSystem {
+        modules = [
+          ./hosts/sajou
+          disko.nixosModules.disko
+        ];
+        specialArgs = {
+          inherit inputs outputs isFreshInstall;
+          username = "yukimi";
+        };
+      };
     };
   };
 }

@@ -1,6 +1,6 @@
 {
   virtualisation.oci-containers.containers = {
-    container-name = {
+    nyaa-rss = {
       image = "ghcr.io/momo-p/nyaa-rss:latest";
       autoStart = true;
       ports = ["3000:3000"];

@@ -41,6 +41,13 @@
     config.allowUnfree = true;
   };
 
+  fileSystems = {
+    "/mnt/media" = {
+      device = "/dev/sda1";
+      fsType = "btrfs";
+    };
+  };
+
   security = {
     rtkit.enable = true;
     polkit.enable = true;

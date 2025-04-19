@@ -8,6 +8,7 @@
       ];
       volumes = [
         "/mnt/media/downloads:/home/rtorrent/rtorrent/download"
+        "/mnt/media/.rtorrent-session:/home/rtorrent/rtorrent/.session"
       ];
     };
   };

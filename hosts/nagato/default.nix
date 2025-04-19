@@ -14,6 +14,7 @@
     ../../modules/1password.nix
     ../../modules/noisetorch.nix
     ../../modules/gaming
+    ../../services/podman.nix
 
     ./hardware-configuration.nix
     ./disk-config.nix

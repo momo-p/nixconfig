@@ -7,7 +7,7 @@
         "5000:3000"
       ];
       volumes = [
-        "/mnt/media/downloads:/downloads"
+        "/mnt/media/downloads:/download"
         "/mnt/media/flood:/root/.local/share/flood"
       ];
     };

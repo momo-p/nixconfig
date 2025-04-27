@@ -2,6 +2,7 @@
   virtualisation.oci-containers.containers = {
     rtorrent = {
       image = "ghcr.io/momo-p/alpine-rtorrent:0.15.1-r0";
+      user = "1000:1000";
       autoStart = true;
       ports = [
         "50000:50000"

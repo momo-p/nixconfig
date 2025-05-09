@@ -7,6 +7,7 @@
     ../../home-manager/1password.nix
 
     ../../home-manager/editor/nixvim
+    ../../home-manager/editor/vscodium
     ../../home-manager/desktop
     ../../home-manager/cli
     ../../home-manager/gaming

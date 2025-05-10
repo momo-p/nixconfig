@@ -43,8 +43,8 @@
 
   fileSystems = {
     "/mnt/media" = {
-      device = "/dev/disk/by-uuid/4602fb36-c6c1-4f93-b537-457163888d0d";
-      fsType = "btrfs";
+      device = "/dev/disk/by-uuid/97dcff17-1c39-43a3-882b-caed9b9eb81d";
+      fsType = "ext4";
     };
   };
 

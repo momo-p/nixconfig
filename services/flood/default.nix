@@ -8,7 +8,7 @@
         "5000:3000"
       ];
       volumes = [
-        "/mnt/media/downloads:/home/rtorrent/rtorrent/download"
+        "/mnt/media/downloads:/home/rtorrent/rtorrent/downloads"
         "/mnt/media/flood:/data"
       ];
     };

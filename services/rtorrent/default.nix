@@ -7,8 +7,6 @@
       autoStart = true;
       ports = [
         "50000:50000"
-        "6881:6881"
-        "6881:6881/udp"
       ];
       volumes = [
         "/mnt/media/downloads:/home/rtorrent/rtorrent/downloads"

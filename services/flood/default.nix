@@ -9,6 +9,7 @@
       ];
       volumes = [
         "/mnt/media/downloads:/home/rtorrent/rtorrent/downloads"
+        "/mnt/media/downloads:/downloads"
         "/mnt/media/flood:/home/node/.local/share/flood"
       ];
     };

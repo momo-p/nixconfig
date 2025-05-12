@@ -11,6 +11,7 @@
     ../../home-manager/desktop
     ../../home-manager/cli
     ../../home-manager/gaming
+    ../../home-manager/media
   ];
 
   home.username = "${username}";
@@ -23,9 +24,6 @@
     discord
     vesktop
     firefox-devedition-bin
-
-    mpv
-    jellyfin-mpv-shim
   ];
 
   programs.waybar.settings.mainBar.modules-right = [

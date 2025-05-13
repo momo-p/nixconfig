@@ -104,6 +104,17 @@
           username = "yukimi";
         };
       };
+
+      nitori = nixpkgs.lib.nixosSystem {
+        modules = [
+          ./hosts/nitori
+          disko.nixosModules.disko
+        ];
+        specialArgs = {
+          inherit inputs outputs isFreshInstall;
+          username = "nitori";
+        };
+      };
     };
   };
 }

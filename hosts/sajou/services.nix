@@ -3,9 +3,9 @@
     ../../services/ssh
     ../../services/podman.nix
     ../../services/nyaa-rss
-    ../../services/rtorrent
-    ../../services/deluge
-    ../../services/flood
-    ../../services/jellyfin
+    ../../services/media/rtorrent
+    ../../services/media/deluge
+    ../../services/media/flood
+    ../../services/media/jellyfin
   ];
 }

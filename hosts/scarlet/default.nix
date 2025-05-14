@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    #    inputs.nixos-hardware.nixosModules.microsoft-surface-go
+    inputs.nixos-hardware.nixosModules.microsoft-surface-go
     inputs.home-manager.nixosModules.default
     inputs.stylix.nixosModules.stylix
 

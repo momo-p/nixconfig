@@ -89,6 +89,7 @@
         "${modifier}+q" = "kill";
         "${modifier}+f" = "fullscreen toggle";
         "${modifier}+s" = "floating toggle";
+        "${modifier}+t" = "sticky toggle";
         "${modifier}+Shift+e" = "exec swaymsg exit";
 
         # focus

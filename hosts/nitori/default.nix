@@ -55,6 +55,7 @@
     isNormalUser = true;
     extraGroups = ["wheel"];
     shell = pkgs.zsh;
+    initialHashedPassword = "$y$j9T$q1KU3cssBTYERZT2nromT0$50vtFnuigg8e/IdP6h/acyGjYoqjmedRp87qrylecM6";
   };
 
   services = {

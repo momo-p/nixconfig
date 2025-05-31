@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./lock-screen.nix
+  ];
+}

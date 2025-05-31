@@ -40,7 +40,6 @@ in {
       config = {
         sway = {
           default = ["wlr" "gtk"];
-          "org.freedesktop.impl.portal.ScreenCast" = "gtk";
         };
       };
     };

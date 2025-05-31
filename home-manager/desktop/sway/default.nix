@@ -50,6 +50,7 @@
     enable = true;
     package = pkgs.swayfx;
     checkConfig = false;
+    wrapperFeatures.gtk = true;
     systemd.xdgAutostart = true;
 
     config = rec {

@@ -13,6 +13,7 @@
 
     ../../modules/1password.nix
     ../../modules/noisetorch.nix
+    ../../modules/lact.nix
     ../../modules/gaming
     ../../services/podman.nix
 
@@ -20,18 +21,10 @@
     ./disk-config.nix
   ];
 
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  hardware.graphics = {
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      amdvlk
-    ];
-    extraPackages32 = with pkgs; [
-      driversi686Linux.amdvlk
-    ];
-  };
 
   networking = {
     hostName = "nagato";

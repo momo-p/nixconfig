@@ -136,17 +136,17 @@
       };
     };
     extraConfig = ''
-      default_border none
-      default_floating_border none
+       default_border none
+       default_floating_border none
 
-      blur enable
-      blur_passes 1
-      blur_radius 5
+       blur enable
+       blur_passes 1
+       blur_radius 5
 
-      corner_radius 10
+       corner_radius 10
 
-      gaps outer 6
-      gaps inner 10
+       gaps outer 6
+       gaps inner 10
 
       for_window [app_id="firefox-*" title="^Picture-in-Picture$"] \
         floating enable, move position 16 70, sticky enable

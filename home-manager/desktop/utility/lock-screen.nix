@@ -4,7 +4,7 @@
       name = "Lock screen";
       exec = "swaylock";
       terminal = false;
-      icon = "lock";
+      icon = "lock-screen";
       categories = ["System"];
     };
   };

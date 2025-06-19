@@ -47,7 +47,6 @@
       screenshot-format = "png";
       screenshot-png-compression = 2;
       screenshot-directory = "${config.home.homeDirectory}/Pictures/mpv";
-      screenshot-template = "%f-%wH.%wM.%wS.%wT-#%#00n";
 
       # yt-dlp
       ytdl-format = "bestvideo+bestaudio";

@@ -1,118 +1,132 @@
 {
+  config,
   lib,
   pkgs,
+  username,
   ...
-}:
-pkgs.python3Packages.buildPythonApplication rec {
-  pname = "jellyfin-mpv-shim";
-  version = "2.8.0";
-
-  src = pkgs.fetchPypi {
-    inherit pname version;
-    hash = "sha256-EANaNmvD8hcdGB2aoGemKvA9syS1VvIqGsP1jk0b+lE=";
-  };
-
-  nativeBuildInputs = [
-    pkgs.copyDesktopItems
-    pkgs.wrapGAppsHook3
-    pkgs.gobject-introspection
+}: let
+  jellyfin-mpv-shim = pkgs.callPackage ./build/jellyfin-mpv-shim.nix {inherit lib pkgs;};
+in {
+  home.packages = [
+    jellyfin-mpv-shim
   ];
 
-  propagatedBuildInputs = with pkgs.python3Packages; [
-    jellyfin-apiclient-python
-    mpv
-    pillow
-    python-mpv-jsonipc
-    pypresence
-
-    # gui dependencies
-    pystray
-    tkinter
-
-    # display_mirror dependencies
-    jinja2
-    pywebview
-  ];
-
-  # override $HOME directory:
-  #   error: [Errno 13] Permission denied: '/homeless-shelter'
-  #
-  # remove jellyfin_mpv_shim/win_utils.py:
-  #   ModuleNotFoundError: No module named 'win32gui'
-  preCheck = ''
-    export HOME=$TMPDIR
-
-    rm jellyfin_mpv_shim/win_utils.py
-  '';
-
-  postPatch = ''
-    substituteInPlace jellyfin_mpv_shim/conf.py \
-      --replace "check_updates: bool = True" "check_updates: bool = False" \
-      --replace "notify_updates: bool = True" "notify_updates: bool = False"
-    # python-mpv renamed to mpv with 1.0.4
-    substituteInPlace setup.py \
-      --replace "python-mpv" "mpv" \
-      --replace "mpv-jsonipc" "python_mpv_jsonipc"
-  '';
-
-  # Install all the icons for the desktop item
-  postInstall = ''
-    for s in 16 32 48 64 128 256; do
-      mkdir -p $out/share/icons/hicolor/''${s}x''${s}/apps
-      ln -s $out/${pkgs.python3.sitePackages}/jellyfin_mpv_shim/integration/jellyfin-''${s}.png \
-        $out/share/icons/hicolor/''${s}x''${s}/apps/${pname}.png
-    done
-  '';
-
-  # needed for pystray to access appindicator using GI
-  preFixup = ''
-    makeWrapperArgs+=("''${gappsWrapperArgs[@]}")
-  '';
-  dontWrapGApps = true;
-
-  # no tests
-  doCheck = false;
-  pythonImportsCheck = ["jellyfin_mpv_shim"];
-
-  desktopItems = [
-    (pkgs.makeDesktopItem {
-      name = pname;
-      exec = pname;
-      icon = pname;
-      desktopName = "Jellyfin MPV Shim";
-      categories = [
-        "Video"
-        "AudioVideo"
-        "TV"
-        "Player"
-      ];
-    })
-  ];
-
-  meta = with lib; {
-    homepage = "https://github.com/jellyfin/jellyfin-mpv-shim";
-    description = "Allows casting of videos to MPV via the jellyfin mobile and web app";
-    longDescription = ''
-      Jellyfin MPV Shim is a client for the Jellyfin media server which plays media in the
-      MPV media player. The application runs in the background and opens MPV only
-      when media is cast to the player. The player supports most file formats, allowing you
-      to prevent needless transcoding of your media files on the server. The player also has
-      advanced features, such as bulk subtitle updates and launching commands on events.
-    '';
-    license = with licenses; [
-      # jellyfin-mpv-shim
-      gpl3Only
-      mit
-
-      # shader-pack licenses (github:iwalton3/default-shader-pack)
-      # KrigBilateral, SSimDownscaler, NNEDI3
-      gpl3Plus
-      # Anime4K, FSRCNNX
-      mit
-      # Static Grain
-      unlicense
-    ];
-    maintainers = with maintainers; [jojosch];
-    mainProgram = "jellyfin-mpv-shim";
+  xdg.configFile = {
+    "jellyfin-mpv-shim/conf.json" = {
+      enable = true;
+      text = ''
+        {
+            "allow_transcode_to_h265": false,
+            "always_transcode": false,
+            "audio_output": "hdmi",
+            "auto_play": true,
+            "check_updates": false,
+            "client_uuid": "daa384e5-b1dc-4261-811e-a1cde67d2709",
+            "connect_retry_mins": 0,
+            "direct_paths": false,
+            "discord_presence": true,
+            "display_mirroring": false,
+            "enable_gui": true,
+            "enable_osc": true,
+            "force_audio_codec": null,
+            "force_set_played": false,
+            "force_video_codec": null,
+            "fullscreen": true,
+            "health_check_interval": 300,
+            "idle_cmd": null,
+            "idle_cmd_delay": 60,
+            "idle_ended_cmd": null,
+            "idle_when_paused": false,
+            "ignore_ssl_cert": false,
+            "kb_debug": "~",
+            "kb_fullscreen": "f",
+            "kb_kill_shader": "k",
+            "kb_menu": "-",
+            "kb_menu_down": "down",
+            "kb_menu_esc": "esc",
+            "kb_menu_left": "left",
+            "kb_menu_ok": "enter",
+            "kb_menu_right": "right",
+            "kb_menu_up": "up",
+            "kb_next": ">",
+            "kb_pause": "space",
+            "kb_prev": "<",
+            "kb_stop": "q",
+            "kb_unwatched": "u",
+            "kb_watched": "w",
+            "lang": null,
+            "lang_filter": "und,eng,jpn,mis,mul,zxx",
+            "lang_filter_audio": false,
+            "lang_filter_sub": false,
+            "local_kbps": 2147483,
+            "log_decisions": true,
+            "media_ended_cmd": null,
+            "media_key_seek": false,
+            "media_keys": true,
+            "menu_mouse": true,
+            "mpv_ext": true,
+            "mpv_ext_ipc": null,
+            "mpv_ext_no_ovr": true,
+            "mpv_ext_path": "/etc/profiles/per-user/${username}/bin/mpv",
+            "mpv_ext_start": true,
+            "mpv_log_level": "info",
+            "notify_updates": false,
+            "play_cmd": null,
+            "playback_timeout": 30,
+            "player_name": "nagato",
+            "pre_media_cmd": null,
+            "prefer_transcode_to_h265": false,
+            "raise_mpv": true,
+            "remote_direct_paths": false,
+            "remote_kbps": 10000,
+            "sanitize_output": true,
+            "screenshot_dir": "${config.home.homeDirectory}/Pictures/mpv",
+            "screenshot_menu": true,
+            "seek_down": -60,
+            "seek_h_exact": false,
+            "seek_left": -5,
+            "seek_right": 5,
+            "seek_up": 60,
+            "seek_v_exact": false,
+            "shader_pack_custom": false,
+            "shader_pack_enable": true,
+            "shader_pack_profile": null,
+            "shader_pack_remember": true,
+            "shader_pack_subtype": "lq",
+            "skip_credits_always": false,
+            "skip_credits_prompt": false,
+            "skip_intro_always": false,
+            "skip_intro_prompt": false,
+            "stop_cmd": null,
+            "stop_idle": false,
+            "subtitle_color": "#FFFFFFFF",
+            "subtitle_position": "bottom",
+            "subtitle_size": 100,
+            "svp_enable": false,
+            "svp_socket": null,
+            "svp_url": "http://127.0.0.1:9901/",
+            "sync_attempts": 5,
+            "sync_max_delay_skip": 300,
+            "sync_max_delay_speed": 50,
+            "sync_method_thresh": 2000,
+            "sync_osd_message": true,
+            "sync_revert_seek": true,
+            "sync_speed_attempts": 3,
+            "sync_speed_time": 1000,
+            "thumbnail_enable": true,
+            "thumbnail_osc_builtin": true,
+            "thumbnail_preferred_size": 320,
+            "transcode_4k": false,
+            "transcode_av1": false,
+            "transcode_dolby_vision": true,
+            "transcode_hdr": false,
+            "transcode_hevc": false,
+            "transcode_hi10p": false,
+            "transcode_warning": true,
+            "use_web_seek": false,
+            "write_logs": false
+        }
+      '';
+    };
   };
 }

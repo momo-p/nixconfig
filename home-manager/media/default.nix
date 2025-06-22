@@ -1,5 +1,6 @@
 {
   imports = [
+    ./ffmpeg.nix
     ./mpv
   ];
 }

@@ -9,7 +9,7 @@
       autoload
       sponsorblock
       mpv-webm
-      autosubsync-mpv
+      # autosubsync-mpv
       eisa01.smart-copy-paste-2
     ];
     scriptOpts = {

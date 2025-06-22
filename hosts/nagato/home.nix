@@ -23,7 +23,7 @@
 
     discord
     vesktop
-    firefox-devedition-bin
+    firefox-devedition
   ];
 
   programs.waybar.settings.mainBar.modules-right = [

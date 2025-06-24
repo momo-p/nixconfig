@@ -9,6 +9,7 @@
     ../../home-manager/editor/nixvim
     ../../home-manager/editor/vscodium
     ../../home-manager/desktop
+    ../../home-manager/development/hoppscotch.nix
     ../../home-manager/cli
     ../../home-manager/gaming
     ../../home-manager/media

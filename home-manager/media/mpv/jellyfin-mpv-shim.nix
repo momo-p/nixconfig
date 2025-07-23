@@ -1,14 +1,11 @@
 {
   config,
-  lib,
   pkgs,
   username,
   ...
-}: let
-  jellyfin-mpv-shim = pkgs.callPackage ./build/jellyfin-mpv-shim.nix {inherit lib pkgs;};
-in {
+}: {
   home.packages = [
-    jellyfin-mpv-shim
+    pkgs.jellyfin-mpv-shim
   ];
 
   xdg.configFile = {

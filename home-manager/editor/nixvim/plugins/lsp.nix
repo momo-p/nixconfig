@@ -6,6 +6,7 @@
   programs.nixvim.plugins = {
     lsp = {
       enable = true;
+      inlayHints = true;
       servers = {
         ts_ls = {
           enable = true;
@@ -32,7 +33,16 @@
         volar.enable = true;
         nil_ls.enable = true;
         clangd.enable = true;
-        gopls.enable = true;
+        gopls = {
+          enable = true;
+          settings = {
+            hints = {
+              compositeLiteralFields = true;
+              constantValues = true;
+              parameterNames = true;
+            };
+          };
+        };
         eslint.enable = true;
         tailwindcss.enable = true;
         html.enable = true;

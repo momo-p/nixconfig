@@ -25,6 +25,7 @@
     discord
     vesktop
     firefox-devedition
+    google-chrome
   ];
 
   programs.waybar.settings.mainBar.modules-right = [

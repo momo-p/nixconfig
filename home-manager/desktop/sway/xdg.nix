@@ -55,5 +55,6 @@ in {
       associations.added = associations;
       defaultApplications = associations;
     };
+    configFile."mimeapps.list".force = true;
   };
 }

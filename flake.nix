@@ -32,7 +32,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
+    apple-fonts.url = "github:momo-p/apple-fonts.nix";
 
     systems.url = "github:nix-systems/default-linux";
   };

@@ -19,7 +19,7 @@
           ];
           extraOptions = {
             init_options = {
-              plugins = [
+              plugins = lib.mkForce [
                 {
                   name = "@vue/typescript-plugin";
                   location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server";

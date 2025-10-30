@@ -69,8 +69,8 @@
           pulseaudio = {
             format = "{icon}";
             format-bluetooth = "{volume}% {icon} {format_source}";
-            format-bluetooth-muted = "🔇";
-            format-muted = "🔇";
+            format-bluetooth-muted = "";
+            format-muted = "";
             format-source = "  {volume}%";
             format-source-muted = "";
             tooltip-format = "{volume}%";
@@ -81,9 +81,9 @@
               "portable" = "";
               "car" = "";
               default = [
-                "🔈"
-                "🔉"
-                "🔊"
+                ""
+                ""
+                ""
               ];
             };
             on-click = "pavucontrol";

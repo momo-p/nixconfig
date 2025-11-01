@@ -1,5 +1,9 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  mainMonitor = "AOC 24G2W1G4 ATNM81A001574";
+  subMonitor = "Philips Consumer Electronics Company PHL 226V6 UHB1936016087";
+in {
   imports = [
+    ./kanshi.nix
     ./xdg.nix
     ./rofi.nix
     ./mako.nix
@@ -123,6 +127,17 @@
         "${modifier}+9" = "workspace number 9";
         "${modifier}+0" = "workspace number 10";
 
+        "${modifier}+Alt+1" = "workspace number 01";
+        "${modifier}+Alt+2" = "workspace number 02";
+        "${modifier}+Alt+3" = "workspace number 03";
+        "${modifier}+Alt+4" = "workspace number 04";
+        "${modifier}+Alt+5" = "workspace number 05";
+        "${modifier}+Alt+6" = "workspace number 06";
+        "${modifier}+Alt+7" = "workspace number 07";
+        "${modifier}+Alt+8" = "workspace number 08";
+        "${modifier}+Alt+9" = "workspace number 09";
+        "${modifier}+Alt+0" = "workspace number 010";
+
         "${modifier}+Shift+1" = "move container to workspace number 1";
         "${modifier}+Shift+2" = "move container to workspace number 2";
         "${modifier}+Shift+3" = "move container to workspace number 3";
@@ -133,23 +148,56 @@
         "${modifier}+Shift+8" = "move container to workspace number 8";
         "${modifier}+Shift+9" = "move container to workspace number 9";
         "${modifier}+Shift+0" = "move container to workspace number 10";
+
+        "${modifier}+Shift+Alt+1" = "move container to workspace number 01";
+        "${modifier}+Shift+Alt+2" = "move container to workspace number 02";
+        "${modifier}+Shift+Alt+3" = "move container to workspace number 03";
+        "${modifier}+Shift+Alt+4" = "move container to workspace number 04";
+        "${modifier}+Shift+Alt+5" = "move container to workspace number 05";
+        "${modifier}+Shift+Alt+6" = "move container to workspace number 06";
+        "${modifier}+Shift+Alt+7" = "move container to workspace number 07";
+        "${modifier}+Shift+Alt+8" = "move container to workspace number 08";
+        "${modifier}+Shift+Alt+9" = "move container to workspace number 09";
+        "${modifier}+Shift+Alt+0" = "move container to workspace number 010";
       };
     };
     extraConfig = ''
-       default_border none
-       default_floating_border none
+      default_border none
+      default_floating_border none
 
-       blur enable
-       blur_passes 1
-       blur_radius 5
+      blur enable
+      blur_passes 1
+      blur_radius 5
 
-       corner_radius 10
+      corner_radius 10
 
-       gaps outer 6
-       gaps inner 10
+      gaps outer 6
+      gaps inner 10
 
       for_window [app_id="firefox-*" title="^Picture-in-Picture$"] \
         floating enable, move position 16 70, sticky enable
+
+      workspace 1 output "${mainMonitor}"
+      workspace 2 output "${mainMonitor}"
+      workspace 3 output "${mainMonitor}"
+      workspace 4 output "${mainMonitor}"
+      workspace 5 output "${mainMonitor}"
+      workspace 6 output "${mainMonitor}"
+      workspace 7 output "${mainMonitor}"
+      workspace 8 output "${mainMonitor}"
+      workspace 9 output "${mainMonitor}"
+      workspace 10 output "${mainMonitor}"
+
+      workspace 01 output "${subMonitor}"
+      workspace 02 output "${subMonitor}"
+      workspace 03 output "${subMonitor}"
+      workspace 04 output "${subMonitor}"
+      workspace 05 output "${subMonitor}"
+      workspace 06 output "${subMonitor}"
+      workspace 07 output "${subMonitor}"
+      workspace 08 output "${subMonitor}"
+      workspace 09 output "${subMonitor}"
+      workspace 010 output "${subMonitor}"
     '';
   };
 }

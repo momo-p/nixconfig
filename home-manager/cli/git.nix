@@ -1,7 +1,11 @@
 {
   programs.git = {
     enable = true;
-    userName = "momo-p";
-    userEmail = "momo-p@chong-arisu.id.vn";
+    settings = {
+      user = {
+        name = "momo-p";
+        email = "momo-p@chong-arisu.id.vn";
+      };
+    };
   };
 }

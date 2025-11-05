@@ -8,7 +8,7 @@
     settings = {
       user = {
         name = "momo-p";
-        email = "momo-p@chong-arisu.id.vn";
+        email = "momo-p@kafuu-chino.cafe";
       };
     };
     signing = {

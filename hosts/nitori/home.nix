@@ -6,6 +6,7 @@
   imports = [
     ../../home-manager/editor/nixvim
     ../../home-manager/cli
+    ../../home-manager/development/helm.nix
   ];
 
   home.username = "${username}";

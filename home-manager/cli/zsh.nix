@@ -1,4 +1,12 @@
 {
+  lib,
+  pkgs,
+  ...
+}: {
+  home.packages = with pkgs; [
+    pfetch
+  ];
+
   programs.zsh = {
     enable = true;
     history = {
@@ -13,5 +21,14 @@
         "zsh-users/zsh-autosuggestions"
       ];
     };
+    shellAliases = {
+      clear = "clear; pfetch";
+    };
+    sessionVariables = {
+      TYPEWRITTEN_PROMPT_LAYOUT = "singleline_verbose";
+    };
+    initContent = lib.mkOrder 1500 ''
+      clear
+    '';
   };
 }

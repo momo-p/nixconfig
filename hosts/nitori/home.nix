@@ -7,6 +7,7 @@
     ../../home-manager/editor/nixvim
     ../../home-manager/cli
     ../../home-manager/development/helm.nix
+    ../../home-manager/development/kustomize.nix
     ../../home-manager/development/terraform.nix
   ];
 

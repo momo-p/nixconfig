@@ -30,7 +30,7 @@
           };
         };
         svelte.enable = true;
-        volar.enable = true;
+        vue_ls.enable = true;
         nil_ls.enable = true;
         clangd.enable = true;
         gopls = {

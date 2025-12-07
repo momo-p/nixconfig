@@ -26,7 +26,7 @@
           css = ["prettier"];
           go = ["gofmt"];
           php = ["prettier"];
-          yaml = ["yamlfmt"];
+          # yaml = ["yamlfmt"];
           swift = ["swift_format"];
           javascriptreact = ["prettier"];
           typescriptreact = ["prettier"];

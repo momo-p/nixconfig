@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  browser = ["firefox.desktop"];
+  browser = ["firefox-devedition.desktop"];
   associations = {
     "text/html" = browser;
     "x-scheme-handler/http" = browser;

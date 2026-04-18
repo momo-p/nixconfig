@@ -47,7 +47,7 @@ in {
       enable = true;
       createDirectories = true;
       extraConfig = {
-        XDG_CODE_DIR = "${config.home.homeDirectory}/Codes";
+        CODE = "${config.home.homeDirectory}/Codes";
       };
     };
     mimeApps = {

@@ -29,6 +29,10 @@
     };
     initContent = lib.mkOrder 1500 ''
       clear
+
+      mangadex() {
+        docker run --rm -v "$(pwd)":/downloads mansuf/mangadex-downloader --save-as cbz "$1"
+      }
     '';
   };
 }

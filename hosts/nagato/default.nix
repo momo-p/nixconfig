@@ -15,6 +15,7 @@
     ../../modules/noisetorch.nix
     ../../modules/lact.nix
     ../../modules/gaming
+    ../../modules/obs.nix
     ../../services/podman.nix
 
     ./hardware-configuration.nix

@@ -23,7 +23,6 @@
     anki
 
     discord
-    vesktop
     firefox-devedition
     google-chrome
   ];

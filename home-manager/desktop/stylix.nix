@@ -34,6 +34,7 @@
       rofi.enable = false;
       waybar.enable = false;
       mangohud.enable = false;
+      vesktop.enable = false;
     };
   };
 }

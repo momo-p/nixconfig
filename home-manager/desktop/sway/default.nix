@@ -22,23 +22,26 @@ in {
 
     glib
     viewnior
+
+    mpvpaper
   ];
 
   programs = {
     swaylock = {
       enable = true;
-      package = pkgs.swaylock-effects;
-      #      settings = {
-      #        clock = true;
-      #	indicator = true;
-      #	indicator-radius = 75;
-      #	indicator-thickness = 7;
-      #	ring-color = "292D3E";
-      #	line-color = "2B2A3E";
-      #	key-h1-color = "414863";
-      #	inside-color = "717C8470";
-      #	text-color = "FFFFFF";
-      #      };
+      package = pkgs.swaylock-plugin;
+      settings = {
+        command = "${pkgs.mpvpaper}/bin/mpvpaper all -o \"loop --no-resume-playback\" ${./idling.mp4} >/dev/null 2>/dev/null";
+        #  clock = true;
+        #	indicator = true;
+        #	indicator-radius = 75;
+        #	indicator-thickness = 7;
+        #	ring-color = "292D3E";
+        #	line-color = "2B2A3E";
+        #	key-h1-color = "414863";
+        #	inside-color = "717C8470";
+        #	text-color = "FFFFFF";
+      };
     };
   };
 
@@ -47,6 +50,15 @@ in {
     gnome-keyring = {
       enable = true;
       components = ["secrets"];
+    };
+    swayidle = {
+      enable = true;
+      timeouts = [
+        {
+          timeout = 250;
+          command = "${pkgs.swaylock-plugin}/bin/swaylock-plugin";
+        }
+      ];
     };
   };
 

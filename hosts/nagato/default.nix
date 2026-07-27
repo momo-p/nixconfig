@@ -78,6 +78,7 @@
       services = {
         login.enableGnomeKeyring = true;
         swaylock = {};
+        swaylock-plugin = {};
       };
     };
   };

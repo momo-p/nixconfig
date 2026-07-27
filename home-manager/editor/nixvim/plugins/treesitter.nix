@@ -3,24 +3,27 @@
     treesitter = {
       enable = true;
 
-      auto_install = true;
-      highlight = {
-        additional_vim_regex_highlighting = true;
-        custom_captures = {};
-        enable = true;
-      };
+      settings = {
+        auto_install = true;
 
-      incremental_selection = {
-        enable = true;
-        keymaps = {
-          init_selection = "gnn";
-          node_decremental = "grm";
-          node_incremental = "grn";
-          scope_incremental = "grc";
+        highlight = {
+          additional_vim_regex_highlighting = true;
+          custom_captures = {};
+          enable = true;
         };
-      };
-      indent = {
-        enable = true;
+
+        incremental_selection = {
+          enable = true;
+          keymaps = {
+            init_selection = "gnn";
+            node_decremental = "grm";
+            node_incremental = "grn";
+            scope_incremental = "grc";
+          };
+        };
+        indent = {
+          enable = true;
+        };
       };
     };
   };

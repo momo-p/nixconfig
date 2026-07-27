@@ -9,7 +9,7 @@
     nixvim = {
       enable = true;
       defaultEditor = true;
-
+      nixpkgs.source = pkgs.path;
       opts = {
         number = true;
         shiftwidth = 4;

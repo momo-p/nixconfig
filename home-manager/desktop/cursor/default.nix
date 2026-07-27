@@ -2,6 +2,7 @@
   home.pointerCursor = let
     name = "チノ";
   in {
+    enable = true;
     gtk.enable = true;
     x11.enable = true;
     name = name;

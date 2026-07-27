@@ -9,17 +9,17 @@
     fonts = {
       monospace = {
         name = "SFMonoDisplay Nerd Font";
-        package = inputs.apple-fonts.packages.${pkgs.system}.sf-mono-nerd;
+        package = inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-mono-nerd;
       };
 
       sansSerif = {
         name = "SFProDisplay";
-        package = inputs.apple-fonts.packages.${pkgs.system}.sf-pro;
+        package = inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-pro;
       };
 
       serif = {
         name = "New York";
-        package = inputs.apple-fonts.packages.${pkgs.system}.ny;
+        package = inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.ny;
       };
 
       sizes = {

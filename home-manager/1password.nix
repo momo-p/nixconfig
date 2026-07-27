@@ -7,7 +7,7 @@
     else onePassDarwinPath;
 in {
   programs.ssh = {
-    matchBlocks = {
+    settings = {
       "*" = {
         identityAgent = onePassPath;
       };

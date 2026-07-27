@@ -8,6 +8,7 @@
 
     ../../home-manager/editor/nixvim
     ../../home-manager/editor/vscodium
+    ../../home-manager/editor/ignore
     ../../home-manager/desktop
     ../../home-manager/development/hoppscotch.nix
     ../../home-manager/cli

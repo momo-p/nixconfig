@@ -4,6 +4,7 @@
 in {
   imports = [
     ./kanshi.nix
+    ./wallpaper.nix
     ./xdg.nix
     ./rofi.nix
     ./mako.nix
@@ -101,6 +102,10 @@ in {
 
         "${modifier}+d" = "exec ${menu}";
         "Ctrl+Alt+t" = "exec ${terminal}";
+
+        # wallpaper rotation
+        "${modifier}+w" = "exec ${pkgs.wpaperd}/bin/wpaperctl next";
+        "${modifier}+Shift+w" = "exec ${pkgs.wpaperd}/bin/wpaperctl previous";
 
         "${modifier}+r" = "reload";
         "${modifier}+q" = "kill";

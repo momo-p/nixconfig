@@ -31,6 +31,9 @@
     };
 
     targets = {
+      sway.useWallpaper = false;
+      wpaperd.enable = false;
+
       rofi.enable = false;
       waybar.enable = false;
       mangohud.enable = false;

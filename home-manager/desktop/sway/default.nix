@@ -191,6 +191,9 @@ in {
       gaps outer 6
       gaps inner 10
 
+      # gamepad input never resets the wayland idle timer
+      for_window [all] inhibit_idle fullscreen
+
       for_window [app_id="firefox-*" title="^Picture-in-Picture$"] \
         floating enable, move position 16 70, sticky enable
 

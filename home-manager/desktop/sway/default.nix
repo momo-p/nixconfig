@@ -1,12 +1,6 @@
 {pkgs, ...}: let
   mainMonitor = "AOC 24G2W1G4 ATNM81A001574";
   subMonitor = "Philips Consumer Electronics Company PHL 226V6 UHB1936016087";
-
-  # silences mako and refreshes the bar's notify module
-  focusMode = pkgs.writeShellScript "focus-mode" ''
-    ${pkgs.mako}/bin/makoctl mode -t do-not-disturb
-    ${pkgs.procps}/bin/pkill -RTMIN+1 waybar || true
-  '';
 in {
   imports = [
     ./kanshi.nix
@@ -107,7 +101,6 @@ in {
 
         "${modifier}+Shift+l" = "exec ${pkgs.swaylock-plugin}/bin/swaylock-plugin";
         "${modifier}+n" = "exec ${pkgs.mako}/bin/makoctl restore";
-        "${modifier}+Shift+f" = "exec ${focusMode}";
 
         # wallpaper rotation
         "${modifier}+w" = "exec ${pkgs.wpaperd}/bin/wpaperctl next";

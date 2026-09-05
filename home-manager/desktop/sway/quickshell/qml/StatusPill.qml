@@ -122,6 +122,20 @@ Pill {
                     : Theme.iconBattery
     }
 
+    Icon {
+        id: dnd
+        visible: Sys.dnd
+        source: Theme.iconDnd
+
+        TapHandler {
+            onTapped: Sys.toggleDnd()
+        }
+
+        HoverHandler {
+            id: dndHover
+        }
+    }
+
     Tooltip {
         targetWindow: root.barWindow
         target: volume
@@ -136,4 +150,10 @@ Pill {
         visible: imeHover.hovered
     }
 
+    Tooltip {
+        targetWindow: root.barWindow
+        target: dnd
+        text: "notifications silenced"
+        visible: dndHover.hovered
+    }
 }

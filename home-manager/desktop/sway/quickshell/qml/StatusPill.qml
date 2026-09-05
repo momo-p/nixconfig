@@ -1,5 +1,4 @@
 import Quickshell
-import Quickshell.Io
 import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 import Quickshell.Networking
@@ -39,34 +38,18 @@ Pill {
 
     Text {
         id: ime
-        property string name: ""
 
         Layout.preferredWidth: Theme.iconSize
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        text: name === "anthy" ? "あ" : name === "bamboo" ? "VI" : "EN"
-        color: name === "" || name === "keyboard-us" ? Theme.text : Theme.accent
+        text: Sys.ime === "anthy" ? "あ" : Sys.ime === "bamboo" ? "VI" : "EN"
+        color: Sys.ime === "" || Sys.ime === "keyboard-us" ? Theme.text : Theme.accent
         font.family: "Noto Sans CJK JP"
         font.pixelSize: 13
         font.bold: true
 
-        // fcitx emits no signal on switch, so one long-lived poller that
-        // only writes a line when the value actually changes
-        Process {
-            running: true
-            command: [Theme.fcitxWatch]
-            stdout: SplitParser {
-                onRead: data => ime.name = data.trim()
-            }
-        }
-
         TapHandler {
-            onTapped: {
-                const list = Theme.inputMethods;
-                const next = list[(list.indexOf(ime.name) + 1) % list.length];
-                ime.name = next;
-                Quickshell.execDetached([Theme.fcitxRemote, "-s", next]);
-            }
+            onTapped: Sys.cycleIme()
         }
 
         HoverHandler {
@@ -140,7 +123,8 @@ Pill {
     Tooltip {
         targetWindow: root.barWindow
         target: ime
-        text: ime.name === "" ? "input method" : ime.name
+        text: Sys.ime === "" ? "input method" : Sys.ime
         visible: imeHover.hovered
     }
+
 }

@@ -92,7 +92,7 @@
 
   stylix = {
     enable = true;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/material-palenight.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-frappe.yaml";
     image = ../../home-manager/desktop/sway/wallpapers/00001.jpg;
   };
 

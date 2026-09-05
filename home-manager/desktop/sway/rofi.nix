@@ -1,5 +1,6 @@
 {config, ...}: let
   inherit (config.lib.formats.rasi) mkLiteral;
+  inherit (config.lib.stylix.colors.withHashtag) base00 base01 base04 base05 base0D base0E;
 
   rofi-theme = {
     configuration = {
@@ -15,15 +16,16 @@
 
     # Global properties
     "*" = {
-      font = "SFProDisplay Nerd Font 12";
-      background = mkLiteral "rgba(41, 45, 62, 1.0)";
-      background-alt = mkLiteral "rgba(41, 45, 62, 1.0)";
-      foreground = mkLiteral "rgba(149, 157, 203, 1.0)";
-      selected = mkLiteral "rgba(149, 157, 203, 1.0)";
-      selected-foreground = mkLiteral "rgba(68, 66, 103, 1.0)";
-      active = mkLiteral "rgba(41, 45, 62, 1.0)";
-      active-foreground = mkLiteral "rgba(130, 170, 255, 1.0)";
-      urgent = mkLiteral "rgba(41, 45, 62, 1.0)";
+      font = "SF Pro Display 12";
+      background = mkLiteral "${base00}8C";
+      background-alt = mkLiteral "${base01}D9";
+      foreground = mkLiteral "${base05}";
+      selected = mkLiteral "${base0E}";
+      selected-foreground = mkLiteral "${base00}";
+      active = mkLiteral "${base01}D9";
+      active-foreground = mkLiteral "${base0D}";
+      urgent = mkLiteral "${base01}D9";
+      placeholder-fg = mkLiteral "${base04}";
     };
 
     # Main window settings
@@ -35,7 +37,7 @@
       x-offset = mkLiteral "0px";
       y-offset = mkLiteral "0px";
       enabled = true;
-      border-radius = mkLiteral "20px";
+      border-radius = mkLiteral "24px";
       cursor = mkLiteral "default";
       background-color = mkLiteral "@background";
     };
@@ -51,8 +53,8 @@
 
     # Listbox settings
     listbox = {
-      spacing = mkLiteral "20px";
-      padding = mkLiteral "20px";
+      spacing = mkLiteral "12px";
+      padding = mkLiteral "12px";
       background-color = mkLiteral "transparent";
       orientation = mkLiteral "vertical";
       children = map mkLiteral ["message" "listview"];
@@ -62,7 +64,7 @@
     inputbar = {
       enabled = true;
       spacing = mkLiteral "10px";
-      padding = mkLiteral "60px 80px";
+      padding = mkLiteral "34px 40px";
       background-color = mkLiteral "transparent";
       background-image = mkLiteral "url('${./momoko.png}', width)";
       text-color = mkLiteral "@foreground";
@@ -75,6 +77,7 @@
       enabled = true;
       expand = false;
       str = "";
+      font = "SFMono Nerd Font 12";
       padding = mkLiteral "12px 20px 12px 16px";
       border-radius = mkLiteral "100%";
       background-color = mkLiteral "@background-alt";
@@ -92,7 +95,7 @@
       text-color = mkLiteral "inherit";
       cursor = mkLiteral "text";
       placeholder = "Search";
-      placeholder-color = mkLiteral "inherit";
+      placeholder-color = mkLiteral "@placeholder-fg";
     };
 
     # Dummy settings
@@ -111,6 +114,7 @@
 
     # Button settings
     button = {
+      font = "SFMono Nerd Font 12";
       width = mkLiteral "45px";
       padding = mkLiteral "12px 16px 12px 12px";
       border-radius = mkLiteral "100%";
@@ -138,18 +142,19 @@
       fixed-height = true;
       fixed-columns = true;
 
-      spacing = mkLiteral "10px";
+      spacing = mkLiteral "4px";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral "@foreground";
       cursor = mkLiteral "default";
     };
 
     # Element settings
+    # 24 window - 12 listbox padding = 12, so the rows sit concentric
     element = {
       enabled = true;
       spacing = mkLiteral "10px";
-      padding = mkLiteral "4px";
-      border-radius = mkLiteral "100%";
+      padding = mkLiteral "5px 8px";
+      border-radius = mkLiteral "12px";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral "@foreground";
       cursor = mkLiteral "pointer";
@@ -207,7 +212,7 @@
 
     textbox = {
       padding = mkLiteral "12px";
-      border-radius = mkLiteral "100%";
+      border-radius = mkLiteral "12px";
       background-color = mkLiteral "@background-alt";
       text-color = mkLiteral "@foreground";
       vertical-align = "1";
@@ -216,7 +221,7 @@
 
     error-message = {
       padding = mkLiteral "12px";
-      border-radius = mkLiteral "20px";
+      border-radius = mkLiteral "12px";
       background-color = mkLiteral "@background";
       text-color = mkLiteral "@foreground";
     };

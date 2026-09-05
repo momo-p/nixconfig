@@ -11,7 +11,7 @@
           {
             criteria = "AOC 24G2W1G4 ATNM81A001574";
             position = "1920,0";
-            mode = "1920x1080@144hz";
+            mode = "1920x1080@144Hz";
           }
         ];
       }
@@ -20,7 +20,7 @@
           {
             criteria = "AOC 24G2W1G4 ATNM81A001574";
             position = "0,0";
-            mode = "1920x1080@144hz";
+            mode = "1920x1080@144Hz";
           }
         ];
       }

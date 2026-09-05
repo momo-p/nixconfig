@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   username,
   ...
@@ -29,18 +30,15 @@
     google-chrome
   ];
 
-  programs.waybar.settings.mainBar.modules-right = [
-    "tray"
-    "network"
-    "pulseaudio"
-  ];
-
   home.sessionVariables = {
     EDITOR = "nvim";
   };
 
   services = {
-    udiskie.enable = true;
+    udiskie = {
+      enable = true;
+      tray = "never";
+    };
   };
 
   programs.home-manager.enable = true;

@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   username,
   ...
@@ -22,13 +23,6 @@
     firefox-devedition-bin
 
     mpv
-  ];
-
-  programs.waybar.settings.mainBar.modules-right = [
-    "tray"
-    "battery"
-    "network"
-    "pulseaudio"
   ];
 
   home.sessionVariables = {

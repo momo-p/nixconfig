@@ -60,6 +60,7 @@
         readonly property string pavucontrol: "${pkgs.pavucontrol}/bin/pavucontrol"
         readonly property string fcitxWatch: "${fcitxWatch}"
         readonly property string fcitxRemote: "${pkgs.fcitx5}/bin/fcitx5-remote"
+        readonly property string mullvad: "${pkgs.mullvad}/bin/mullvad"
 
         // mirrors the group in home-manager/desktop/fcitx5.nix
         readonly property var inputMethods: ["keyboard-us", "anthy", "bamboo"]
@@ -104,6 +105,9 @@
         readonly property string iconBattery: "file://${yanisIcon "status/scalable/battery-100-symbolic.svg" base05}"
         readonly property string iconBatteryLow: "file://${yanisIcon "status/scalable/battery-020-symbolic.svg" base0A}"
         readonly property string iconBatteryCrit: "file://${yanisIcon "status/scalable/battery-020-symbolic.svg" base08}"
+        readonly property string iconVpn: "file://${yanisIcon "status/scalable/network-vpn.svg" base05}"
+        readonly property string iconVpnWait: "file://${yanisIcon "status/scalable/network-vpn-acquiring.svg" base0A}"
+        readonly property string iconVpnBlocked: "file://${yanisIcon "status/scalable/network-vpn.svg" base08}"
     }
   '';
 

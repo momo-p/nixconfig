@@ -36,6 +36,15 @@ Pill {
             : ("scannerEnabled" in dev ? Theme.iconWifi : Theme.iconWired)
     }
 
+    Icon {
+        visible: Sys.vpn !== "Disconnected"
+        source: Sys.vpn === "Connected"
+            ? Theme.iconVpn
+            : Sys.vpn === "Blocked"
+                ? Theme.iconVpnBlocked
+                : Theme.iconVpnWait
+    }
+
     Text {
         id: ime
 

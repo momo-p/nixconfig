@@ -1,25 +1,26 @@
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 import "."
 
-PopupWindow {
+// a layer surface rather than a popup: swayfx only applies layer_effects
+// to layers, so a popup would get no blur
+PanelWindow {
     id: popup
 
-    property Item anchorItem
-    property var anchorWindow
     property date shown: new Date()
+
+    WlrLayershell.namespace: "quickshell-popup"
+
+    anchors.top: true
+    margins.top: Theme.barHeight + 4
+    exclusionMode: ExclusionMode.Ignore
 
     implicitWidth: 320
     implicitHeight: card.implicitHeight
     color: "transparent"
     visible: false
-
-    anchor {
-        window: popup.anchorWindow
-        rect.x: anchorItem ? anchorItem.x + (anchorItem.width - popup.implicitWidth) / 2 : 0
-        rect.y: Theme.barHeight + 4
-    }
 
     onVisibleChanged: if (visible) shown = new Date()
 

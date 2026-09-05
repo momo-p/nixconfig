@@ -7,6 +7,11 @@
 
     stylix.url = "github:danth/stylix";
 
+    yanis = {
+      url = "git+https://bitbucket.org/dirn-typo/yet-another-monochrome-icon-set.git";
+      flake = false;
+    };
+
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";

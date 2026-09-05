@@ -14,7 +14,7 @@ in {
     ./xdg.nix
     ./rofi.nix
     ./mako.nix
-    ./waybar
+    ./quickshell
   ];
 
   home.packages = with pkgs; [
@@ -91,7 +91,7 @@ in {
 
       menu = "${pkgs.rofi}/bin/rofi -show drun";
 
-      bars = [{command = "${pkgs.waybar}/bin/waybar";}];
+      bars = [];
 
       # kanshi owns the external outputs; two writers made it flap
       output.eDP-1.scale = "1.0";

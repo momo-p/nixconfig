@@ -1,6 +1,12 @@
 {pkgs, ...}: let
   mainMonitor = "AOC 24G2W1G4 ATNM81A001574";
   subMonitor = "Philips Consumer Electronics Company PHL 226V6 UHB1936016087";
+
+  # silences mako and refreshes the bar's notify module
+  focusMode = pkgs.writeShellScript "focus-mode" ''
+    ${pkgs.mako}/bin/makoctl mode -t do-not-disturb
+    ${pkgs.procps}/bin/pkill -RTMIN+1 waybar || true
+  '';
 in {
   imports = [
     ./kanshi.nix
@@ -92,9 +98,16 @@ in {
       keybindings = {
         "Print" = "exec grimshot copy area";
         "Shift+Print" = "exec grimshot copy screen";
+        "${modifier}+Print" = "exec grimshot save area ~/Pictures/shot-$(date +%Y%m%d-%H%M%S).png";
 
         "${modifier}+d" = "exec ${menu}";
         "Ctrl+Alt+t" = "exec ${terminal}";
+
+        "${modifier}+v" = "exec ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu -p clipboard | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy";
+
+        "${modifier}+Shift+l" = "exec ${pkgs.swaylock-plugin}/bin/swaylock-plugin";
+        "${modifier}+n" = "exec ${pkgs.mako}/bin/makoctl restore";
+        "${modifier}+Shift+f" = "exec ${focusMode}";
 
         # wallpaper rotation
         "${modifier}+w" = "exec ${pkgs.wpaperd}/bin/wpaperctl next";
@@ -106,6 +119,13 @@ in {
         "${modifier}+s" = "floating toggle";
         "${modifier}+t" = "sticky toggle";
         "${modifier}+Shift+e" = "exec swaymsg exit";
+
+        "${modifier}+b" = "splith";
+        "${modifier}+Shift+b" = "splitv";
+        "${modifier}+Ctrl+r" = "mode resize";
+
+        "${modifier}+grave" = "scratchpad show";
+        "${modifier}+Shift+grave" = "move scratchpad";
 
         # focus
         "${modifier}+bracketleft" = "focus left";
@@ -169,6 +189,15 @@ in {
         "${modifier}+Shift+Alt+8" = "move container to workspace number 08";
         "${modifier}+Shift+Alt+9" = "move container to workspace number 09";
         "${modifier}+Shift+Alt+0" = "move container to workspace number 010";
+      };
+
+      modes.resize = {
+        Left = "resize shrink width 20px";
+        Right = "resize grow width 20px";
+        Up = "resize shrink height 20px";
+        Down = "resize grow height 20px";
+        Escape = "mode default";
+        Return = "mode default";
       };
     };
     extraConfig = ''

@@ -14,6 +14,7 @@
     ../../home-manager/cli
     ../../home-manager/gaming
     ../../home-manager/media
+    ../../home-manager/notes
   ];
 
   home.username = "${username}";

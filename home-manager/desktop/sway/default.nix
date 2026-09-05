@@ -208,10 +208,40 @@ in {
       blur_passes 1
       blur_radius 5
 
-      corner_radius 10
+      corner_radius 16
+      smart_corner_radius enable
 
-      gaps outer 6
+      default_dim_inactive 0.15
+      dim_inactive_colors.unfocused #14161FFF
+
+      shadows enable
+      shadows_on_csd enable
+      shadow_blur_radius 40
+      shadow_color #14161F66
+
+      # outer + inner = 14, the same edge the bar margin uses
+      gaps outer 4
       gaps inner 10
+
+      # matches WlrLayershell.namespace in the quickshell config
+      layer_effects "quickshell-bar" {
+        blur enable;
+        blur_ignore_transparent enable;
+        corner_radius 18;
+      }
+
+      layer_effects "notifications" {
+        blur enable;
+        blur_ignore_transparent enable;
+        corner_radius 18;
+      }
+
+      layer_effects "rofi" {
+        blur enable;
+        blur_ignore_transparent enable;
+        shadows enable;
+        corner_radius 24;
+      }
 
       # gamepad input never resets the wayland idle timer
       for_window [all] inhibit_idle fullscreen

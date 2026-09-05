@@ -197,6 +197,10 @@ in {
       for_window [app_id="firefox-*" title="^Picture-in-Picture$"] \
         floating enable, move position 16 70, sticky enable
 
+      for_window [class="steam" title="^Friends List$"] floating enable
+      for_window [class="steam" title=".* - Chat"] floating enable
+      for_window [title="^Steam Keyboard$"] floating enable
+
       workspace 1 output "${mainMonitor}"
       workspace 2 output "${mainMonitor}"
       workspace 3 output "${mainMonitor}"

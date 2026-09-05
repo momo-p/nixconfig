@@ -477,7 +477,8 @@
         "nixvim": "nixvim",
         "rust-overlay": "rust-overlay",
         "stylix": "stylix",
-        "systems": "systems_3"
+        "systems": "systems_3",
+        "yanis": "yanis"
       }
     },
     "rust-overlay": {
@@ -725,6 +726,22 @@
         "owner": "tinted-theming",
         "repo": "base16-zed",
         "type": "github"
+      }
+    },
+    "yanis": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788535837,
+        "narHash": "sha256-WW4gRaVmtOv4u7Ru+1JzFeakKA+1QPnkUhoxpN4lnxQ=",
+        "ref": "refs/heads/main",
+        "rev": "ec97c1a2034634d464bcba4001bc9f77390f1256",
+        "revCount": 58,
+        "type": "git",
+        "url": "https://bitbucket.org/dirn-typo/yet-another-monochrome-icon-set.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://bitbucket.org/dirn-typo/yet-another-monochrome-icon-set.git"
       }
     }
   },

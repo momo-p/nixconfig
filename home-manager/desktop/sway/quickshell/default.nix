@@ -112,14 +112,15 @@
     mkdir -p $out
     cp ${./qml}/*.qml $out/
     cp ${theme} $out/Theme.qml
-    {
-      echo "singleton Theme 1.0 Theme.qml"
-      for f in $out/*.qml; do
-        n=$(basename "$f" .qml)
-        [ "$n" = Theme ] || [ "$n" = shell ] && continue
+    for f in $out/*.qml; do
+      n=$(basename "$f" .qml)
+      [ "$n" = shell ] && continue
+      if head -1 "$f" | grep -q '^pragma Singleton'; then
+        echo "singleton $n 1.0 $n.qml"
+      else
         echo "$n 1.0 $n.qml"
-      done
-    } > $out/qmldir
+      fi
+    done > $out/qmldir
   '';
 in {
   home.packages = [pkgs.quickshell pkgs.pavucontrol];

@@ -8,12 +8,12 @@
 
     fonts = {
       monospace = {
-        name = "SFMonoDisplay Nerd Font";
+        name = "SFMono Nerd Font";
         package = inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-mono-nerd;
       };
 
       sansSerif = {
-        name = "SFProDisplay";
+        name = "SF Pro Display";
         package = inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-pro;
       };
 

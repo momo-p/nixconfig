@@ -6,6 +6,9 @@
   stylix = {
     polarity = "dark";
 
+    # lets the compositor's layer_effects blur show through mako
+    opacity.popups = 0.55;
+
     fonts = {
       monospace = {
         name = "SFMono Nerd Font";

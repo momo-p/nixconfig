@@ -230,6 +230,13 @@ in {
         corner_radius 18;
       }
 
+      layer_effects "quickshell-popup" {
+        blur enable;
+        blur_ignore_transparent enable;
+        shadows enable;
+        corner_radius 24;
+      }
+
       layer_effects "notifications" {
         blur enable;
         blur_ignore_transparent enable;

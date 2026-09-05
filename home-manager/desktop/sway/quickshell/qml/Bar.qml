@@ -56,8 +56,6 @@ PanelWindow {
 
     Calendar {
         id: calendar
-        anchorItem: clockPill
-        anchorWindow: bar
     }
 
     Row {

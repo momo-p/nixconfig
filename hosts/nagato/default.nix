@@ -17,6 +17,7 @@
     ../../modules/lact.nix
     ../../modules/gaming
     ../../modules/obs.nix
+    ../../modules/usb-hdd-power.nix
     ../../services/podman.nix
 
     ./hardware-configuration.nix

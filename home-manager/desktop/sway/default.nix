@@ -87,15 +87,8 @@ in {
 
       bars = [{command = "${pkgs.waybar}/bin/waybar";}];
 
-      output = {
-        "AOC 24G2W1G4 ATNM81A001574" = {
-          mode = "1920x1080@144Hz";
-          scale = "1.0";
-        };
-        eDP-1 = {
-          scale = "1.0";
-        };
-      };
+      # kanshi owns the external outputs; two writers made it flap
+      output.eDP-1.scale = "1.0";
       keybindings = {
         "Print" = "exec grimshot copy area";
         "Shift+Print" = "exec grimshot copy screen";

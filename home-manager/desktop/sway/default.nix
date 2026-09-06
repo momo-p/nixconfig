@@ -4,8 +4,8 @@
   pkgs,
   ...
 }: let
-  mainMonitor = "AOC 24G2W1G4 ATNM81A001574";
-  subMonitor = "Philips Consumer Electronics Company PHL 226V6 UHB1936016087";
+  monitors = import ./monitors.nix;
+  inherit (monitors) main sub;
 
   modifier = "Mod4";
   terminal = "kitty";
@@ -270,27 +270,27 @@ in {
       for_window [class="steam" title=".* - Chat"] floating enable
       for_window [title="^Steam Keyboard$"] floating enable
 
-      workspace 1 output "${mainMonitor}"
-      workspace 2 output "${mainMonitor}"
-      workspace 3 output "${mainMonitor}"
-      workspace 4 output "${mainMonitor}"
-      workspace 5 output "${mainMonitor}"
-      workspace 6 output "${mainMonitor}"
-      workspace 7 output "${mainMonitor}"
-      workspace 8 output "${mainMonitor}"
-      workspace 9 output "${mainMonitor}"
-      workspace 10 output "${mainMonitor}"
+      workspace 1 output "${main}"
+      workspace 2 output "${main}"
+      workspace 3 output "${main}"
+      workspace 4 output "${main}"
+      workspace 5 output "${main}"
+      workspace 6 output "${main}"
+      workspace 7 output "${main}"
+      workspace 8 output "${main}"
+      workspace 9 output "${main}"
+      workspace 10 output "${main}"
 
-      workspace 01 output "${subMonitor}"
-      workspace 02 output "${subMonitor}"
-      workspace 03 output "${subMonitor}"
-      workspace 04 output "${subMonitor}"
-      workspace 05 output "${subMonitor}"
-      workspace 06 output "${subMonitor}"
-      workspace 07 output "${subMonitor}"
-      workspace 08 output "${subMonitor}"
-      workspace 09 output "${subMonitor}"
-      workspace 010 output "${subMonitor}"
+      workspace 01 output "${sub}"
+      workspace 02 output "${sub}"
+      workspace 03 output "${sub}"
+      workspace 04 output "${sub}"
+      workspace 05 output "${sub}"
+      workspace 06 output "${sub}"
+      workspace 07 output "${sub}"
+      workspace 08 output "${sub}"
+      workspace 09 output "${sub}"
+      workspace 010 output "${sub}"
     '';
   };
 }

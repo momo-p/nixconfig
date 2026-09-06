@@ -13,14 +13,25 @@ PanelWindow {
 
     WlrLayershell.namespace: "quickshell-popup"
 
-    anchors.top: true
-    margins.top: Theme.barHeight + 4
+    // the surface covers the output so a click anywhere off the card dismisses it
+    anchors {
+        top: true
+        bottom: true
+        left: true
+        right: true
+    }
     exclusionMode: ExclusionMode.Ignore
 
-    implicitWidth: 320
-    implicitHeight: card.implicitHeight
     color: "transparent"
     visible: false
+
+    TapHandler {
+        onTapped: point => {
+            const p = card.mapFromItem(null, point.position);
+            if (p.x < 0 || p.y < 0 || p.x > card.width || p.y > card.height)
+                popup.visible = false;
+        }
+    }
 
     onVisibleChanged: if (visible) shown = new Date()
 
@@ -51,7 +62,9 @@ PanelWindow {
 
     Rectangle {
         id: card
-        width: parent.width
+        width: 320
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: Theme.barHeight + 4
         implicitHeight: layout.implicitHeight + 36
         radius: 24
         color: Theme.pill(0.72)

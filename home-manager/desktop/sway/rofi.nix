@@ -34,6 +34,29 @@
     esac
   '';
 
+  # thumbnails come from the same directory wpaperd rotates through; an
+  # explicit pick pauses the rotation so it actually sticks
+  wallpaper = pkgs.writeShellScript "rofi-wallpaper" ''
+    dir=${./wallpapers}
+    if [ "$#" -eq 0 ]; then
+      printf '\0no-custom\x1ftrue\n'
+      printf '自動\n'
+      for f in "$dir"/*; do
+        printf '%s\0icon\x1f%s\n' "''${f##*/}" "$f"
+      done
+      exit 0
+    fi
+    # only the output the picker was summoned from, so the other screen keeps
+    # whatever it had
+    out=$(${pkgs.sway}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
+    if [ "$1" = "自動" ]; then
+      ${pkgs.wpaperd}/bin/wpaperctl resume-wallpaper "$out"
+    else
+      ${pkgs.wpaperd}/bin/wpaperctl set-wallpaper "$dir/$1" "$out"
+      ${pkgs.wpaperd}/bin/wpaperctl pause-wallpaper "$out"
+    fi
+  '';
+
   # the chord is dimmed down to its last key, so one column of letters scans
   keys = pkgs.writeShellScript "rofi-keys" ''
     [ "$#" -gt 0 ] && exit 0
@@ -49,7 +72,7 @@
 
   rofi-theme = {
     configuration = {
-      modi = "drun,run,filebrowser,window,clip:${clip},keysheet:${keys},power:${power}";
+      modi = "drun,run,filebrowser,window,clip:${clip},keysheet:${keys},power:${power},wallpaper:${wallpaper}";
       show-icons = true;
       display-drun = "";
       display-run = "";
@@ -57,6 +80,7 @@
       display-window = "";
       display-clip = "";
       display-keysheet = "";
+      display-wallpaper = "";
       display-power = "";
       drun-display-format = "{name}";
       window-format = "{w} · {c} · {t}";
@@ -163,8 +187,8 @@
     # Button settings
     button = {
       font = "SFMono Nerd Font 12";
-      width = mkLiteral "44px";
-      padding = mkLiteral "12px 12px";
+      width = mkLiteral "38px";
+      padding = mkLiteral "9px 9px";
       border-radius = mkLiteral "100%";
       background-color = mkLiteral "@background-alt";
       text-color = mkLiteral "inherit";

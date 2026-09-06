@@ -91,8 +91,8 @@
         ["Print" "exec grimshot copy area" "Screenshot area"]
         ["Shift+Print" "exec grimshot copy screen" "Screenshot screen"]
         ["${modifier}+Print" "exec grimshot save area ~/Pictures/shot-$(date +%Y%m%d-%H%M%S).png" "Screenshot area to file"]
-        ["${modifier}+w" "exec ${pkgs.wpaperd}/bin/wpaperctl next" "Next wallpaper"]
-        ["${modifier}+Shift+w" "exec ${pkgs.wpaperd}/bin/wpaperctl previous" "Previous wallpaper"]
+        ["${modifier}+w" "exec ${rofi} -show wallpaper" "Wallpaper picker"]
+        ["${modifier}+Shift+w" "exec ${pkgs.wpaperd}/bin/wpaperctl next" "Next wallpaper"]
         ["${modifier}+Shift+l" "exec ${pkgs.swaylock-plugin}/bin/swaylock-plugin" "Lock screen"]
         ["${modifier}+r" "reload" "Reload sway"]
       ];

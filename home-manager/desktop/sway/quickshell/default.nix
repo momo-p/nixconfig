@@ -119,9 +119,6 @@
     }
   '';
 
-  modifier = config.wayland.windowManager.sway.config.modifier;
-  qsIpc = "${pkgs.quickshell}/bin/quickshell ipc -p ${configDir}";
-
   # qmldir is generated so adding a component needs no edit here
   configDir = pkgs.runCommand "quickshell-config" {} ''
     mkdir -p $out
@@ -139,12 +136,6 @@
   '';
 in {
   home.packages = [pkgs.quickshell pkgs.pavucontrol];
-
-  # the keys live here because the ipc calls need the config path
-  wayland.windowManager.sway.config.keybindings = {
-    "${modifier}+Shift+f" = "exec ${qsIpc} call focus toggle";
-    "${modifier}+n" = "exec ${qsIpc} call notifications toggle";
-  };
 
   # also on disk so `qs` works by hand
   xdg.configFile."quickshell".source = configDir;

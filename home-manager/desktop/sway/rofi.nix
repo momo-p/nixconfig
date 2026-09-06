@@ -1,15 +1,63 @@
-{config, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   inherit (config.lib.formats.rasi) mkLiteral;
   inherit (config.lib.stylix.colors.withHashtag) base00 base01 base04 base05 base0D base0E;
 
+  # sized so it always over-fills the inputbar: width scaling is exact across,
+  # and a hair of extra height crops instead of leaving a gap to tile
+  banner = pkgs.runCommand "rofi-banner.png" {} ''
+    ${pkgs.imagemagick}/bin/magick ${./momoko.png} -resize 700x240! $out
+  '';
+
+  # rofi script modes: no argument asks for the list, an argument is the pick
+
+  clip = pkgs.writeShellScript "rofi-clip" ''
+    [ "$#" -eq 0 ] && exec ${pkgs.cliphist}/bin/cliphist list
+    printf '%s' "$1" | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
+  '';
+
+  power = pkgs.writeShellScript "rofi-power" ''
+    if [ "$#" -eq 0 ]; then
+      printf '\0no-custom\x1ftrue\n'
+      printf '%s\n' lock suspend "log out" reboot "shut down"
+      exit 0
+    fi
+    case "$1" in
+      lock) ${pkgs.swaylock-plugin}/bin/swaylock-plugin & ;;
+      suspend) ${pkgs.systemd}/bin/systemctl suspend ;;
+      "log out") ${pkgs.sway}/bin/swaymsg exit ;;
+      reboot) ${pkgs.systemd}/bin/systemctl reboot ;;
+      "shut down") ${pkgs.systemd}/bin/systemctl poweroff ;;
+    esac
+  '';
+
+  # the chord is dimmed down to its last key, so one column of letters scans
+  keys = pkgs.writeShellScript "rofi-keys" ''
+    [ "$#" -gt 0 ] && exit 0
+    printf '\0no-custom\x1ftrue\n'
+    printf '\0markup-rows\x1ftrue\n'
+    ${pkgs.gawk}/bin/awk -F'\t' '{
+      n = split($1, p, "+");
+      mods = "";
+      for (i = 1; i < n; i++) mods = mods p[i] "+";
+      printf "<span alpha=\"45%%\">%s</span><b>%s</b>  %s  <span alpha=\"45%%\">%s</span>\n", mods, p[n], $2, $3
+    }' ${config.xdg.configHome}/sway/keys.tsv
+  '';
+
   rofi-theme = {
     configuration = {
-      modi = "drun,run,filebrowser,window";
+      modi = "drun,run,filebrowser,window,clip:${clip},keysheet:${keys},power:${power}";
       show-icons = true;
       display-drun = "";
       display-run = "";
       display-filebrowser = "";
       display-window = "";
+      display-clip = "";
+      display-keysheet = "";
+      display-power = "";
       drun-display-format = "{name}";
       window-format = "{w} · {c} · {t}";
     };
@@ -64,9 +112,9 @@
     inputbar = {
       enabled = true;
       spacing = mkLiteral "10px";
-      padding = mkLiteral "34px 40px";
+      padding = mkLiteral "34px 40px 156px 40px";
       background-color = mkLiteral "transparent";
-      background-image = mkLiteral "url('${./momoko.png}', width)";
+      background-image = mkLiteral "url('${banner}', width)";
       text-color = mkLiteral "@foreground";
       orientation = mkLiteral "horizontal";
       children = map mkLiteral ["textbox-prompt-colon" "entry" "dummy" "mode-switcher"];
@@ -88,7 +136,7 @@
     entry = {
       enabled = true;
       expand = false;
-      width = mkLiteral "250px";
+      width = mkLiteral "180px";
       padding = mkLiteral "12px 20px";
       border-radius = mkLiteral "100%";
       background-color = mkLiteral "@background-alt";
@@ -107,7 +155,7 @@
     # Mode switcher settings
     "mode-switcher" = {
       enabled = true;
-      spacing = mkLiteral "10px";
+      spacing = mkLiteral "6px";
       background-color = mkLiteral "transparent";
       text-color = mkLiteral "@foreground";
     };
@@ -115,8 +163,8 @@
     # Button settings
     button = {
       font = "SFMono Nerd Font 12";
-      width = mkLiteral "45px";
-      padding = mkLiteral "12px 16px 12px 12px";
+      width = mkLiteral "44px";
+      padding = mkLiteral "12px 12px";
       border-radius = mkLiteral "100%";
       background-color = mkLiteral "@background-alt";
       text-color = mkLiteral "inherit";

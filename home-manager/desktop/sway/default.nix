@@ -1,7 +1,120 @@
-{pkgs, ...}: let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   mainMonitor = "AOC 24G2W1G4 ATNM81A001574";
   subMonitor = "Philips Consumer Electronics Company PHL 226V6 UHB1936016087";
+
+  modifier = "Mod4";
+  terminal = "kitty";
+  rofi = "${pkgs.rofi}/bin/rofi";
+  menu = "${rofi} -show drun";
+
+  # quickshell keys instances by the literal path the shell was started with
+  qsIpc = "${pkgs.quickshell}/bin/quickshell ipc -p ${config.xdg.configFile."quickshell".source}";
+
+  dirs = [
+    ["Left" "left"]
+    ["Right" "right"]
+    ["Up" "up"]
+    ["Down" "down"]
+  ];
+
+  # 1-9 sit on their own digit, 10 on 0; the alt set is the second monitor
+  wsKey = n:
+    if n == 10
+    then "0"
+    else toString n;
+  wsNum = n: toString n;
+  altNum = n: "0${toString n}";
+
+  # bindings and the cheatsheet come from one list, so a new key documents
+  # itself and cannot drift out of date
+  keyGroups = [
+    {
+      name = "Apps";
+      keys = [
+        ["${modifier}+d" "exec ${menu}" "Launcher"]
+        ["Ctrl+Alt+t" "exec ${terminal}" "Terminal"]
+        ["${modifier}+v" "exec ${rofi} -show clip" "Clipboard history"]
+        ["${modifier}+slash" "exec ${rofi} -show keysheet" "This cheatsheet"]
+        ["${modifier}+Shift+e" "exec ${rofi} -show power" "Power menu"]
+      ];
+    }
+    {
+      name = "Shell";
+      keys = [
+        ["${modifier}+n" "exec ${qsIpc} call notifications toggle" "Notification history"]
+        ["${modifier}+Shift+f" "exec ${qsIpc} call focus toggle" "Focus mode"]
+      ];
+    }
+    {
+      name = "Windows";
+      keys =
+        [
+          ["${modifier}+q" "kill" "Close window"]
+          ["${modifier}+f" "fullscreen toggle" "Fullscreen"]
+          ["${modifier}+s" "floating toggle" "Float"]
+          ["${modifier}+t" "sticky toggle" "Sticky"]
+          ["${modifier}+b" "splith" "Split horizontal"]
+          ["${modifier}+Shift+b" "splitv" "Split vertical"]
+          ["${modifier}+Ctrl+r" "mode resize" "Resize mode"]
+          ["${modifier}+grave" "scratchpad show" "Scratchpad"]
+          ["${modifier}+Shift+grave" "move scratchpad" "Send to scratchpad"]
+          ["${modifier}+bracketleft" "focus left" "Focus left"]
+          ["${modifier}+bracketright" "focus right" "Focus right"]
+        ]
+        ++ map (d: ["${modifier}+${builtins.elemAt d 0}" "focus ${builtins.elemAt d 1}" "Focus ${builtins.elemAt d 1}"]) dirs
+        ++ map (d: ["${modifier}+Shift+${builtins.elemAt d 0}" "move ${builtins.elemAt d 1}" "Move ${builtins.elemAt d 1}"]) dirs;
+    }
+    {
+      name = "Workspaces";
+      keys =
+        [
+          ["${modifier}+braceleft" "workspace prev_on_output" "Previous workspace"]
+          ["${modifier}+braceright" "workspace next_on_output" "Next workspace"]
+          ["Alt+Left" "workspace prev_on_output" "Previous workspace"]
+          ["Alt+Right" "workspace next_on_output" "Next workspace"]
+        ]
+        ++ lib.concatMap (n: [
+          ["${modifier}+${wsKey n}" "workspace number ${wsNum n}" "Workspace ${wsNum n}"]
+          ["${modifier}+Alt+${wsKey n}" "workspace number ${altNum n}" "Workspace ${altNum n}"]
+          ["${modifier}+Shift+${wsKey n}" "move container to workspace number ${wsNum n}" "Move to workspace ${wsNum n}"]
+          ["${modifier}+Shift+Alt+${wsKey n}" "move container to workspace number ${altNum n}" "Move to workspace ${altNum n}"]
+        ]) (lib.range 1 10);
+    }
+    {
+      name = "Screen";
+      keys = [
+        ["Print" "exec grimshot copy area" "Screenshot area"]
+        ["Shift+Print" "exec grimshot copy screen" "Screenshot screen"]
+        ["${modifier}+Print" "exec grimshot save area ~/Pictures/shot-$(date +%Y%m%d-%H%M%S).png" "Screenshot area to file"]
+        ["${modifier}+w" "exec ${pkgs.wpaperd}/bin/wpaperctl next" "Next wallpaper"]
+        ["${modifier}+Shift+w" "exec ${pkgs.wpaperd}/bin/wpaperctl previous" "Previous wallpaper"]
+        ["${modifier}+Shift+l" "exec ${pkgs.swaylock-plugin}/bin/swaylock-plugin" "Lock screen"]
+        ["${modifier}+r" "reload" "Reload sway"]
+      ];
+    }
+  ];
+
+  binds = lib.concatMap (g:
+    map (k: {
+      key = builtins.elemAt k 0;
+      cmd = builtins.elemAt k 1;
+      desc = builtins.elemAt k 2;
+      grp = g.name;
+    })
+    g.keys)
+  keyGroups;
 in {
+  # the cheatsheet is the binding list rendered, never a second copy
+  xdg.configFile."sway/keys.tsv".text =
+    lib.concatMapStringsSep "\n"
+    (b: "${lib.replaceStrings ["Mod4"] ["Mod"] b.key}\t${b.desc}\t${b.grp}")
+    binds;
+
   imports = [
     ./kanshi.nix
     ./wallpaper.nix
@@ -69,9 +182,8 @@ in {
     wrapperFeatures.gtk = true;
     systemd.xdgAutostart = true;
 
-    config = rec {
-      modifier = "Mod4";
-      terminal = "kitty";
+    config = {
+      inherit modifier terminal menu;
       defaultWorkspace = "workspace number 1";
       focus = {
         followMouse = false;
@@ -82,105 +194,11 @@ in {
         {command = "exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
       ];
 
-      menu = "${pkgs.rofi}/bin/rofi -show drun";
-
       bars = [];
 
       # kanshi owns the external outputs; two writers made it flap
       output.eDP-1.scale = "1.0";
-      keybindings = {
-        "Print" = "exec grimshot copy area";
-        "Shift+Print" = "exec grimshot copy screen";
-        "${modifier}+Print" = "exec grimshot save area ~/Pictures/shot-$(date +%Y%m%d-%H%M%S).png";
-
-        "${modifier}+d" = "exec ${menu}";
-        "Ctrl+Alt+t" = "exec ${terminal}";
-
-        "${modifier}+v" = "exec ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu -p clipboard | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy";
-
-        "${modifier}+Shift+l" = "exec ${pkgs.swaylock-plugin}/bin/swaylock-plugin";
-
-        # wallpaper rotation
-        "${modifier}+w" = "exec ${pkgs.wpaperd}/bin/wpaperctl next";
-        "${modifier}+Shift+w" = "exec ${pkgs.wpaperd}/bin/wpaperctl previous";
-
-        "${modifier}+r" = "reload";
-        "${modifier}+q" = "kill";
-        "${modifier}+f" = "fullscreen toggle";
-        "${modifier}+s" = "floating toggle";
-        "${modifier}+t" = "sticky toggle";
-        "${modifier}+Shift+e" = "exec swaymsg exit";
-
-        "${modifier}+b" = "splith";
-        "${modifier}+Shift+b" = "splitv";
-        "${modifier}+Ctrl+r" = "mode resize";
-
-        "${modifier}+grave" = "scratchpad show";
-        "${modifier}+Shift+grave" = "move scratchpad";
-
-        # focus
-        "${modifier}+bracketleft" = "focus left";
-        "${modifier}+bracketright" = "focus right";
-        "${modifier}+Left" = "focus left";
-        "${modifier}+Right" = "focus right";
-        "${modifier}+Up" = "focus up";
-        "${modifier}+Down" = "focus down";
-
-        "${modifier}+Shift+Left" = "move left";
-        "${modifier}+Shift+Right" = "move right";
-        "${modifier}+Shift+Up" = "move up";
-        "${modifier}+Shift+Down" = "move down";
-
-        # workspace
-        "${modifier}+braceleft" = "workspace prev_on_output";
-        "${modifier}+braceright" = "workspace next_on_output";
-        "Alt+Left" = "workspace prev_on_output";
-        "Alt+Right" = "workspace next_on_output";
-
-        "${modifier}+1" = "workspace number 1";
-        "${modifier}+2" = "workspace number 2";
-        "${modifier}+3" = "workspace number 3";
-        "${modifier}+4" = "workspace number 4";
-        "${modifier}+5" = "workspace number 5";
-        "${modifier}+6" = "workspace number 6";
-        "${modifier}+7" = "workspace number 7";
-        "${modifier}+8" = "workspace number 8";
-        "${modifier}+9" = "workspace number 9";
-        "${modifier}+0" = "workspace number 10";
-
-        "${modifier}+Alt+1" = "workspace number 01";
-        "${modifier}+Alt+2" = "workspace number 02";
-        "${modifier}+Alt+3" = "workspace number 03";
-        "${modifier}+Alt+4" = "workspace number 04";
-        "${modifier}+Alt+5" = "workspace number 05";
-        "${modifier}+Alt+6" = "workspace number 06";
-        "${modifier}+Alt+7" = "workspace number 07";
-        "${modifier}+Alt+8" = "workspace number 08";
-        "${modifier}+Alt+9" = "workspace number 09";
-        "${modifier}+Alt+0" = "workspace number 010";
-
-        "${modifier}+Shift+1" = "move container to workspace number 1";
-        "${modifier}+Shift+2" = "move container to workspace number 2";
-        "${modifier}+Shift+3" = "move container to workspace number 3";
-        "${modifier}+Shift+4" = "move container to workspace number 4";
-        "${modifier}+Shift+5" = "move container to workspace number 5";
-        "${modifier}+Shift+6" = "move container to workspace number 6";
-        "${modifier}+Shift+7" = "move container to workspace number 7";
-        "${modifier}+Shift+8" = "move container to workspace number 8";
-        "${modifier}+Shift+9" = "move container to workspace number 9";
-        "${modifier}+Shift+0" = "move container to workspace number 10";
-
-        "${modifier}+Shift+Alt+1" = "move container to workspace number 01";
-        "${modifier}+Shift+Alt+2" = "move container to workspace number 02";
-        "${modifier}+Shift+Alt+3" = "move container to workspace number 03";
-        "${modifier}+Shift+Alt+4" = "move container to workspace number 04";
-        "${modifier}+Shift+Alt+5" = "move container to workspace number 05";
-        "${modifier}+Shift+Alt+6" = "move container to workspace number 06";
-        "${modifier}+Shift+Alt+7" = "move container to workspace number 07";
-        "${modifier}+Shift+Alt+8" = "move container to workspace number 08";
-        "${modifier}+Shift+Alt+9" = "move container to workspace number 09";
-        "${modifier}+Shift+Alt+0" = "move container to workspace number 010";
-      };
+      keybindings = lib.listToAttrs (map (b: lib.nameValuePair b.key b.cmd) binds);
 
       modes.resize = {
         Left = "resize shrink width 20px";

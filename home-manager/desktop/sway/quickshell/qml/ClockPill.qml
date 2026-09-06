@@ -44,6 +44,7 @@ Pill {
     }
 
     TapHandler {
+        parent: root
         onTapped: root.toggled()
     }
 }

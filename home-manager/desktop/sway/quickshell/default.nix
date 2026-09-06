@@ -70,6 +70,7 @@
         readonly property string fcitxRemote: "${pkgs.fcitx5}/bin/fcitx5-remote"
         readonly property string mullvad: "${pkgs.mullvad}/bin/mullvad"
         readonly property string weatherCache: "${config.xdg.cacheHome}/weather.json"
+        readonly property string agendaCache: "${config.xdg.cacheHome}/agenda.json"
 
         // mirrors the group in home-manager/desktop/fcitx5.nix
         readonly property var inputMethods: ["keyboard-us", "anthy", "bamboo"]

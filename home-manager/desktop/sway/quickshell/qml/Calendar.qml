@@ -12,6 +12,11 @@ PanelWindow {
     property date shown: new Date()
     property int hovered: 0
 
+    // hovering a day reports that day rather than today, so one gesture
+    // drives both the forecast line and the agenda below
+    readonly property int agendaDay: hovered > 0 ? hovered : new Date().getDate()
+    readonly property var agendaRows: Agenda.on(dateKey(agendaDay))
+
     WlrLayershell.namespace: "quickshell-popup"
 
     // the surface covers the output so a click anywhere off the card dismisses it
@@ -42,7 +47,13 @@ PanelWindow {
         }
     }
 
-    onVisibleChanged: if (visible) shown = new Date()
+    onVisibleChanged: {
+        if (!visible)
+            return;
+        shown = new Date();
+        // the pointer is not over a day when this opens
+        hovered = 0;
+    }
 
     readonly property var weekdays: ["月", "火", "水", "木", "金", "土", "日"]
 
@@ -153,10 +164,17 @@ PanelWindow {
                         required property int index
                         required property int modelData
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 30
+                        Layout.preferredHeight: 34
 
+                        // a cell only clears its own day: moving between two cells
+                        // can deliver the leave after the enter
                         HoverHandler {
-                            onHoveredChanged: popup.hovered = hovered ? parent.modelData : 0
+                            onHoveredChanged: {
+                                if (hovered)
+                                    popup.hovered = parent.modelData;
+                                else if (popup.hovered === parent.modelData)
+                                    popup.hovered = 0;
+                            }
                         }
 
                         // rain sits under the day, so the grid read for
@@ -183,6 +201,29 @@ PanelWindow {
                             color: Theme.accent
                         }
 
+                        // events as dots under the number, capped at three:
+                        // more than that is a calendar app, not a glance
+                        Row {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: 2
+                            spacing: 3
+
+                            Repeater {
+                                model: parent.parent.modelData === 0
+                                    ? []
+                                    : Agenda.on(popup.dateKey(parent.parent.modelData)).slice(0, 3)
+
+                                Rectangle {
+                                    required property var modelData
+                                    width: 3
+                                    height: 3
+                                    radius: 1.5
+                                    color: Agenda.colorOf(modelData.cal)
+                                }
+                            }
+                        }
+
                         Text {
                             anchors.centerIn: parent
                             text: modelData === 0 ? "" : modelData
@@ -197,6 +238,60 @@ PanelWindow {
                         }
                     }
                 }
+            }
+
+            // today only: anything richer is a calendar app
+            Repeater {
+                model: popup.agendaRows.slice(0, 3)
+
+                RowLayout {
+                    required property var modelData
+
+                    Layout.fillWidth: true
+                    spacing: 8
+
+                    Rectangle {
+                        Layout.preferredWidth: 3
+                        Layout.fillHeight: true
+                        radius: 1.5
+                        color: Agenda.colorOf(modelData.cal)
+                    }
+
+                    Text {
+                        visible: modelData.time !== ""
+                        text: modelData.time
+                        color: Theme.overlay
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 11
+                    }
+
+                    Text {
+                        Layout.fillWidth: true
+                        text: modelData.title
+                        color: Theme.text
+                        elide: Text.ElideRight
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 12
+                    }
+                }
+
+            }
+            Text {
+                Layout.fillWidth: true
+                visible: popup.hovered > 0 && popup.agendaRows.length === 0
+                text: "予定なし"
+                color: Theme.overlay
+                font.family: "Noto Sans CJK JP"
+                font.pixelSize: 12
+            }
+
+            Text {
+                Layout.fillWidth: true
+                visible: popup.agendaRows.length > 3
+                text: "他 " + (popup.agendaRows.length - 3) + " 件"
+                color: Theme.overlay
+                font.family: "Noto Sans CJK JP"
+                font.pixelSize: 11
             }
         }
     }

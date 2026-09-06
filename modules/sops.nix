@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  username,
   ...
 }: {
   imports = [inputs.sops-nix.nixosModules.sops];
@@ -16,6 +17,12 @@
     age = {
       keyFile = "/var/lib/sops-nix/key.txt";
       generateKey = true;
+    };
+
+    # the shell syncs as the user, so the feed list has to be readable by it
+    secrets.ical = {
+      key = "ical";
+      owner = username;
     };
   };
 }

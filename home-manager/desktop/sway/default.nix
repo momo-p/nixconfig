@@ -121,6 +121,7 @@ in {
     ./xdg.nix
     ./rofi.nix
     ./weather.nix
+    ./calendar.nix
     ./quickshell
   ];
 

@@ -10,4 +10,13 @@ ShellRoot {
             screen: modelData
         }
     }
+
+    // one set of notification surfaces, not one per bar
+    Toasts {
+        screen: Sys.mainScreen
+    }
+
+    NotifHistory {
+        screen: Sys.mainScreen
+    }
 }

@@ -19,7 +19,7 @@ PanelWindow {
     implicitHeight: Theme.barHeight
     color: "transparent"
 
-    readonly property bool isMain: screen ? screen.name !== "DVI-D-1" : true
+    readonly property bool isMain: screen ? screen.name !== Theme.subOutput : true
 
     Row {
         anchors.left: parent.left

@@ -7,7 +7,6 @@ in {
     ./wallpaper.nix
     ./xdg.nix
     ./rofi.nix
-    ./mako.nix
     ./quickshell
   ];
 
@@ -100,7 +99,6 @@ in {
         "${modifier}+v" = "exec ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu -p clipboard | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy";
 
         "${modifier}+Shift+l" = "exec ${pkgs.swaylock-plugin}/bin/swaylock-plugin";
-        "${modifier}+n" = "exec ${pkgs.mako}/bin/makoctl restore";
 
         # wallpaper rotation
         "${modifier}+w" = "exec ${pkgs.wpaperd}/bin/wpaperctl next";

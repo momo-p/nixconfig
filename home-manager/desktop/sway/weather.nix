@@ -13,7 +13,7 @@
   # change to this script and nothing else
   fetch = pkgs.writeShellScript "weather-fetch" ''
     set -eu
-    url="https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=10"
+    url="https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum&timezone=auto&forecast_days=10"
 
     tmp=$(${pkgs.coreutils}/bin/mktemp)
     ${pkgs.coreutils}/bin/chmod 644 "$tmp"
@@ -31,21 +31,42 @@
             "85":"にわか雪","86":"にわか雪",
             "95":"雷雨","96":"雷雨","99":"雷雨"
           }[tostring] // "—";
-          {
-            now: {
-              temp: (.current.temperature_2m | round),
-              cond: (.current.weather_code | jp)
-            },
-            days: [
-              range(0; (.daily.time | length)) as $i | {
-                date: .daily.time[$i],
-                hi: (.daily.temperature_2m_max[$i] | round),
-                lo: (.daily.temperature_2m_min[$i] | round),
-                rain: (.daily.precipitation_probability_max[$i] // 0)
-              }
-            ],
-            ts: (now | floor)
-          }' > "$tmp"
+
+          . as $r
+          | {
+              now: {
+                temp: ($r.current.temperature_2m | round),
+                cond: ($r.current.weather_code | jp)
+              },
+              days: [
+                range(0; ($r.daily.time | length)) as $i | {
+                  date: $r.daily.time[$i],
+                  hi: ($r.daily.temperature_2m_max[$i] | round),
+                  lo: ($r.daily.temperature_2m_min[$i] | round),
+                  rain: ($r.daily.precipitation_probability_max[$i] // 0),
+                  mm: (($r.daily.precipitation_sum[$i] // 0) * 10 | round / 10),
+
+                  # four six-hour windows, so a dry morning is not hidden
+                  # behind a wet afternoon in one daily total
+                  parts: [
+                    range(0; 4) as $b
+                    | [range(0; 6) | $r.hourly.precipitation_probability[$i * 24 + $b * 6 + .] // 0]
+                    | max
+                  ],
+
+                  # the same four windows for temperature, so a day reads as
+                  # its shape rather than one flat range
+                  tparts: [
+                    range(0; 4) as $b
+                    | [range(0; 6) | $r.hourly.temperature_2m[$i * 24 + $b * 6 + .]]
+                    | map(select(. != null))
+                    | if length == 0 then null
+                      else {lo: (min | round), hi: (max | round)} end
+                  ]
+                }
+              ],
+              ts: (now | floor)
+            }' > "$tmp"
 
     ${pkgs.coreutils}/bin/mv "$tmp" ${cache}
     trap - EXIT

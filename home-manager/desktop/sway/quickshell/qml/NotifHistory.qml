@@ -13,16 +13,25 @@ PanelWindow {
 
     screen: Notifs.historyScreen ? Notifs.historyScreen : Sys.mainScreen
 
-    anchors.top: true
-    anchors.right: true
-    margins.top: Theme.barHeight + 4
-    margins.right: Theme.edge
+    // the surface covers the output so a click anywhere off the card dismisses it
+    anchors {
+        top: true
+        bottom: true
+        left: true
+        right: true
+    }
     exclusionMode: ExclusionMode.Ignore
 
-    implicitWidth: Theme.cardWidth
-    implicitHeight: card.implicitHeight
     color: "transparent"
     visible: Notifs.historyOpen
+
+    TapHandler {
+        onTapped: point => {
+            const p = card.mapFromItem(null, point.position);
+            if (p.x < 0 || p.y < 0 || p.x > card.width || p.y > card.height)
+                Notifs.historyOpen = false;
+        }
+    }
 
     // a glance surface, not an inbox
     readonly property int shown: 4
@@ -31,7 +40,9 @@ PanelWindow {
 
     Rectangle {
         id: card
-        width: parent.width
+        width: Theme.cardWidth
+        x: parent.width - width - Theme.edge
+        y: Theme.barHeight + 4
         implicitHeight: layout.implicitHeight + 32
         radius: 24
         color: Theme.pill(0.72)

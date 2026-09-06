@@ -2,6 +2,7 @@ pragma Singleton
 import Quickshell
 import Quickshell.Io
 import Quickshell.I3
+import Quickshell.Wayland
 import "."
 
 // one copy of each watcher, shared by every bar
@@ -18,6 +19,30 @@ Singleton {
             if (s.name !== Theme.subOutput)
                 return s;
         return list.length ? list[0] : null;
+    }
+
+    // a toplevel reports the outputs it covers, so a film playing full screen
+    // is a fact wayland hands over rather than something to look for
+    readonly property var busyScreens: {
+        const out = [];
+        for (const t of ToplevelManager.toplevels.values) {
+            if (!t.fullscreen)
+                continue;
+            for (const s of t.screens)
+                if (out.indexOf(s) === -1)
+                    out.push(s);
+        }
+        return out;
+    }
+
+    // toasts step aside to a free output rather than land on the film
+    readonly property var toastScreen: {
+        if (busyScreens.indexOf(mainScreen) === -1)
+            return mainScreen;
+        for (const s of Quickshell.screens)
+            if (s !== mainScreen && busyScreens.indexOf(s) === -1)
+                return s;
+        return mainScreen;
     }
 
     // mod+n has no pointer to start from, so it follows the keyboard

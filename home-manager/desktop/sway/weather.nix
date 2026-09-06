@@ -16,6 +16,7 @@
     url="https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=10"
 
     tmp=$(${pkgs.coreutils}/bin/mktemp)
+    ${pkgs.coreutils}/bin/chmod 644 "$tmp"
     trap '${pkgs.coreutils}/bin/rm -f "$tmp"' EXIT
 
     ${pkgs.curl}/bin/curl -fsS --max-time 20 "$url" \
@@ -65,7 +66,6 @@ in {
     Timer = {
       OnStartupSec = "20s";
       OnUnitActiveSec = "15m";
-      Persistent = true;
     };
     Install.WantedBy = ["timers.target"];
   };

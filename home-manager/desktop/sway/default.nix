@@ -259,6 +259,15 @@ in {
         corner_radius 24;
       }
 
+      # matches the rail card exactly: a wider radius here leaves a ring of
+      # compositor shadow outside the panel
+      layer_effects "quickshell-rail" {
+        blur enable;
+        blur_ignore_transparent enable;
+        shadows enable;
+        corner_radius 22;
+      }
+
       layer_effects "notifications" {
         blur enable;
         blur_ignore_transparent enable;

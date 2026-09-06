@@ -15,15 +15,16 @@ Pill {
             visible: modelData.monitor && screenName
                 ? modelData.monitor.name === screenName
                 : true
-            Layout.preferredWidth: modelData.focused ? 26 : 8
+            Layout.preferredWidth: modelData.active ? 26 : 8
             Layout.preferredHeight: 8
             radius: height / 2
+            // sway focuses one workspace globally, so the current workspace of
+            // an unfocused output is dimmed rather than left unmarked
             color: modelData.urgent
                 ? Theme.red
-                : modelData.focused
-                    ? Theme.accent
-                    : Qt.rgba(Theme.text.r, Theme.text.g, Theme.text.b,
-                              modelData.active ? 0.62 : 0.22)
+                : modelData.active
+                    ? Theme.fade(Theme.accent, modelData.focused ? 1 : 0.45)
+                    : Theme.hairline(0.22)
 
             Behavior on Layout.preferredWidth {
                 NumberAnimation {

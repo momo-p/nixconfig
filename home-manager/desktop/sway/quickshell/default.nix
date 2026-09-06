@@ -55,6 +55,9 @@
         function hairline(alpha) {
             return Qt.rgba(text.r, text.g, text.b, alpha);
         }
+        function fade(c, alpha) {
+            return Qt.rgba(c.r, c.g, c.b, alpha);
+        }
 
         readonly property string launcher: "${pkgs.rofi}/bin/rofi -show drun"
         readonly property string pavucontrol: "${pkgs.pavucontrol}/bin/pavucontrol"

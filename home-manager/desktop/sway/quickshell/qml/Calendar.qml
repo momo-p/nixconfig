@@ -26,6 +26,14 @@ PanelWindow {
     color: "transparent"
     visible: false
 
+    // the bar keeps its own clicks, so the pill that opened this can close it
+    // and the opening click cannot land here and dismiss it at once
+    mask: Region {
+        y: Theme.barHeight
+        width: popup.width
+        height: popup.height - Theme.barHeight
+    }
+
     TapHandler {
         onTapped: point => {
             const p = card.mapFromItem(null, point.position);

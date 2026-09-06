@@ -25,6 +25,13 @@ PanelWindow {
     color: "transparent"
     visible: Notifs.historyOpen
 
+    // the bar keeps its own clicks, so the pill that opened this can close it
+    mask: Region {
+        y: Theme.barHeight
+        width: panel.width
+        height: panel.height - Theme.barHeight
+    }
+
     TapHandler {
         onTapped: point => {
             const p = card.mapFromItem(null, point.position);

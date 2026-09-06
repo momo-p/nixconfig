@@ -10,6 +10,7 @@ PanelWindow {
     id: popup
 
     property date shown: new Date()
+    property int hovered: 0
 
     WlrLayershell.namespace: "quickshell-popup"
 
@@ -53,6 +54,11 @@ PanelWindow {
         return out;
     }
 
+    function dateKey(d) {
+        const m = shown.getMonth() + 1;
+        return shown.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d);
+    }
+
     function isToday(d) {
         const n = new Date();
         return d === n.getDate()
@@ -84,6 +90,27 @@ PanelWindow {
                 font.family: "Noto Sans CJK JP"
                 font.pixelSize: 15
                 font.bold: true
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: -8
+                visible: Weather.known
+                // the header says more rather than the grid growing a row
+                text: {
+                    const d = popup.hovered;
+                    if (d <= 0)
+                        return Weather.cond;
+                    const day = Weather.dayOn(popup.dateKey(d));
+                    const head = (popup.shown.getMonth() + 1) + "/" + d + "  ";
+                    return day
+                        ? head + day.hi + "°/" + day.lo + "°  降水" + day.rain + "%"
+                        : head + "予報なし";
+                }
+                color: Theme.overlay
+                opacity: Weather.stale ? 0.45 : 1
+                font.family: "Noto Sans CJK JP"
+                font.pixelSize: 12
             }
 
             // columns align by construction, not by monospace luck
@@ -119,6 +146,25 @@ PanelWindow {
                         required property int modelData
                         Layout.fillWidth: true
                         Layout.preferredHeight: 30
+
+                        HoverHandler {
+                            onHoveredChanged: popup.hovered = hovered ? parent.modelData : 0
+                        }
+
+                        // rain sits under the day, so the grid read for
+                        // events is also the thing a week is planned around
+                        Rectangle {
+                            readonly property int rain: parent.modelData === 0
+                                ? -1
+                                : Weather.rainOn(popup.dateKey(parent.modelData))
+
+                            anchors.fill: parent
+                            anchors.margins: 2
+                            radius: 7
+                            visible: rain >= 0
+                            opacity: Weather.stale ? 0.45 : 1
+                            color: Theme.fade(Theme.blue, 0.06 + rain / 100 * 0.4)
+                        }
 
                         Rectangle {
                             anchors.centerIn: parent

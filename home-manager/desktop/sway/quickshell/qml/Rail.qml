@@ -15,7 +15,7 @@ PanelWindow {
 
     property bool expanded: false
 
-    WlrLayershell.namespace: "quickshell-popup"
+    WlrLayershell.namespace: "quickshell-rail"
 
     anchors.bottom: true
     anchors.right: true

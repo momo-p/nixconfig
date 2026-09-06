@@ -159,7 +159,7 @@ Pill {
                 else if (button === Qt.MiddleButton)
                     Notifs.clear();
                 else
-                    Notifs.toggleHistory();
+                    Notifs.toggleHistory(root.barWindow ? root.barWindow.screen : null);
             }
         }
 

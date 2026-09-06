@@ -16,7 +16,5 @@ ShellRoot {
         screen: Sys.mainScreen
     }
 
-    NotifHistory {
-        screen: Sys.mainScreen
-    }
+    NotifHistory {}
 }

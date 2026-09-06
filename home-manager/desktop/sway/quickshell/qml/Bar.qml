@@ -56,6 +56,7 @@ PanelWindow {
 
     Calendar {
         id: calendar
+        screen: bar.screen
     }
 
     Row {
@@ -64,10 +65,12 @@ PanelWindow {
         anchors.rightMargin: Theme.edge
         anchors.topMargin: Theme.edge
         spacing: 12
-        visible: bar.isMain
 
+        // the controls sit on both outputs, so a film on one screen can still
+        // be driven from the other; the tray stays single
         TrayPill {
             barWindow: bar
+            visible: bar.isMain
         }
 
         StatusPill {

@@ -11,6 +11,8 @@ PanelWindow {
 
     WlrLayershell.namespace: "quickshell-popup"
 
+    screen: Notifs.historyScreen ? Notifs.historyScreen : Sys.mainScreen
+
     anchors.top: true
     anchors.right: true
     margins.top: Theme.barHeight + 4

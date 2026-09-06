@@ -143,6 +143,47 @@ PanelWindow {
             anchors.margins: 14
             spacing: 10
 
+            // current conditions, then the week: the bar answers "do I need a
+            // jacket", this answers "which day should I do this on"
+            ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 6
+                visible: rail.expanded && Weather.known
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    Text {
+                        text: Weather.temp + "°"
+                        color: Theme.text
+                        opacity: Weather.stale ? 0.45 : 1
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 18
+                    }
+
+                    Text {
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 6
+                        text: Weather.cond
+                        color: Theme.subtext
+                        opacity: Weather.stale ? 0.45 : 1
+                        font.family: "Noto Sans CJK JP"
+                        font.pixelSize: 11
+                    }
+                }
+
+                WeatherStrip {
+                    Layout.fillWidth: true
+                    opacity: Weather.stale ? 0.45 : 1
+                }
+
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 1
+                    color: Theme.hairline(0.18)
+                }
+            }
+
             // the rail's calendar is the one you browse: the bar popup stays
             // fixed on this month, this one walks
             ColumnLayout {

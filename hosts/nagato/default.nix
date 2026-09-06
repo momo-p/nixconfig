@@ -19,6 +19,7 @@
     ../../modules/obs.nix
     ../../modules/usb-hdd-power.nix
     ../../services/podman.nix
+    ../../modules/sops.nix
 
     ./hardware-configuration.nix
     ./disk-config.nix

@@ -1,0 +1,12 @@
+# momo_p edits secrets, nagato decrypts them at activation. Add a host by
+# appending its key here and re-running `sops updatekeys secrets/<host>.yaml`.
+keys:
+  - &momo_p age1343x9evmu9qun8l28rxh9kdghx6cc53g5n4aynmpkx0ruuc7nsss25gzx9
+  - &nagato age19drcp0dynk7q4mu92zvspu9engtt93843vylacepjlhz3c6p4v4s6y4pyd
+
+creation_rules:
+  - path_regex: secrets/nagato\.yaml$
+    key_groups:
+      - age:
+          - *momo_p
+          - *nagato

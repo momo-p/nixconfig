@@ -48,6 +48,10 @@
         readonly property int pillHeight: 34
         readonly property int edge: 14
         readonly property int iconSize: 18
+        readonly property int cardWidth: 380
+
+        // the bar exists on both outputs, single surfaces go on the other one
+        readonly property string subOutput: "DVI-D-1"
 
         function pill(alpha) {
             return Qt.rgba(base.r, base.g, base.b, alpha);
@@ -63,7 +67,6 @@
         readonly property string pavucontrol: "${pkgs.pavucontrol}/bin/pavucontrol"
         readonly property string fcitxWatch: "${fcitxWatch}"
         readonly property string fcitxRemote: "${pkgs.fcitx5}/bin/fcitx5-remote"
-        readonly property string makoctl: "${pkgs.mako}/bin/makoctl"
         readonly property string mullvad: "${pkgs.mullvad}/bin/mullvad"
 
         // mirrors the group in home-manager/desktop/fcitx5.nix
@@ -112,9 +115,12 @@
         readonly property string iconVpn: "file://${yanisIcon "status/scalable/network-vpn.svg" base05}"
         readonly property string iconVpnWait: "file://${yanisIcon "status/scalable/network-vpn-acquiring.svg" base0A}"
         readonly property string iconVpnBlocked: "file://${yanisIcon "status/scalable/network-vpn.svg" base08}"
-        readonly property string iconDnd: "file://${yanisIcon "status/scalable/notifications-disabled-symbolic.svg" base0A}"
+        readonly property string iconDnd: "file://${yanisIcon "status/scalable/notifications-disabled-symbolic.svg" base0E}"
     }
   '';
+
+  modifier = config.wayland.windowManager.sway.config.modifier;
+  qsIpc = "${pkgs.quickshell}/bin/quickshell ipc -p ${configDir}";
 
   # qmldir is generated so adding a component needs no edit here
   configDir = pkgs.runCommand "quickshell-config" {} ''
@@ -134,8 +140,11 @@
 in {
   home.packages = [pkgs.quickshell pkgs.pavucontrol];
 
-  # the key lives here because the ipc call needs the config path
-  wayland.windowManager.sway.config.keybindings."${config.wayland.windowManager.sway.config.modifier}+Shift+f" = "exec ${pkgs.quickshell}/bin/quickshell ipc -p ${configDir} call focus toggle";
+  # the keys live here because the ipc calls need the config path
+  wayland.windowManager.sway.config.keybindings = {
+    "${modifier}+Shift+f" = "exec ${qsIpc} call focus toggle";
+    "${modifier}+n" = "exec ${qsIpc} call notifications toggle";
+  };
 
   # also on disk so `qs` works by hand
   xdg.configFile."quickshell".source = configDir;

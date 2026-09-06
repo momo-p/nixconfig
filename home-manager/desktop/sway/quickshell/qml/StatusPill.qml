@@ -122,17 +122,49 @@ Pill {
                     : Theme.iconBattery
     }
 
-    Icon {
-        id: dnd
-        visible: Sys.dnd
-        source: Theme.iconDnd
+    // one control, both jobs: it appears only while silenced or holding
+    // something, and the count is what invites the click
+    RowLayout {
+        id: notify
+        visible: Notifs.dnd || Notifs.missed > 0
+        spacing: 6
+
+        Icon {
+            source: Theme.iconDnd
+        }
+
+        Rectangle {
+            visible: Notifs.missed > 0
+            Layout.preferredWidth: missed.implicitWidth + 10
+            Layout.preferredHeight: 16
+            radius: height / 2
+            color: Theme.accent
+
+            Text {
+                id: missed
+                anchors.centerIn: parent
+                text: Notifs.missed
+                color: Theme.base
+                font.family: "SF Pro Display"
+                font.pixelSize: 11
+                font.bold: true
+            }
+        }
 
         TapHandler {
-            onTapped: Sys.toggleDnd()
+            acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
+            onTapped: (point, button) => {
+                if (button === Qt.RightButton)
+                    Notifs.toggleDnd();
+                else if (button === Qt.MiddleButton)
+                    Notifs.clear();
+                else
+                    Notifs.toggleHistory();
+            }
         }
 
         HoverHandler {
-            id: dndHover
+            id: notifyHover
         }
     }
 
@@ -152,8 +184,10 @@ Pill {
 
     Tooltip {
         targetWindow: root.barWindow
-        target: dnd
-        text: "notifications silenced"
-        visible: dndHover.hovered
+        target: notify
+        text: Notifs.missed > 0
+            ? Notifs.missed + " while silenced"
+            : "notifications silenced"
+        visible: notifyHover.hovered
     }
 }

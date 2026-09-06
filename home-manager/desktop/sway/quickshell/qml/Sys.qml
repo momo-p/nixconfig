@@ -1,6 +1,7 @@
 pragma Singleton
 import Quickshell
 import Quickshell.Io
+import "."
 
 // one copy of each watcher, shared by every bar
 Singleton {
@@ -8,7 +9,15 @@ Singleton {
 
     property string ime: ""
     property string vpn: "Disconnected"
-    property bool dnd: false
+
+    // surfaces that exist once rather than per bar live on this output
+    readonly property var mainScreen: {
+        const list = Quickshell.screens;
+        for (const s of list)
+            if (s.name !== Theme.subOutput)
+                return s;
+        return list.length ? list[0] : null;
+    }
 
     function cycleIme(): void {
         const list = Theme.inputMethods;
@@ -17,15 +26,20 @@ Singleton {
         Quickshell.execDetached([Theme.fcitxRemote, "-s", next]);
     }
 
-    function toggleDnd(): void {
-        dnd = !dnd;
-        Quickshell.execDetached([Theme.makoctl, "mode", "-t", "do-not-disturb"]);
-    }
-
     IpcHandler {
         target: "focus"
         function toggle(): void {
-            root.toggleDnd();
+            Notifs.toggleDnd();
+        }
+    }
+
+    IpcHandler {
+        target: "notifications"
+        function toggle(): void {
+            Notifs.toggleHistory();
+        }
+        function clear(): void {
+            Notifs.clear();
         }
     }
 
@@ -47,18 +61,6 @@ Singleton {
             onRead: data => {
                 if (data && data[0] !== " " && data.trim() !== "")
                     root.vpn = data.trim().split(" ")[0];
-            }
-        }
-    }
-
-    // mako keeps its mode across a shell restart, so read it once at startup
-    Process {
-        running: true
-        command: [Theme.makoctl, "mode"]
-        stdout: SplitParser {
-            onRead: data => {
-                if (data.trim() === "do-not-disturb")
-                    root.dnd = true;
             }
         }
     }

@@ -1,6 +1,7 @@
 pragma Singleton
 import Quickshell
 import Quickshell.Io
+import Quickshell.I3
 import "."
 
 // one copy of each watcher, shared by every bar
@@ -17,6 +18,17 @@ Singleton {
             if (s.name !== Theme.subOutput)
                 return s;
         return list.length ? list[0] : null;
+    }
+
+    // mod+n has no pointer to start from, so it follows the keyboard
+    readonly property var focusedScreen: {
+        const mon = I3.focusedMonitor;
+        if (!mon)
+            return mainScreen;
+        for (const s of Quickshell.screens)
+            if (s.name === mon.name)
+                return s;
+        return mainScreen;
     }
 
     function cycleIme(): void {
@@ -36,7 +48,7 @@ Singleton {
     IpcHandler {
         target: "notifications"
         function toggle(): void {
-            Notifs.toggleHistory();
+            Notifs.toggleHistory(root.focusedScreen);
         }
         function clear(): void {
             Notifs.clear();

@@ -14,6 +14,7 @@ Singleton {
     property bool dnd: false
     property int missed: 0
     property bool historyOpen: false
+    property var historyScreen: null
 
     // consecutive notifications from one app are one event
     readonly property var grouped: {
@@ -41,7 +42,9 @@ Singleton {
             missed = 0;
     }
 
-    function toggleHistory(): void {
+    function toggleHistory(screen): void {
+        if (screen)
+            historyScreen = screen;
         historyOpen = !historyOpen;
         if (historyOpen)
             missed = 0;

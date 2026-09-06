@@ -17,4 +17,8 @@ ShellRoot {
     }
 
     NotifHistory {}
+
+    Rail {
+        screen: Sys.mainScreen
+    }
 }

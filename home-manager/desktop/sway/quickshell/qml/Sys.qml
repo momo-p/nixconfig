@@ -1,6 +1,7 @@
 pragma Singleton
 import Quickshell
 import Quickshell.Io
+import QtQuick
 import Quickshell.I3
 import Quickshell.Wayland
 import "."
@@ -111,5 +112,52 @@ Singleton {
                     root.vpn = data.trim().split(" ")[0];
             }
         }
+    }
+
+    property string generation: ""
+    property string genAge: ""
+
+    readonly property string today: {
+        const d = new Date();
+        const m = d.getMonth() + 1;
+        const day = d.getDate();
+        return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+    }
+
+    // only changes on a rebuild, so reading it slowly is plenty
+    Process {
+        id: gen
+        running: true
+        command: [Theme.stat, "-c", "%N %Y", "/nix/var/nix/profiles/system"]
+        stdout: SplitParser {
+            onRead: data => {
+                const m = data.match(/system-(\d+)-link/);
+                if (m)
+                    root.generation = "#" + m[1];
+                const t = data.match(/ (\d+)$/);
+                if (t) {
+                    const days = Math.floor((Date.now() / 1000 - parseInt(t[1])) / 86400);
+                    root.genAge = days < 1 ? "today" : days + "d";
+                }
+            }
+        }
+    }
+
+    Timer {
+        interval: 300000
+        running: true
+        repeat: true
+        onTriggered: gen.running = true
+    }
+
+    // an input a month behind is worth knowing about; the count only moves
+    // when the lock does or when a month passes
+    readonly property int staleInputs: {
+        const cutoff = Date.now() / 1000 - 30 * 86400;
+        let n = 0;
+        for (let i = 0; i < Theme.inputTimes.length; i++)
+            if (Theme.inputTimes[i] < cutoff)
+                n++;
+        return n;
     }
 }

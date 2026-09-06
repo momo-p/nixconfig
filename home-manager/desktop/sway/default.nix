@@ -120,6 +120,7 @@ in {
     ./wallpaper.nix
     ./xdg.nix
     ./rofi.nix
+    ./weather.nix
     ./quickshell
   ];
 

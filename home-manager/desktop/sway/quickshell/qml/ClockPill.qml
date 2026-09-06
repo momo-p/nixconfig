@@ -43,6 +43,16 @@ Pill {
         verticalAlignment: Text.AlignVCenter
     }
 
+    Text {
+        visible: Weather.known
+        text: Weather.temp + "°"
+        color: Theme.subtext
+        opacity: Weather.stale ? 0.45 : 1
+        font.family: "SF Pro Display"
+        font.pixelSize: 13
+        verticalAlignment: Text.AlignVCenter
+    }
+
     TapHandler {
         parent: root
         onTapped: root.toggled()

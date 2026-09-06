@@ -10,6 +10,7 @@
   modifier = "Mod4";
   terminal = "kitty";
   rofi = "${pkgs.rofi}/bin/rofi";
+  playerctl = "${pkgs.playerctl}/bin/playerctl";
   menu = "${rofi} -show drun";
 
   # quickshell keys instances by the literal path the shell was started with
@@ -41,6 +42,15 @@
         ["${modifier}+v" "exec ${rofi} -show clip" "Clipboard history"]
         ["${modifier}+slash" "exec ${rofi} -show keysheet" "This cheatsheet"]
         ["${modifier}+Shift+e" "exec ${rofi} -show power" "Power menu"]
+      ];
+    }
+    {
+      name = "Media";
+      keys = [
+        ["XF86AudioPlay" "exec ${playerctl} play-pause" "Play / pause"]
+        ["XF86AudioNext" "exec ${playerctl} next" "Next track"]
+        ["XF86AudioPrev" "exec ${playerctl} previous" "Previous track"]
+        ["XF86AudioStop" "exec ${playerctl} stop" "Stop"]
       ];
     }
     {
@@ -122,6 +132,7 @@ in {
     ./rofi.nix
     ./weather.nix
     ./calendar.nix
+    ./cover.nix
     ./quickshell
   ];
 

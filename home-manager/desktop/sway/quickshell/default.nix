@@ -4,6 +4,10 @@
   pkgs,
   ...
 }: let
+  coverFetch = import ../cover-package.nix {
+    inherit pkgs;
+    cacheHome = config.xdg.cacheHome;
+  };
   inherit (config.lib.stylix.colors.withHashtag) base00 base01 base03 base04 base05 base08 base0A base0B base0D base0E;
 
   # YANIS uses fill:currentColor, so a state is just a recoloured copy
@@ -13,6 +17,14 @@
     '';
 
   trayEntry = name: path: ''"${name}": "file://${yanisIcon path base05}"'';
+
+  # the lock only changes on a flake update, so the timestamps can be baked
+  # in and compared against the clock at runtime
+  inputTimes = let
+    lock = builtins.fromJSON (builtins.readFile ../../../../flake.lock);
+    nodes = builtins.attrValues (builtins.removeAttrs lock.nodes ["root"]);
+  in
+    builtins.filter (t: t != null) (map (n: n.locked.lastModified or null) nodes);
 
   # fcitx emits no dbus signal on switch, so poll in one long-lived process
   # and only write a line when the value actually changes
@@ -49,6 +61,9 @@
         readonly property int edge: 14
         readonly property int iconSize: 18
         readonly property int cardWidth: 380
+        readonly property int railWidth: 300
+
+        readonly property var inputTimes: [${builtins.concatStringsSep ", " (map toString inputTimes)}]
 
         // connector names are not stable across restarts, so the shell picks
         // its output by the same identity kanshi and sway match on
@@ -69,6 +84,8 @@
         readonly property string fcitxWatch: "${fcitxWatch}"
         readonly property string fcitxRemote: "${pkgs.fcitx5}/bin/fcitx5-remote"
         readonly property string mullvad: "${pkgs.mullvad}/bin/mullvad"
+        readonly property string stat: "${pkgs.coreutils}/bin/stat"
+        readonly property string coverFetch: "${coverFetch}/bin/cover-fetch"
         readonly property string weatherCache: "${config.xdg.cacheHome}/weather.json"
         readonly property string agendaCache: "${config.xdg.cacheHome}/agenda.json"
 
@@ -119,6 +136,10 @@
         readonly property string iconVpnWait: "file://${yanisIcon "status/scalable/network-vpn-acquiring.svg" base0A}"
         readonly property string iconVpnBlocked: "file://${yanisIcon "status/scalable/network-vpn.svg" base08}"
         readonly property string iconDnd: "file://${yanisIcon "status/scalable/notifications-disabled-symbolic.svg" base0E}"
+        readonly property string iconPrev: "file://${yanisIcon "actions/16/media-skip-backward.svg" base05}"
+        readonly property string iconNext: "file://${yanisIcon "actions/16/media-skip-forward.svg" base05}"
+        readonly property string iconPlay: "file://${yanisIcon "actions/16/media-playback-start.svg" base05}"
+        readonly property string iconPause: "file://${yanisIcon "actions/16/media-playback-pause.svg" base05}"
     }
   '';
 

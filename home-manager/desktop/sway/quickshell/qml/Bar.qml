@@ -29,6 +29,7 @@ PanelWindow {
         spacing: 12
 
         Pill {
+            id: launcher
             pad: 10
 
             Icon {
@@ -36,7 +37,10 @@ PanelWindow {
                 size: 20
             }
 
+            // aimed at the pill: the default property would file a handler
+            // under the row, leaving only the icon clickable
             TapHandler {
+                parent: launcher
                 onTapped: I3.dispatch("exec " + Theme.launcher)
             }
         }

@@ -50,8 +50,9 @@
         readonly property int iconSize: 18
         readonly property int cardWidth: 380
 
-        // the bar exists on both outputs, single surfaces go on the other one
-        readonly property string subOutput: "DVI-D-1"
+        // connector names are not stable across restarts, so the shell picks
+        // its output by the same identity kanshi and sway match on
+        readonly property string mainMonitor: "${(import ../monitors.nix).main}"
 
         function pill(alpha) {
             return Qt.rgba(base.r, base.g, base.b, alpha);

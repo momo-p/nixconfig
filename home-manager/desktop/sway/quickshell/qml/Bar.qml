@@ -19,7 +19,7 @@ PanelWindow {
     implicitHeight: Theme.barHeight
     color: "transparent"
 
-    readonly property bool isMain: screen ? screen.name !== Theme.subOutput : true
+    readonly property bool isMain: !Sys.mainScreen || screen === Sys.mainScreen
 
     Row {
         anchors.left: parent.left

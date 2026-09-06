@@ -1,26 +1,31 @@
-{
+{...}: let
+  monitors = import ./monitors.nix;
+in {
   services.kanshi = {
     enable = true;
     settings = [
       {
         profile.outputs = [
           {
-            criteria = "Philips Consumer Electronics Company PHL 226V6 UHB1936016087";
+            criteria = monitors.sub;
             position = "0,0";
           }
           {
-            criteria = "AOC 24G2W1G4 ATNM81A001574";
+            criteria = monitors.main;
             position = "1920,0";
             mode = "1920x1080@144Hz";
             scale = 1.0;
           }
         ];
       }
+      # the sub panel is not always awake, so this profile also matches while
+      # both are plugged in; giving the main panel the same placement in both
+      # means a switch between them moves nothing
       {
         profile.outputs = [
           {
-            criteria = "AOC 24G2W1G4 ATNM81A001574";
-            position = "0,0";
+            criteria = monitors.main;
+            position = "1920,0";
             mode = "1920x1080@144Hz";
             scale = 1.0;
           }

@@ -12,12 +12,23 @@ Singleton {
     property string ime: ""
     property string vpn: "Disconnected"
 
-    // surfaces that exist once rather than per bar live on this output
-    readonly property var mainScreen: {
-        const list = Quickshell.screens;
-        for (const s of list)
-            if (s.name !== Theme.subOutput)
+    function screenNamed(name) {
+        for (const s of Quickshell.screens)
+            if (s.name === name)
                 return s;
+        return null;
+    }
+
+    // sway knows which panel a connector is, so surfaces that exist once are
+    // placed by monitor identity rather than by a name that can be reassigned
+    readonly property var mainScreen: {
+        const mons = I3.monitors.values;
+        for (const m of mons) {
+            const o = m.lastIpcObject;
+            if (o && o.make + " " + o.model + " " + o.serial === Theme.mainMonitor)
+                return screenNamed(m.name);
+        }
+        const list = Quickshell.screens;
         return list.length ? list[0] : null;
     }
 

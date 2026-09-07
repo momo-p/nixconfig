@@ -21,4 +21,8 @@ ShellRoot {
     Rail {
         screen: Sys.mainScreen
     }
+
+    Credit {
+        screen: Sys.mainScreen
+    }
 }

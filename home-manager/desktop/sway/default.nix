@@ -259,12 +259,11 @@ in {
         corner_radius 24;
       }
 
-      # matches the rail card exactly: a wider radius here leaves a ring of
-      # compositor shadow outside the panel
+      # no shadow: this is the one panel that resizes, and swayfx keeps drawing
+      # the shadow at the previous size, leaving a seam across the card
       layer_effects "quickshell-rail" {
         blur enable;
         blur_ignore_transparent enable;
-        shadows enable;
         corner_radius 22;
       }
 

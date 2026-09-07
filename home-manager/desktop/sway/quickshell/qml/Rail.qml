@@ -337,16 +337,19 @@ PanelWindow {
                         }
 
                         Text {
-                            text: rail.pickedDay
-                                ? rail.pickedDay.hi + "° / " + rail.pickedDay.lo + "°　降水 " + rail.pickedDay.rain + "%"
-                                : ""
-                            color: Theme.subtext
+                            text: hourly.at >= 0
+                                ? hourly.at + "時　" + hourly.atTemp + "°　降水 " + hourly.atRain + "%"
+                                : rail.pickedDay
+                                    ? rail.pickedDay.hi + "° / " + rail.pickedDay.lo + "°　降水 " + rail.pickedDay.rain + "%"
+                                    : ""
+                            color: hourly.at >= 0 ? Theme.text : Theme.subtext
                             font.family: "Noto Sans CJK JP"
                             font.pixelSize: 11
                         }
                     }
 
                     HourStrip {
+                        id: hourly
                         Layout.fillWidth: true
                         visible: rail.pickedHours
                         day: rail.pickedDay

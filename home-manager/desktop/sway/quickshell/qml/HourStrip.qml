@@ -43,6 +43,29 @@ ColumnLayout {
         return Theme.runs(flags);
     }
 
+    // the runs give the shape of the day; pointing at one gives its numbers
+    property int at: -1
+
+    readonly property int atTemp: at >= 0 && temps[at] !== null && temps[at] !== undefined
+        ? Math.round(temps[at])
+        : 0
+    readonly property int atRain: at >= 0 && rain[at] !== undefined ? rain[at] : 0
+
+    HoverHandler {
+        id: probe
+
+        onPointChanged: {
+            if (!probe.hovered || hours.width <= 0) {
+                hours.at = -1;
+                return;
+            }
+            const i = Math.floor(probe.point.position.x / (hours.width / 24));
+            hours.at = Math.min(23, Math.max(0, i));
+        }
+
+        onHoveredChanged: if (!hovered) hours.at = -1
+    }
+
     spacing: 3
 
     Item {
@@ -70,6 +93,15 @@ ColumnLayout {
                 width: modelData.len * parent.cell
             }
         }
+
+        Rectangle {
+            visible: hours.at >= 0
+            width: parent.cell
+            height: parent.height
+            radius: height / 2
+            color: Theme.fade(Theme.text, 0.5)
+            x: hours.at * parent.cell
+        }
     }
 
     Item {
@@ -96,6 +128,15 @@ ColumnLayout {
                 x: modelData.at * parent.cell
                 width: modelData.len * parent.cell
             }
+        }
+
+        Rectangle {
+            visible: hours.at >= 0
+            width: parent.cell
+            height: parent.height
+            radius: height / 2
+            color: Theme.fade(Theme.text, 0.5)
+            x: hours.at * parent.cell
         }
     }
 

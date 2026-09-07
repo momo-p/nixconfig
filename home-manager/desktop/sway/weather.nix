@@ -9,8 +9,6 @@
 
   cache = "${config.xdg.cacheHome}/weather.json";
 
-  # the shape the shell reads is fixed here, so swapping provider later is a
-  # change to this script and nothing else
   fetch = pkgs.writeShellScript "weather-fetch" ''
     set -eu
     url="https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum&timezone=auto&forecast_days=10"
@@ -46,16 +44,12 @@
                   rain: ($r.daily.precipitation_probability_max[$i] // 0),
                   mm: (($r.daily.precipitation_sum[$i] // 0) * 10 | round / 10),
 
-                  # four six-hour windows, so a dry morning is not hidden
-                  # behind a wet afternoon in one daily total
                   parts: [
                     range(0; 4) as $b
                     | [range(0; 6) | $r.hourly.precipitation_probability[$i * 24 + $b * 6 + .] // 0]
                     | max
                   ],
 
-                  # the same four windows for temperature, so a day reads as
-                  # its shape rather than one flat range
                   tparts: [
                     range(0; 4) as $b
                     | [range(0; 6) | $r.hourly.temperature_2m[$i * 24 + $b * 6 + .]]
@@ -64,8 +58,6 @@
                       else {lo: (min | round), hi: (max | round)} end
                   ],
 
-                  # kept as two flat arrays rather than 24 objects: the day
-                  # detail reads them by index and the file stays small
                   hours: {
                     t: [range(0; 24) | $r.hourly.temperature_2m[$i * 24 + .]],
                     p: [range(0; 24) | $r.hourly.precipitation_probability[$i * 24 + .] // 0]
@@ -87,8 +79,6 @@ in {
     };
   };
 
-  # never fetched from the widget: the file is the interface, so the shell
-  # works offline and a restart costs nothing
   systemd.user.timers.weather = {
     Unit.Description = "refresh the forecast";
     Timer = {

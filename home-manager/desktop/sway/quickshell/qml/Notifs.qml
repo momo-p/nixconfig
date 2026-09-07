@@ -4,8 +4,6 @@ import Quickshell.Io
 import Quickshell.Services.Notifications
 import "."
 
-// quickshell is the notification daemon itself, so every change arrives as a
-// signal and nothing has to be polled
 Singleton {
     id: root
 
@@ -51,7 +49,6 @@ Singleton {
         onLoadFailed: root.restored = true
     }
 
-    // consecutive notifications from one app are one event
     readonly property var grouped: {
         const out = [];
         for (let i = 0; i < history.length; i++) {
@@ -117,9 +114,6 @@ Singleton {
         return hours < 24 ? hours + "h" : Math.floor(hours / 24) + "d";
     }
 
-    // the server advertises actions over dbus, so a click has to actually
-    // reach one: the default action is what the sending app expects a tap on
-    // the body to mean, and only with none does the tap just get rid of it
     function activate(n): void {
         const acts = n.actions;
         for (let i = 0; i < acts.length; i++) {
@@ -133,7 +127,6 @@ Singleton {
         n.dismiss();
     }
 
-    // an action that is not the default is a button, not a body tap
     function buttons(n) {
         const out = [];
         const acts = n.actions;
@@ -162,7 +155,6 @@ Singleton {
                 }
             ].concat(root.history).slice(0, 50);
 
-            // critical breaks through, which is what makes silencing safe
             if (root.dnd && n.urgency !== NotificationUrgency.Critical) {
                 root.missed += 1;
                 return;

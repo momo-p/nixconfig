@@ -37,8 +37,7 @@ PanelWindow {
                 size: 20
             }
 
-            // aimed at the pill: the default property would file a handler
-            // under the row, leaving only the icon clickable
+            // without this the handler lands in the row, not the pill
             TapHandler {
                 parent: launcher
                 onTapped: I3.dispatch("exec " + Theme.launcher)
@@ -70,8 +69,6 @@ PanelWindow {
         anchors.topMargin: Theme.edge
         spacing: 12
 
-        // the controls sit on both outputs, so a film on one screen can still
-        // be driven from the other; the tray stays single
         TrayPill {
             barWindow: bar
             visible: bar.isMain

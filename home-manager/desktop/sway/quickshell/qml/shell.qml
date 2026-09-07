@@ -11,7 +11,6 @@ ShellRoot {
         }
     }
 
-    // one set of notification surfaces, not one per bar
     Toasts {
         screen: Sys.toastScreen
     }

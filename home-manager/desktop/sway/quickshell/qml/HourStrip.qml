@@ -2,8 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import "."
 
-// the week strip's language turned along one day: warm hours over a track,
-// wet hours under it, merged into runs the same way
 ColumnLayout {
     id: hours
 
@@ -43,7 +41,6 @@ ColumnLayout {
         return Theme.runs(flags);
     }
 
-    // the runs give the shape of the day; pointing at one gives its numbers
     property int at: -1
 
     readonly property int atTemp: at >= 0 && temps[at] !== null && temps[at] !== undefined

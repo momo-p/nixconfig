@@ -4,8 +4,6 @@ import QtQuick
 import QtQuick.Layouts
 import "."
 
-// history appears where the toasts appeared, because it is the same thing
-// returning: top right, same width, the rows are the toasts shrunk
 PanelWindow {
     id: panel
 
@@ -13,7 +11,6 @@ PanelWindow {
 
     screen: Notifs.historyScreen ? Notifs.historyScreen : Sys.mainScreen
 
-    // the surface covers the output so a click anywhere off the card dismisses it
     anchors {
         top: true
         bottom: true
@@ -25,7 +22,6 @@ PanelWindow {
     color: "transparent"
     visible: Notifs.historyOpen
 
-    // the bar keeps its own clicks, so the pill that opened this can close it
     mask: Region {
         y: Theme.barHeight
         width: panel.width
@@ -40,7 +36,6 @@ PanelWindow {
         }
     }
 
-    // a glance surface, not an inbox
     readonly property int shown: 4
     readonly property var rows: Notifs.grouped.slice(0, shown)
     readonly property int older: Notifs.grouped.length - rows.length

@@ -11,8 +11,7 @@
     AGENDA_CACHE=${cache} exec ${pyEnv}/bin/python3 ${./agenda-sync.py}
   '';
 
-  # the feeds live in the secret rather than the repo: a google ical url has
-  # its token in the url, so it is a credential even without a password
+  # a google ical url carries its token, so the feed list is a credential
   add = pkgs.writeShellScriptBin "calendar-add" ''
     set -eu
     repo=''${NIXCONFIG:-$HOME/nixconfig}
@@ -43,7 +42,6 @@ in {
     };
   };
 
-  # never fetched from the widget, same as the forecast
   systemd.user.timers.agenda-sync = {
     Unit.Description = "refresh subscribed calendars";
     Timer = {

@@ -4,8 +4,6 @@ import Quickshell.Io
 import QtQuick
 import "."
 
-// a timer writes the file and the shell only ever reads it, so this works
-// offline and a restart costs nothing
 Singleton {
     id: root
 
@@ -18,13 +16,11 @@ Singleton {
 
     onForecastChanged: root.check()
 
-    // numbers quietly going old are worse than no numbers
     function check(): void {
         stale = !forecast.ts || Date.now() / 1000 - forecast.ts > 5400;
     }
 
-    // null past the horizon, which is what stops the tint rather than fading
-    // it into something indistinguishable from "no rain"
+    // null past the horizon, so the tint stops rather than fades
     function dayOn(date) {
         const days = forecast.days;
         if (!days)

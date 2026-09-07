@@ -23,7 +23,6 @@
     ["Down" "down"]
   ];
 
-  # 1-9 sit on their own digit, 10 on 0; the alt set is the second monitor
   wsKey = n:
     if n == 10
     then "0"
@@ -31,8 +30,6 @@
   wsNum = n: toString n;
   altNum = n: "0${toString n}";
 
-  # bindings and the cheatsheet come from one list, so a new key documents
-  # itself and cannot drift out of date
   keyGroups = [
     {
       name = "Apps";
@@ -119,7 +116,6 @@
     g.keys)
   keyGroups;
 in {
-  # the cheatsheet is the binding list rendered, never a second copy
   xdg.configFile."sway/keys.tsv".text =
     lib.concatMapStringsSep "\n"
     (b: "${lib.replaceStrings ["Mod4"] ["Mod"] b.key}\t${b.desc}\t${b.grp}")
@@ -158,15 +154,6 @@ in {
       package = pkgs.swaylock-plugin;
       settings = {
         command = "${pkgs.mpvpaper}/bin/mpvpaper all -o \"loop --no-resume-playback\" ${./idling.mp4} >/dev/null 2>/dev/null";
-        #  clock = true;
-        #	indicator = true;
-        #	indicator-radius = 75;
-        #	indicator-thickness = 7;
-        #	ring-color = "292D3E";
-        #	line-color = "2B2A3E";
-        #	key-h1-color = "414863";
-        #	inside-color = "717C8470";
-        #	text-color = "FFFFFF";
       };
     };
   };
@@ -241,7 +228,6 @@ in {
       shadow_blur_radius 40
       shadow_color #14161F66
 
-      # outer + inner = 14, the same edge the bar margin uses
       gaps outer 4
       gaps inner 10
 
@@ -259,8 +245,7 @@ in {
         corner_radius 24;
       }
 
-      # no shadow: this is the one panel that resizes, and swayfx keeps drawing
-      # the shadow at the previous size, leaving a seam across the card
+      # the only panel that resizes, and swayfx draws its shadow at the old size
       layer_effects "quickshell-rail" {
         blur enable;
         blur_ignore_transparent enable;

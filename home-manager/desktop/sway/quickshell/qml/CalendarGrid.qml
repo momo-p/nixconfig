@@ -2,8 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import "."
 
-// the month grid on its own: the bar popup shows this month, the rail lets
-// you walk through others
 ColumnLayout {
     id: grid
 
@@ -11,14 +9,12 @@ ColumnLayout {
     property int hovered: 0
     property int selected: 0
 
-    // walking to another month would otherwise keep a day of the old one picked
     onShownChanged: selected = 0
 
     spacing: 2
 
     readonly property var weekdays: ["月", "火", "水", "木", "金", "土", "日"]
 
-    // monday-first cells, 0 meaning an empty pad cell
     readonly property var cells: {
         const y = shown.getFullYear();
         const m = shown.getMonth();
@@ -46,7 +42,6 @@ ColumnLayout {
             && shown.getFullYear() === n.getFullYear();
     }
 
-    // columns align by construction, not by monospace luck
     GridLayout {
         Layout.fillWidth: true
         columns: 7
@@ -80,8 +75,7 @@ ColumnLayout {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 34
 
-                // a cell only clears its own day: moving between two cells
-                // can deliver the leave after the enter
+                // the leave can arrive after the next enter
                 HoverHandler {
                     onHoveredChanged: {
                         if (hovered)
@@ -98,8 +92,6 @@ ColumnLayout {
                         : parent.modelData
                 }
 
-                // rain sits under the day, so the grid read for events is
-                // also the thing a week is planned around
                 Rectangle {
                     readonly property int rain: parent.modelData === 0
                         ? -1
@@ -113,8 +105,6 @@ ColumnLayout {
                     color: Theme.fade(Theme.blue, 0.06 + rain / 100 * 0.4)
                 }
 
-                // events as dots under the number, capped at three: more
-                // than that is a calendar app, not a glance
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom

@@ -2,7 +2,6 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
 import Quickshell.Services.Mpris
-import Quickshell.I3
 import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
@@ -27,24 +26,7 @@ PanelWindow {
     implicitHeight: card.implicitHeight
     color: "transparent"
 
-    // reads the shared screen rather than this window's own: visible depends
-    // on this, so touching screen here loops back through the surface
-    readonly property bool empty: {
-        const sc = Sys.mainScreen;
-        if (!sc)
-            return false;
-        const list = I3.workspaces.values;
-        for (let i = 0; i < list.length; i++) {
-            const w = list[i];
-            if (!w.active || !w.monitor || w.monitor.name !== sc.name)
-                continue;
-            const o = w.lastIpcObject;
-            return !o || !o.representation || o.representation === "";
-        }
-        return false;
-    }
-
-    visible: empty
+    visible: Sys.desktopEmpty
     onVisibleChanged: if (!visible) expanded = false
 
     readonly property var todayRows: Agenda.on(Sys.today)

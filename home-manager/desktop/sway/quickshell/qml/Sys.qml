@@ -33,6 +33,23 @@ Singleton {
         return list.length ? list[0] : null;
     }
 
+    // sway leaves representation empty exactly when a workspace holds nothing,
+    // so the desktop surfaces can key off it without counting windows
+    readonly property bool desktopEmpty: {
+        const sc = mainScreen;
+        if (!sc)
+            return false;
+        const list = I3.workspaces.values;
+        for (let i = 0; i < list.length; i++) {
+            const w = list[i];
+            if (!w.active || !w.monitor || w.monitor.name !== sc.name)
+                continue;
+            const o = w.lastIpcObject;
+            return !o || !o.representation || o.representation === "";
+        }
+        return false;
+    }
+
     // a toplevel reports the outputs it covers, so a film playing full screen
     // is a fact wayland hands over rather than something to look for
     readonly property var busyScreens: {

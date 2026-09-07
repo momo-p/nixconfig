@@ -79,6 +79,25 @@
             return Qt.rgba(c.r, c.g, c.b, alpha);
         }
 
+        // consecutive true values become one {at, len}, which is what draws a
+        // wet stretch as a single piece rather than blocks that happen to touch
+        function runs(flags) {
+            const out = [];
+            let i = 0;
+            while (i < flags.length) {
+                if (!flags[i]) {
+                    i++;
+                    continue;
+                }
+                let n = 0;
+                while (i + n < flags.length && flags[i + n])
+                    n++;
+                out.push({at: i, len: n});
+                i += n;
+            }
+            return out;
+        }
+
         readonly property string launcher: "${pkgs.rofi}/bin/rofi -show drun"
         readonly property string pavucontrol: "${pkgs.pavucontrol}/bin/pavucontrol"
         readonly property string fcitxWatch: "${fcitxWatch}"

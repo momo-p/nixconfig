@@ -62,7 +62,14 @@
                     | map(select(. != null))
                     | if length == 0 then null
                       else {lo: (min | round), hi: (max | round)} end
-                  ]
+                  ],
+
+                  # kept as two flat arrays rather than 24 objects: the day
+                  # detail reads them by index and the file stays small
+                  hours: {
+                    t: [range(0; 24) | $r.hourly.temperature_2m[$i * 24 + .]],
+                    p: [range(0; 24) | $r.hourly.precipitation_probability[$i * 24 + .] // 0]
+                  }
                 }
               ],
               ts: (now | floor)

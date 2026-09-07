@@ -13,6 +13,7 @@ Singleton {
 
     property var history: []
     property bool dnd: false
+
     property int missed: 0
     property bool historyOpen: false
     property var historyScreen: null
@@ -53,7 +54,8 @@ Singleton {
     // consecutive notifications from one app are one event
     readonly property var grouped: {
         const out = [];
-        for (const row of history) {
+        for (let i = 0; i < history.length; i++) {
+            const row = history[i];
             const last = out.length ? out[out.length - 1] : null;
             if (last && last.appName === row.appName) {
                 last.count += 1;
@@ -62,12 +64,20 @@ Singleton {
             out.push({
                 appName: row.appName,
                 summary: row.summary,
+                body: row.body || "",
                 urgency: row.urgency,
                 time: row.time,
-                count: 1
+                count: 1,
+                at: i
             });
         }
         return out;
+    }
+
+    function drop(at, count): void {
+        const out = history.slice();
+        out.splice(at, count);
+        history = out;
     }
 
     function toggleDnd(): void {
@@ -146,6 +156,7 @@ Singleton {
                 {
                     appName: n.appName || "unknown",
                     summary: n.summary,
+                    body: n.body || "",
                     urgency: n.urgency,
                     time: Date.now()
                 }

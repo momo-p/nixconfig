@@ -158,6 +158,7 @@
         readonly property string iconVpn: "file://${yanisIcon "status/scalable/nm-vpn-standalone-lock.svg" base05}"
         readonly property string iconVpnWait: "file://${yanisIcon "status/scalable/nm-vpn-standalone-lock.svg" base0A}"
         readonly property string iconVpnBlocked: "file://${yanisIcon "status/scalable/nm-vpn-standalone-lock.svg" base08}"
+        readonly property string iconNotif: "file://${yanisIcon "status/scalable/notification-active-symbolic.svg" base05}"
         readonly property string iconDnd: "file://${yanisIcon "status/scalable/notifications-disabled-symbolic.svg" base0E}"
         readonly property string iconPrev: "file://${yanisIcon "actions/16/media-skip-backward.svg" base05}"
         readonly property string iconNext: "file://${yanisIcon "actions/16/media-skip-forward.svg" base05}"

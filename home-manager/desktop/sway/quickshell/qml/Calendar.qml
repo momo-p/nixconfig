@@ -9,9 +9,11 @@ import "."
 PanelWindow {
     id: popup
 
-    // hovering a day reports that day rather than today, so one gesture
-    // drives both the forecast line and the agenda below
-    readonly property int agendaDay: grid.hovered > 0 ? grid.hovered : new Date().getDate()
+    // a click pins a day, hover reports one in passing, and with neither it is
+    // today: one value drives both the forecast line and the agenda below
+    readonly property int agendaDay: grid.selected > 0
+        ? grid.selected
+        : grid.hovered > 0 ? grid.hovered : new Date().getDate()
     readonly property var agendaRows: Agenda.on(grid.dateKey(agendaDay))
 
     WlrLayershell.namespace: "quickshell-popup"
@@ -50,6 +52,7 @@ PanelWindow {
         grid.shown = new Date();
         // the pointer is not over a day when this opens
         grid.hovered = 0;
+        grid.selected = 0;
     }
 
     Rectangle {
@@ -84,7 +87,7 @@ PanelWindow {
                 visible: Weather.known
                 // the header says more rather than the grid growing a row
                 text: {
-                    const d = grid.hovered;
+                    const d = grid.selected > 0 ? grid.selected : grid.hovered;
                     if (d <= 0)
                         return Weather.cond;
                     const day = Weather.dayOn(grid.dateKey(d));
@@ -142,7 +145,7 @@ PanelWindow {
 
             Text {
                 Layout.fillWidth: true
-                visible: grid.hovered > 0 && popup.agendaRows.length === 0
+                visible: (grid.selected > 0 || grid.hovered > 0) && popup.agendaRows.length === 0
                 text: "予定なし"
                 color: Theme.overlay
                 font.family: "Noto Sans CJK JP"

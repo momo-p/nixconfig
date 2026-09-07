@@ -34,7 +34,22 @@ PanelWindow {
             rail.probe();
     }
 
-    readonly property var todayRows: Agenda.on(Sys.today)
+    // a picked day takes over the agenda; with none picked it is today
+    readonly property string pickedKey: railGrid.selected > 0
+        ? railGrid.dateKey(railGrid.selected)
+        : Sys.today
+
+    readonly property var todayRows: Agenda.on(pickedKey)
+
+    readonly property var pickedDay: railGrid.selected > 0
+        ? Weather.dayOn(pickedKey)
+        : null
+
+    // a cache written before the hourly fields existed still has the day, so
+    // the summary stands on its own and only the strip waits for the hours
+    readonly property bool pickedHours: pickedDay !== null
+        && pickedDay.hours !== undefined
+        && pickedDay.hours.t !== undefined
 
     // self counts: nagato is a host on the tailnet like any other
     property var hosts: []
@@ -301,6 +316,53 @@ PanelWindow {
                     Layout.fillWidth: true
                 }
 
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.topMargin: 2
+                    spacing: 4
+                    visible: rail.pickedDay !== null
+
+                    RowLayout {
+                        Layout.fillWidth: true
+
+                        Text {
+                            text: (railGrid.shown.getMonth() + 1) + "/" + railGrid.selected
+                            color: Theme.text
+                            font.family: "SF Pro Display"
+                            font.pixelSize: 11
+                        }
+
+                        Item {
+                            Layout.fillWidth: true
+                        }
+
+                        Text {
+                            text: rail.pickedDay
+                                ? rail.pickedDay.hi + "° / " + rail.pickedDay.lo + "°　降水 " + rail.pickedDay.rain + "%"
+                                : ""
+                            color: Theme.subtext
+                            font.family: "Noto Sans CJK JP"
+                            font.pixelSize: 11
+                        }
+                    }
+
+                    HourStrip {
+                        Layout.fillWidth: true
+                        visible: rail.pickedHours
+                        day: rail.pickedDay
+                    }
+                }
+
+                // past the forecast horizon a picked day has no hours to draw
+                Text {
+                    Layout.fillWidth: true
+                    visible: railGrid.selected > 0 && rail.pickedDay === null
+                    text: (railGrid.shown.getMonth() + 1) + "/" + railGrid.selected + "　予報なし"
+                    color: Theme.overlay
+                    font.family: "Noto Sans CJK JP"
+                    font.pixelSize: 11
+                }
+
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 1
@@ -312,7 +374,16 @@ PanelWindow {
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 6
-                visible: rail.expanded && rail.todayRows.length > 0
+                visible: rail.expanded && (rail.todayRows.length > 0 || railGrid.selected > 0)
+
+                Text {
+                    Layout.fillWidth: true
+                    visible: rail.todayRows.length === 0
+                    text: "予定なし"
+                    color: Theme.overlay
+                    font.family: "Noto Sans CJK JP"
+                    font.pixelSize: 12
+                }
 
                 Repeater {
                     model: rail.todayRows.slice(0, 4)
@@ -321,6 +392,14 @@ PanelWindow {
                         required property var modelData
                         Layout.fillWidth: true
                         spacing: 8
+
+                        // which calendar it came from, same colours as the grid dots
+                        Rectangle {
+                            Layout.preferredWidth: 3
+                            Layout.fillHeight: true
+                            radius: 1.5
+                            color: Agenda.colorOf(modelData.cal)
+                        }
 
                         Text {
                             visible: modelData.time !== ""
@@ -339,6 +418,15 @@ PanelWindow {
                             font.pixelSize: 12
                         }
                     }
+                }
+
+                Text {
+                    Layout.fillWidth: true
+                    visible: rail.todayRows.length > 4
+                    text: "他 " + (rail.todayRows.length - 4) + " 件"
+                    color: Theme.overlay
+                    font.family: "Noto Sans CJK JP"
+                    font.pixelSize: 11
                 }
 
                 Rectangle {

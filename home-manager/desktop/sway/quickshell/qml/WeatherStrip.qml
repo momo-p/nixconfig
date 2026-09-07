@@ -29,38 +29,19 @@ RowLayout {
 
     readonly property var jpDays: ["日", "月", "火", "水", "木", "金", "土"]
 
-    // consecutive true values become one {at, len}, which is what turns four
-    // windows into one pill instead of four
-    function runs(flags) {
-        const out = [];
-        let i = 0;
-        while (i < flags.length) {
-            if (!flags[i]) {
-                i++;
-                continue;
-            }
-            let n = 0;
-            while (i + n < flags.length && flags[i + n])
-                n++;
-            out.push({at: i, len: n});
-            i += n;
-        }
-        return out;
-    }
-
     function warmRuns(tparts) {
         const span = Math.max(1, ceiling - floor);
         const flags = [];
         for (let i = 0; i < tparts.length; i++)
             flags.push(!!tparts[i] && (tparts[i].hi - floor) / span >= 0.5);
-        return runs(flags);
+        return Theme.runs(flags);
     }
 
     function wetRuns(parts) {
         const flags = [];
         for (let i = 0; i < parts.length; i++)
             flags.push(parts[i] >= 50);
-        return runs(flags);
+        return Theme.runs(flags);
     }
 
     visible: days.length > 0

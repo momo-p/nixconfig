@@ -9,6 +9,10 @@ ColumnLayout {
 
     property date shown: new Date()
     property int hovered: 0
+    property int selected: 0
+
+    // walking to another month would otherwise keep a day of the old one picked
+    onShownChanged: selected = 0
 
     spacing: 2
 
@@ -87,6 +91,13 @@ ColumnLayout {
                     }
                 }
 
+                TapHandler {
+                    enabled: parent.modelData !== 0
+                    onTapped: grid.selected = grid.selected === parent.modelData
+                        ? 0
+                        : parent.modelData
+                }
+
                 // rain sits under the day, so the grid read for events is
                 // also the thing a week is planned around
                 Rectangle {
@@ -132,6 +143,17 @@ ColumnLayout {
                     radius: height / 2
                     visible: grid.isToday(parent.modelData)
                     color: Theme.accent
+                }
+
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: 26
+                    height: 26
+                    radius: height / 2
+                    visible: parent.modelData !== 0 && grid.selected === parent.modelData
+                    color: "transparent"
+                    border.width: 1
+                    border.color: Theme.text
                 }
 
                 Text {

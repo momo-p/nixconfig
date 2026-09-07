@@ -22,16 +22,22 @@ PanelWindow {
     margins.right: Theme.edge
     exclusionMode: ExclusionMode.Ignore
 
-    implicitWidth: rail.expanded ? Theme.cardWidth : Theme.railWidth
+    // one width in both states: the peek content is meant to keep its pixels,
+    // and swayfx rounds a resized surface at its old width for a frame, which
+    // left a ghost corner inside the card
+    implicitWidth: Theme.cardWidth
     implicitHeight: card.implicitHeight
     color: "transparent"
 
     visible: Sys.desktopEmpty
     onVisibleChanged: {
-        if (!visible)
+        if (!visible) {
             expanded = false;
-        else
+            // a day picked last time is not a day picked now
+            railGrid.selected = 0;
+        } else {
             rail.probe();
+        }
     }
 
     // a picked day takes over the agenda; with none picked it is today

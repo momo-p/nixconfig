@@ -61,7 +61,6 @@
         readonly property int edge: 14
         readonly property int iconSize: 18
         readonly property int cardWidth: 380
-        readonly property int railWidth: 300
 
         readonly property var inputTimes: [${builtins.concatStringsSep ", " (map toString inputTimes)}]
 

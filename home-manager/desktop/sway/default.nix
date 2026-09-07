@@ -154,6 +154,9 @@ in {
       package = pkgs.swaylock-plugin;
       settings = {
         command = "${pkgs.mpvpaper}/bin/mpvpaper all -o \"loop --no-resume-playback\" ${./idling.mp4} >/dev/null 2>/dev/null";
+        indicator-idle-visible = true;
+        indicator-radius = 75;
+        indicator-thickness = 7;
       };
     };
   };

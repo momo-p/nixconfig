@@ -1,5 +1,6 @@
 pragma Singleton
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Notifications
 import "."
 
@@ -15,6 +16,39 @@ Singleton {
     property int missed: 0
     property bool historyOpen: false
     property var historyScreen: null
+
+    // also the writer, so saving before the restore writes back the read
+    property bool restored: false
+
+    onHistoryChanged: if (restored) save()
+    onMissedChanged: if (restored) save()
+
+    function save(): void {
+        store.setText(JSON.stringify({
+            history: history,
+            missed: missed
+        }));
+    }
+
+    FileView {
+        id: store
+        path: Theme.notifCache
+        printErrors: false
+        atomicWrites: true
+
+        onLoaded: {
+            try {
+                const d = JSON.parse(store.text());
+                if (d.history)
+                    root.history = d.history;
+                root.missed = d.missed || 0;
+            } catch (e) {
+            }
+            root.restored = true;
+        }
+
+        onLoadFailed: root.restored = true
+    }
 
     // consecutive notifications from one app are one event
     readonly property var grouped: {

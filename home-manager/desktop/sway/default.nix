@@ -5,7 +5,7 @@
   ...
 }: let
   monitors = import ./monitors.nix;
-  inherit (monitors) main sub;
+  inherit (monitors) main sub mainMode;
 
   modifier = "Mod4";
   terminal = "kitty";
@@ -209,8 +209,8 @@ in {
 
       bars = [];
 
-      # kanshi owns the external outputs; two writers made it flap
       output.eDP-1.scale = "1.0";
+      output."${main}".mode = mainMode;
       keybindings = lib.listToAttrs (map (b: lib.nameValuePair b.key b.cmd) binds);
 
       modes.resize = {

@@ -27,7 +27,7 @@
       '';
       on-select = ''
         &{{
-            ${pkgs.lf}/bin/lf -remote "send $id set statfmt \"$(${pkgs.eza}/bin/eza -ld --color=always "$f" | sed 's/\\/\\\\/g;s/"/\\"/g')\""
+            ${pkgs.lf}/bin/lf -remote "send $id set user_statline \"$(${pkgs.eza}/bin/eza -ld --color=always "$f" | sed 's/\\/\\\\/g;s/"/\\"/g')\""
         }}
       '';
       on-cd = ''
@@ -50,12 +50,40 @@
       icons = true;
       kitty = true;
     };
-    extraConfig =
-      "set cleaner "
-      + pkgs.writeShellScript "cleaner.sh" ''
-        #!/bin/sh
-        exec ${pkgs.kitty}/bin/kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
-      '';
+    extraConfig = ''
+      set cleaner ${
+        pkgs.writeShellScript "cleaner.sh" ''
+          #!/bin/sh
+          exec ${pkgs.kitty}/bin/kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
+        ''
+      }
+      set rulerfile ${
+        pkgs.writeText "ruler" ''
+          {{with .Message -}}
+              {{. -}}
+          {{else with .UserOptions.statline -}}
+              {{. -}}
+          {{else with .Stat -}}
+              {{.Permissions | printf "\033[36m%s\033[0m" -}}
+              {{with .LinkCount}} {{.}}{{end -}}
+              {{with .User}} {{.}}{{end -}}
+              {{with .Group}} {{.}}{{end -}}
+              {{.Size | humanize | printf " %5s" -}}
+              {{.ModTime | printf " %s" -}}
+              {{with .Target}} -> {{.}}{{end -}}
+          {{end -}}
+          {{.SPACER -}}
+          {{with .Keys}}  {{.}}{{end -}}
+          {{with .Progress}}  {{join . " "}}{{end -}}
+          {{with .Copy}}  {{len . | printf "%s %d \033[0m" $.Options.copyfmt}}{{end -}}
+          {{with .Cut}}  {{len . | printf "%s %d \033[0m" $.Options.cutfmt}}{{end -}}
+          {{with .Select}}  {{len . | printf "%s %d \033[0m" $.Options.selectfmt}}{{end -}}
+          {{with .Visual}}  {{len . | printf "%s %d \033[0m" $.Options.visualfmt}}{{end -}}
+          {{with .Filter}}  {{join . " " | printf "\033[7;34m %s \033[0m"}}{{end -}}
+          {{printf "  %d/%d" .Index .Total}}
+        ''
+      }
+    '';
     previewer = {
       source = pkgs.writeShellScript "pv.sh" ''
         #!/bin/sh

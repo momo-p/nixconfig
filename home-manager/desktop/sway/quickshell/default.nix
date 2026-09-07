@@ -84,6 +84,7 @@
         readonly property string fcitxWatch: "${fcitxWatch}"
         readonly property string fcitxRemote: "${pkgs.fcitx5}/bin/fcitx5-remote"
         readonly property string mullvad: "${pkgs.mullvad}/bin/mullvad"
+        readonly property string tailscale: "${pkgs.tailscale}/bin/tailscale"
         readonly property string stat: "${pkgs.coreutils}/bin/stat"
         readonly property string coverFetch: "${coverFetch}/bin/cover-fetch"
         readonly property string wpaperctl: "${pkgs.wpaperd}/bin/wpaperctl"

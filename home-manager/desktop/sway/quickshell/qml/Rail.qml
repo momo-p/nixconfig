@@ -27,9 +27,79 @@ PanelWindow {
     color: "transparent"
 
     visible: Sys.desktopEmpty
-    onVisibleChanged: if (!visible) expanded = false
+    onVisibleChanged: {
+        if (!visible)
+            expanded = false;
+        else
+            rail.probe();
+    }
 
     readonly property var todayRows: Agenda.on(Sys.today)
+
+    // self counts: nagato is a host on the tailnet like any other
+    property var hosts: []
+    property string relay: ""
+
+    readonly property int hostsUp: {
+        let n = 0;
+        for (let i = 0; i < hosts.length; i++)
+            if (hosts[i])
+                n++;
+        return n;
+    }
+
+    function probe(): void {
+        ts.running = true;
+        mv.running = true;
+    }
+
+    Process {
+        id: ts
+        command: [Theme.tailscale, "status", "--json"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                let out = [];
+                try {
+                    const d = JSON.parse(text);
+                    if (d.BackendState === "Running") {
+                        out.push(d.Self && d.Self.Online === true);
+                        for (const k in d.Peer)
+                            out.push(d.Peer[k].Online === true);
+                    }
+                } catch (e) {
+                    out = [];
+                }
+                rail.hosts = out;
+            }
+        }
+    }
+
+    Process {
+        id: mv
+        command: [Theme.mullvad, "status"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const r = text.match(/Relay:\s+(\S+)/);
+                rail.relay = r ? r[1] : "";
+            }
+        }
+    }
+
+    Connections {
+        target: Sys
+
+        function onVpnChanged() {
+            if (rail.visible)
+                mv.running = true;
+        }
+    }
+
+    Timer {
+        interval: 60000
+        running: rail.visible
+        repeat: true
+        onTriggered: rail.probe()
+    }
 
     // a player that exists but has nothing loaded has nothing to say
     readonly property bool hasTrack: player && player.trackTitle !== ""
@@ -278,41 +348,124 @@ PanelWindow {
                 }
             }
 
-            // the always-there row is the handle, so the calendar above keeps
+            // the always-there block is the handle, so the calendar above keeps
             // its own clicks. three columns, as in the sketch: what it is,
             // what it says, and the number that matters
-            RowLayout {
+            ColumnLayout {
                 id: statusRow
                 Layout.fillWidth: true
-                Layout.preferredHeight: 22
+                spacing: 3
 
                 TapHandler {
                     onTapped: rail.expanded = !rail.expanded
                 }
 
-                Text {
-                    Layout.preferredWidth: 42
-                    text: "gen"
-                    color: Theme.subtext
-                    font.family: "SF Pro Display"
-                    font.pixelSize: 11
-                }
-
-                Text {
+                RowLayout {
                     Layout.fillWidth: true
-                    text: Sys.genAge === ""
-                        ? Sys.generation
-                        : Sys.generation + " · " + Sys.genAge
-                    color: Theme.text
-                    font.family: "SF Pro Display"
-                    font.pixelSize: 12
+                    Layout.preferredHeight: 22
+
+                    Text {
+                        Layout.preferredWidth: 42
+                        text: "vpn"
+                        color: Theme.subtext
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 11
+                    }
+
+                    Text {
+                        Layout.fillWidth: true
+                        text: rail.relay
+                        color: Sys.vpn === "Connected" ? Theme.text : Theme.subtext
+                        elide: Text.ElideRight
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        text: Sys.vpn.toLowerCase()
+                        color: Sys.vpn === "Connected"
+                            ? Theme.green
+                            : Sys.vpn === "Disconnected"
+                                ? Theme.subtext
+                                : Sys.vpn === "Blocked"
+                                    ? Theme.red
+                                    : Theme.yellow
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 11
+                    }
                 }
 
-                Text {
-                    text: Sys.staleInputs + " stale"
-                    color: Sys.staleInputs > 0 ? Theme.yellow : Theme.subtext
-                    font.family: "SF Pro Display"
-                    font.pixelSize: 11
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 22
+                    visible: rail.hosts.length > 0
+
+                    Text {
+                        Layout.preferredWidth: 42
+                        text: "hosts"
+                        color: Theme.subtext
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 11
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 5
+
+                        Repeater {
+                            model: rail.hosts
+
+                            Rectangle {
+                                required property var modelData
+
+                                implicitWidth: 7
+                                implicitHeight: 7
+                                radius: 3.5
+                                color: modelData ? Theme.green : Theme.hairline(0.25)
+                            }
+                        }
+
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                    Text {
+                        text: rail.hostsUp + " / " + rail.hosts.length + " up"
+                        color: rail.hostsUp === rail.hosts.length ? Theme.subtext : Theme.yellow
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 11
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 22
+
+                    Text {
+                        Layout.preferredWidth: 42
+                        text: "gen"
+                        color: Theme.subtext
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 11
+                    }
+
+                    Text {
+                        Layout.fillWidth: true
+                        text: Sys.genAge === ""
+                            ? Sys.generation
+                            : Sys.generation + " · " + Sys.genAge
+                        color: Theme.text
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        text: Sys.staleInputs + " stale"
+                        color: Sys.staleInputs > 0 ? Theme.yellow : Theme.subtext
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 11
+                    }
                 }
             }
 

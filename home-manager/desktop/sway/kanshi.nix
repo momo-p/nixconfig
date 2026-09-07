@@ -13,7 +13,6 @@ in {
           {
             criteria = monitors.main;
             position = "1920,0";
-            mode = "1920x1080@144Hz";
             scale = 1.0;
           }
         ];
@@ -26,7 +25,6 @@ in {
           {
             criteria = monitors.main;
             position = "1920,0";
-            mode = "1920x1080@144Hz";
             scale = 1.0;
           }
         ];

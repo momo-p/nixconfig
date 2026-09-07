@@ -126,15 +126,15 @@ Pill {
     // something, and the count is what invites the click
     RowLayout {
         id: notify
-        visible: Notifs.dnd || Notifs.missed > 0
+        visible: Notifs.dnd || Notifs.history.length > 0
         spacing: 6
 
         Icon {
-            source: Theme.iconDnd
+            source: Notifs.dnd ? Theme.iconDnd : Theme.iconNotif
         }
 
         Rectangle {
-            visible: Notifs.missed > 0
+            visible: Notifs.history.length > 0
             Layout.preferredWidth: missed.implicitWidth + 10
             Layout.preferredHeight: 16
             radius: height / 2
@@ -143,7 +143,7 @@ Pill {
             Text {
                 id: missed
                 anchors.centerIn: parent
-                text: Notifs.missed
+                text: Notifs.history.length
                 color: Theme.base
                 font.family: "SF Pro Display"
                 font.pixelSize: 11
@@ -187,7 +187,9 @@ Pill {
         target: notify
         text: Notifs.missed > 0
             ? Notifs.missed + " while silenced"
-            : "notifications silenced"
+            : Notifs.history.length > 0
+                ? Notifs.history.length + " waiting"
+                : "notifications silenced"
         visible: notifyHover.hovered
     }
 }

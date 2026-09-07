@@ -102,62 +102,106 @@ PanelWindow {
             Repeater {
                 model: panel.rows
 
-                RowLayout {
+                Rectangle {
+                    id: entry
+
                     required property var modelData
 
                     Layout.fillWidth: true
-                    spacing: 11
+                    implicitHeight: line.implicitHeight + 10
+                    radius: 10
+                    color: entryHover.hovered ? Theme.hairline(0.10) : "transparent"
 
-                    Rectangle {
-                        Layout.fillHeight: true
-                        Layout.preferredWidth: 3
-                        radius: 1.5
-                        color: Notifs.rule(modelData.urgency)
+                    HoverHandler {
+                        id: entryHover
                     }
 
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 1
+                    TapHandler {
+                        onTapped: Notifs.drop(entry.modelData.at, entry.modelData.count)
+                    }
 
-                        RowLayout {
-                            Layout.fillWidth: true
-                            spacing: 6
+                    RowLayout {
+                        id: line
+                        anchors.fill: parent
+                        anchors.leftMargin: 6
+                        anchors.rightMargin: 6
+                        spacing: 11
 
-                            Text {
-                                text: modelData.appName
-                                color: Theme.overlay
-                                elide: Text.ElideRight
-                                font.family: "SF Pro Display"
-                                font.pixelSize: 11
-                            }
-
-                            Text {
-                                visible: modelData.count > 1
-                                text: "×" + modelData.count
-                                color: Theme.accent
-                                font.family: "SF Pro Display"
-                                font.pixelSize: 11
-                            }
-
-                            Item {
-                                Layout.fillWidth: true
-                            }
-
-                            Text {
-                                text: Notifs.since(modelData.time)
-                                color: Theme.overlay
-                                font.family: "SF Pro Display"
-                                font.pixelSize: 11
-                            }
+                        Rectangle {
+                            Layout.fillHeight: true
+                            Layout.topMargin: 5
+                            Layout.bottomMargin: 5
+                            Layout.preferredWidth: 3
+                            radius: 1.5
+                            color: Notifs.rule(entry.modelData.urgency)
                         }
 
-                        Text {
+                        ColumnLayout {
                             Layout.fillWidth: true
-                            text: modelData.summary
-                            color: Theme.text
-                            elide: Text.ElideRight
-                            font.family: "SF Pro Display"
-                            font.pixelSize: 13
+                            spacing: 1
+
+                            RowLayout {
+                                Layout.fillWidth: true
+                                spacing: 6
+
+                                Text {
+                                    text: entry.modelData.appName
+                                    color: Theme.overlay
+                                    elide: Text.ElideRight
+                                    font.family: "SF Pro Display"
+                                    font.pixelSize: 11
+                                }
+
+                                Text {
+                                    visible: entry.modelData.count > 1
+                                    text: "×" + entry.modelData.count
+                                    color: Theme.accent
+                                    font.family: "SF Pro Display"
+                                    font.pixelSize: 11
+                                }
+
+                                Item {
+                                    Layout.fillWidth: true
+                                }
+
+                                Text {
+                                    visible: !entryHover.hovered
+                                    text: Notifs.since(entry.modelData.time)
+                                    color: Theme.overlay
+                                    font.family: "SF Pro Display"
+                                    font.pixelSize: 11
+                                }
+
+                                Text {
+                                    visible: entryHover.hovered
+                                    text: "✕"
+                                    color: Theme.text
+                                    font.family: "SF Pro Display"
+                                    font.pixelSize: 11
+                                }
+                            }
+
+                            Text {
+                                Layout.fillWidth: true
+                                text: entry.modelData.summary
+                                color: Theme.text
+                                elide: Text.ElideRight
+                                font.family: "SF Pro Display"
+                                font.pixelSize: 13
+                            }
+
+                            Text {
+                                Layout.fillWidth: true
+                                visible: entry.modelData.body !== ""
+                                text: entry.modelData.body
+                                color: Theme.subtext
+                                textFormat: Text.StyledText
+                                elide: Text.ElideRight
+                                maximumLineCount: 2
+                                wrapMode: Text.Wrap
+                                font.family: "SF Pro Display"
+                                font.pixelSize: 12
+                            }
                         }
                     }
                 }

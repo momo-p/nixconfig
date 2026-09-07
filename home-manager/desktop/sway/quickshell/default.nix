@@ -108,6 +108,7 @@
         readonly property string wpaperctl: "${pkgs.wpaperd}/bin/wpaperctl"
         readonly property string weatherCache: "${config.xdg.cacheHome}/weather.json"
         readonly property string agendaCache: "${config.xdg.cacheHome}/agenda.json"
+        readonly property string notifCache: "${config.xdg.cacheHome}/notifications.json"
 
         readonly property var wallpaperCredits: (${builtins.toJSON (import ../wallpaper-credits.nix)})
 

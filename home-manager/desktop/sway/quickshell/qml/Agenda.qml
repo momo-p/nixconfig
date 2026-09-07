@@ -3,8 +3,6 @@ import Quickshell
 import Quickshell.Io
 import "."
 
-// same shape as the forecast: a timer syncs and writes the file, the shell
-// only reads it
 Singleton {
     id: root
 
@@ -12,8 +10,6 @@ Singleton {
 
     readonly property var events: data.events ? data.events : []
 
-    // a stable colour per calendar without naming them here: the order comes
-    // from the file, which only changes when an account is added
     readonly property var calendars: {
         const out = [];
         for (let i = 0; i < events.length; i++)

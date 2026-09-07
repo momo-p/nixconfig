@@ -18,14 +18,12 @@ PanelWindow {
     anchors.left: true
     margins.top: Theme.barHeight + 2
 
-    // the bar spans the output, so item coordinates are output coordinates
     margins.left: target
         ? Math.round(target.mapToItem(null, target.width / 2, 0).x - tip.implicitWidth / 2)
         : 0
 
     exclusionMode: ExclusionMode.Ignore
 
-    // never take the pointer, it sits right under the icon it describes
     mask: Region {}
 
     implicitWidth: label.implicitWidth + 22

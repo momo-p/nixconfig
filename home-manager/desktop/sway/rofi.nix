@@ -6,8 +6,7 @@
   inherit (config.lib.formats.rasi) mkLiteral;
   inherit (config.lib.stylix.colors.withHashtag) base00 base01 base04 base05 base0D base0E;
 
-  # sized so it always over-fills the inputbar: width scaling is exact across,
-  # and a hair of extra height crops instead of leaving a gap to tile
+  # over-fills the inputbar: an exact fit leaves a gap that tiles
   banner = pkgs.runCommand "rofi-banner.png" {} ''
     ${pkgs.imagemagick}/bin/magick ${./momoko.png} -resize 700x240! $out
   '';
@@ -34,8 +33,6 @@
     esac
   '';
 
-  # thumbnails come from the same directory wpaperd rotates through; an
-  # explicit pick pauses the rotation so it actually sticks
   wallpaper = pkgs.writeShellScript "rofi-wallpaper" ''
     dir=${./wallpapers}
     if [ "$#" -eq 0 ]; then
@@ -46,8 +43,6 @@
       done
       exit 0
     fi
-    # only the output the picker was summoned from, so the other screen keeps
-    # whatever it had
     out=$(${pkgs.sway}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
     if [ "$1" = "自動" ]; then
       ${pkgs.wpaperd}/bin/wpaperctl resume-wallpaper "$out"
@@ -57,7 +52,6 @@
     fi
   '';
 
-  # the chord is dimmed down to its last key, so one column of letters scans
   keys = pkgs.writeShellScript "rofi-keys" ''
     [ "$#" -gt 0 ] && exit 0
     printf '\0no-custom\x1ftrue\n'
@@ -86,7 +80,6 @@
       window-format = "{w} · {c} · {t}";
     };
 
-    # Global properties
     "*" = {
       font = "SF Pro Display 12";
       background = mkLiteral "${base00}8C";
@@ -100,7 +93,6 @@
       placeholder-fg = mkLiteral "${base04}";
     };
 
-    # Main window settings
     window = {
       location = mkLiteral "center";
       anchor = mkLiteral "center";
@@ -114,7 +106,6 @@
       background-color = mkLiteral "@background";
     };
 
-    # Main box settings
     mainbox = {
       enabled = true;
       spacing = mkLiteral "0px";
@@ -123,7 +114,6 @@
       children = map mkLiteral ["inputbar" "listbox"];
     };
 
-    # Listbox settings
     listbox = {
       spacing = mkLiteral "12px";
       padding = mkLiteral "12px";
@@ -132,7 +122,6 @@
       children = map mkLiteral ["message" "listview"];
     };
 
-    # Inputbar settings
     inputbar = {
       enabled = true;
       spacing = mkLiteral "10px";
@@ -144,7 +133,6 @@
       children = map mkLiteral ["textbox-prompt-colon" "entry" "dummy" "mode-switcher"];
     };
 
-    # Textbox prompt colon settings
     "textbox-prompt-colon" = {
       enabled = true;
       expand = false;
@@ -156,7 +144,6 @@
       text-color = mkLiteral "inherit";
     };
 
-    # Entry settings
     entry = {
       enabled = true;
       expand = false;
@@ -170,13 +157,11 @@
       placeholder-color = mkLiteral "@placeholder-fg";
     };
 
-    # Dummy settings
     dummy = {
       expand = true;
       background-color = mkLiteral "transparent";
     };
 
-    # Mode switcher settings
     "mode-switcher" = {
       enabled = true;
       spacing = mkLiteral "6px";
@@ -184,7 +169,6 @@
       text-color = mkLiteral "@foreground";
     };
 
-    # Button settings
     button = {
       font = "SFMono Nerd Font 12";
       width = mkLiteral "38px";
@@ -195,13 +179,11 @@
       cursor = mkLiteral "pointer";
     };
 
-    # Button selected settings
     "button selected" = {
       background-color = mkLiteral "@selected";
       text-color = mkLiteral "@selected-foreground";
     };
 
-    # Listview settings
     listview = {
       enabled = true;
       columns = 1;
@@ -277,7 +259,6 @@
       horizontal-align = 0;
     };
 
-    # Message settings
     message = {
       background-color = mkLiteral "transparent";
     };

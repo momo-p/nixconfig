@@ -24,8 +24,7 @@ PanelWindow {
     implicitHeight: label.implicitHeight
     color: "transparent"
 
-    // keyed off the shared flag alone: deriving this from the label would let
-    // the probe that fills the label decide whether to run
+    // not off the label: the probe fills it, so that would loop
     visible: Sys.desktopEmpty
     onVisibleChanged: if (visible && connector !== "") probe.running = true
 

@@ -122,8 +122,6 @@ Pill {
                     : Theme.iconBattery
     }
 
-    // one control, both jobs: it appears only while silenced or holding
-    // something, and the count is what invites the click
     RowLayout {
         id: notify
         visible: Notifs.dnd || Notifs.history.length > 0

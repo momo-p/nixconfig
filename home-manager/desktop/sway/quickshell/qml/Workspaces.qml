@@ -18,8 +18,7 @@ Pill {
             Layout.preferredWidth: modelData.active ? 26 : 8
             Layout.preferredHeight: 8
             radius: height / 2
-            // sway focuses one workspace globally, so the current workspace of
-            // an unfocused output is dimmed rather than left unmarked
+            // sway focuses one workspace globally, across all outputs
             color: modelData.urgent
                 ? Theme.red
                 : modelData.active

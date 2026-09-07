@@ -6,7 +6,6 @@ import QtQuick.Effects
 import QtQuick.Layouts
 import "."
 
-// swayfx blurs this namespace, so the cards carry the same glass as the bar
 PanelWindow {
     id: toasts
 
@@ -21,10 +20,8 @@ PanelWindow {
     implicitWidth: Theme.cardWidth
     implicitHeight: Math.max(1, column.implicitHeight)
     color: "transparent"
-    // the panel shows the same cards shrunk, so never both at once
     visible: !Notifs.historyOpen && Notifs.live.values.length > 0
 
-    // only the cards take the pointer, the gaps between them stay click-through
     mask: Region {
         item: column
     }
@@ -34,7 +31,6 @@ PanelWindow {
         width: parent.width
         spacing: 10
 
-        // arrive from the right, the same direction they leave in
         add: Transition {
             NumberAnimation {
                 property: "x"
@@ -66,7 +62,6 @@ PanelWindow {
                 border.width: 1
                 border.color: Theme.hairline(0.18)
 
-                // a critical notification is the one thing that must not vanish
                 Timer {
                     running: modelData.urgency !== NotificationUrgency.Critical
                     interval: modelData.expireTimeout > 0 ? modelData.expireTimeout : 10000

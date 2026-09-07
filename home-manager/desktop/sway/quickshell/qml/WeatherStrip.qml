@@ -2,9 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import "."
 
-// seven columns, not seven icons. each day is one track with its six-hour
-// windows merged into runs, so a warm stretch or a wet stretch is drawn as a
-// single connected piece rather than four blocks that happen to touch
 RowLayout {
     id: strip
 
@@ -12,7 +9,6 @@ RowLayout {
         ? Weather.forecast.days.slice(0, 7)
         : []
 
-    // one scale for the row, or a mild day would look as tall as a hot one
     readonly property int floor: {
         let lo = 99;
         for (let i = 0; i < days.length; i++)
@@ -57,13 +53,11 @@ RowLayout {
 
             readonly property int dow: new Date(modelData.date + "T00:00:00").getDay()
 
-            // equal shares: without a preferred width the columns size to
-            // their text and the numbers run into each other
+            // fillWidth alone splits surplus, not the whole row
             Layout.fillWidth: true
             Layout.preferredWidth: 1
             spacing: 3
 
-            //土 blue, 日 red, matching the grid below
             Text {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
@@ -84,7 +78,6 @@ RowLayout {
                 font.pixelSize: 10
             }
 
-            // one track a day, with the warm stretch drawn over it
             Item {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: 6
@@ -122,8 +115,6 @@ RowLayout {
                 font.pixelSize: 10
             }
 
-            // the same windows as rain, merged the same way: a wet afternoon
-            // and evening is one piece, not two
             Item {
                 Layout.fillWidth: true
                 Layout.leftMargin: 1

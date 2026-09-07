@@ -18,16 +18,12 @@
 
   trayEntry = name: path: ''"${name}": "file://${yanisIcon path base05}"'';
 
-  # the lock only changes on a flake update, so the timestamps can be baked
-  # in and compared against the clock at runtime
   inputTimes = let
     lock = builtins.fromJSON (builtins.readFile ../../../../flake.lock);
     nodes = builtins.attrValues (builtins.removeAttrs lock.nodes ["root"]);
   in
     builtins.filter (t: t != null) (map (n: n.locked.lastModified or null) nodes);
 
-  # fcitx emits no dbus signal on switch, so poll in one long-lived process
-  # and only write a line when the value actually changes
   fcitxWatch = pkgs.writeShellScript "fcitx-watch" ''
     prev=""
     while :; do
@@ -185,12 +181,9 @@
 in {
   home.packages = [pkgs.quickshell pkgs.pavucontrol];
 
-  # also on disk so `qs` works by hand
   xdg.configFile."quickshell".source = configDir;
 
-  # a unit rather than a sway exec, so it restarts on failure and on rebuild.
-  # the config path is baked in, which is what makes the unit change when the
-  # qml changes, so home-manager restarts it.
+  # the baked-in config path is what makes the unit change when the qml does
   systemd.user.services.quickshell = {
     Unit = {
       Description = "quickshell desktop shell";

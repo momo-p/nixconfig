@@ -7,8 +7,6 @@ import QtQuick.Effects
 import QtQuick.Layouts
 import "."
 
-// bottom right, growing upward: the peek content keeps its pixels when the
-// rail expands, so it reads as one object opening rather than two layouts
 PanelWindow {
     id: rail
 
@@ -22,9 +20,6 @@ PanelWindow {
     margins.right: Theme.edge
     exclusionMode: ExclusionMode.Ignore
 
-    // one width in both states: the peek content is meant to keep its pixels,
-    // and swayfx rounds a resized surface at its old width for a frame, which
-    // left a ghost corner inside the card
     implicitWidth: Theme.cardWidth
     implicitHeight: card.implicitHeight
     color: "transparent"
@@ -33,14 +28,12 @@ PanelWindow {
     onVisibleChanged: {
         if (!visible) {
             expanded = false;
-            // a day picked last time is not a day picked now
             railGrid.selected = 0;
         } else {
             rail.probe();
         }
     }
 
-    // a picked day takes over the agenda; with none picked it is today
     readonly property string pickedKey: railGrid.selected > 0
         ? railGrid.dateKey(railGrid.selected)
         : Sys.today
@@ -51,13 +44,11 @@ PanelWindow {
         ? Weather.dayOn(pickedKey)
         : null
 
-    // a cache written before the hourly fields existed still has the day, so
-    // the summary stands on its own and only the strip waits for the hours
+    // a cache from before the hourly fields still has the day
     readonly property bool pickedHours: pickedDay !== null
         && pickedDay.hours !== undefined
         && pickedDay.hours.t !== undefined
 
-    // self counts: nagato is a host on the tailnet like any other
     property var hosts: []
     property string relay: ""
 
@@ -122,11 +113,8 @@ PanelWindow {
         onTriggered: rail.probe()
     }
 
-    // a player that exists but has nothing loaded has nothing to say
     readonly property bool hasTrack: player && player.trackTitle !== ""
 
-    // mpris carries art for most players; the lookup is only for the ones
-    // that do not, and it answers from a cache after the first time
     property int tick: 0
     property string fetchedArt: ""
     readonly property string art: {
@@ -173,8 +161,6 @@ PanelWindow {
         }
     }
 
-    // hold on to the player being shown rather than re-picking on every
-    // state change: a browser tab pausing would otherwise swap the whole row
     property var chosen: null
     readonly property var player: chosen
 
@@ -216,8 +202,6 @@ PanelWindow {
             anchors.margins: 14
             spacing: 10
 
-            // current conditions, then the week: the bar answers "do I need a
-            // jacket", this answers "which day should I do this on"
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 6
@@ -257,8 +241,6 @@ PanelWindow {
                 }
             }
 
-            // the rail's calendar is the one you browse: the bar popup stays
-            // fixed on this month, this one walks
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 8
@@ -268,7 +250,6 @@ PanelWindow {
                     Layout.fillWidth: true
 
                     Text {
-                        // a glyph is a small target, so the cell is the button
                         Layout.preferredWidth: 30
                         Layout.preferredHeight: 26
                         horizontalAlignment: Text.AlignHCenter
@@ -362,7 +343,6 @@ PanelWindow {
                     }
                 }
 
-                // past the forecast horizon a picked day has no hours to draw
                 Text {
                     Layout.fillWidth: true
                     visible: railGrid.selected > 0 && rail.pickedDay === null
@@ -379,7 +359,6 @@ PanelWindow {
                 }
             }
 
-            // expanding only ever adds at the top
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 6
@@ -402,7 +381,6 @@ PanelWindow {
                         Layout.fillWidth: true
                         spacing: 8
 
-                        // which calendar it came from, same colours as the grid dots
                         Rectangle {
                             Layout.preferredWidth: 3
                             Layout.fillHeight: true
@@ -445,9 +423,6 @@ PanelWindow {
                 }
             }
 
-            // the always-there block is the handle, so the calendar above keeps
-            // its own clicks. three columns, as in the sketch: what it is,
-            // what it says, and the number that matters
             ColumnLayout {
                 id: statusRow
                 Layout.fillWidth: true
@@ -578,15 +553,12 @@ PanelWindow {
                 spacing: 10
                 visible: rail.hasTrack
 
-                // circular, per the sketch; MultiEffect because a Rectangle
-                // cannot clip an image to a rounded shape
+                // a Rectangle cannot clip an image to a rounded shape
                 Item {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.preferredWidth: 42
                     Layout.preferredHeight: 42
 
-                    // the disc stays whatever happens, so a track without a
-                    // cover has the same shape as one with it
                     Rectangle {
                         anchors.fill: parent
                         radius: width / 2
@@ -653,15 +625,11 @@ PanelWindow {
                         font.pixelSize: 11
                     }
 
-                    // the sketch has a progress line under the artist; mpris
-                    // only moves position when asked, so it is read on a tick
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.topMargin: 3
                         Layout.preferredHeight: 2
                         radius: 1
-                        // the track stays put; only the fill answers to length,
-                        // which reads zero for a moment between songs
                         visible: rail.hasTrack
                         color: Theme.hairline(0.22)
 
@@ -680,8 +648,6 @@ PanelWindow {
                     }
                 }
 
-                // the rail only shows on an empty workspace, so these are a
-                // convenience; the media keys are the control that always works
                 RowLayout {
                     Layout.alignment: Qt.AlignVCenter
                     spacing: 2

@@ -19,7 +19,6 @@
     "application/x-extension-xhtml" = browser;
     "application/x-extension-xht" = browser;
 
-    #"text/*" = [ "neovim.desktop" ];
     "audio/*" = ["mpv.desktop"];
     "video/*" = ["mpv.dekstop"];
     "image/*" = ["viewnior.desktop"];

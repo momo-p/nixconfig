@@ -17,9 +17,7 @@ in {
           }
         ];
       }
-      # the sub panel is not always awake, so this profile also matches while
-      # both are plugged in; giving the main panel the same placement in both
-      # means a switch between them moves nothing
+      # also matches with both plugged in, so a switch moves nothing
       {
         profile.outputs = [
           {

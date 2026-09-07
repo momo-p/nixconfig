@@ -4,13 +4,10 @@ import QtQuick
 import QtQuick.Layouts
 import "."
 
-// a layer surface rather than a popup: swayfx only applies layer_effects
-// to layers, so a popup would get no blur
+// a layer, not a popup: swayfx only blurs layers
 PanelWindow {
     id: popup
 
-    // a click pins a day, hover reports one in passing, and with neither it is
-    // today: one value drives both the forecast line and the agenda below
     readonly property int agendaDay: grid.selected > 0
         ? grid.selected
         : grid.hovered > 0 ? grid.hovered : new Date().getDate()
@@ -18,7 +15,6 @@ PanelWindow {
 
     WlrLayershell.namespace: "quickshell-popup"
 
-    // the surface covers the output so a click anywhere off the card dismisses it
     anchors {
         top: true
         bottom: true
@@ -30,8 +26,6 @@ PanelWindow {
     color: "transparent"
     visible: false
 
-    // the bar keeps its own clicks, so the pill that opened this can close it
-    // and the opening click cannot land here and dismiss it at once
     mask: Region {
         y: Theme.barHeight
         width: popup.width
@@ -50,7 +44,6 @@ PanelWindow {
         if (!visible)
             return;
         grid.shown = new Date();
-        // the pointer is not over a day when this opens
         grid.hovered = 0;
         grid.selected = 0;
     }
@@ -85,7 +78,6 @@ PanelWindow {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: -8
                 visible: Weather.known
-                // the header says more rather than the grid growing a row
                 text: {
                     const d = grid.selected > 0 ? grid.selected : grid.hovered;
                     if (d <= 0)
@@ -107,7 +99,6 @@ PanelWindow {
                 Layout.fillWidth: true
             }
 
-            // today only: anything richer is a calendar app
             Repeater {
                 model: popup.agendaRows.slice(0, 3)
 

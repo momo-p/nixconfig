@@ -6,7 +6,6 @@ import Quickshell.I3
 import Quickshell.Wayland
 import "."
 
-// one copy of each watcher, shared by every bar
 Singleton {
     id: root
 
@@ -20,8 +19,7 @@ Singleton {
         return null;
     }
 
-    // sway knows which panel a connector is, so surfaces that exist once are
-    // placed by monitor identity rather than by a name that can be reassigned
+    // connector names get reassigned; monitor identity does not
     readonly property var mainScreen: {
         const mons = I3.monitors.values;
         for (const m of mons) {
@@ -33,8 +31,7 @@ Singleton {
         return list.length ? list[0] : null;
     }
 
-    // sway leaves representation empty exactly when a workspace holds nothing,
-    // so the desktop surfaces can key off it without counting windows
+    // sway leaves representation empty exactly when a workspace holds nothing
     readonly property bool desktopEmpty: {
         const sc = mainScreen;
         if (!sc)
@@ -50,8 +47,6 @@ Singleton {
         return false;
     }
 
-    // a toplevel reports the outputs it covers, so a film playing full screen
-    // is a fact wayland hands over rather than something to look for
     readonly property var busyScreens: {
         const out = [];
         for (const t of ToplevelManager.toplevels.values) {
@@ -64,7 +59,6 @@ Singleton {
         return out;
     }
 
-    // toasts step aside to a free output rather than land on the film
     readonly property var toastScreen: {
         if (busyScreens.indexOf(mainScreen) === -1)
             return mainScreen;
@@ -74,7 +68,6 @@ Singleton {
         return mainScreen;
     }
 
-    // mod+n has no pointer to start from, so it follows the keyboard
     readonly property var focusedScreen: {
         const mon = I3.focusedMonitor;
         if (!mon)
@@ -109,8 +102,7 @@ Singleton {
         }
     }
 
-    // fcitx emits no signal on switch, so one long-lived poller that
-    // only writes a line when the value actually changes
+    // fcitx emits no signal on switch, so it has to be polled
     Process {
         running: true
         command: [Theme.fcitxWatch]
@@ -141,7 +133,6 @@ Singleton {
         return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
     }
 
-    // only changes on a rebuild, so reading it slowly is plenty
     Process {
         id: gen
         running: true
@@ -167,8 +158,6 @@ Singleton {
         onTriggered: gen.running = true
     }
 
-    // an input a month behind is worth knowing about; the count only moves
-    // when the lock does or when a month passes
     readonly property int staleInputs: {
         const cutoff = Date.now() / 1000 - 30 * 86400;
         let n = 0;

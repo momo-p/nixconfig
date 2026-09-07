@@ -74,7 +74,7 @@ PanelWindow {
                 }
 
                 TapHandler {
-                    onTapped: modelData.dismiss()
+                    onTapped: Notifs.activate(modelData)
                 }
 
                 RowLayout {
@@ -154,6 +154,50 @@ PanelWindow {
                             elide: Text.ElideRight
                             font.family: "SF Pro Display"
                             font.pixelSize: 12
+                        }
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            Layout.topMargin: 4
+                            spacing: 6
+                            visible: repeater.count > 0
+
+                            Repeater {
+                                id: repeater
+                                model: Notifs.buttons(modelData)
+
+                                Rectangle {
+                                    required property var modelData
+
+                                    implicitWidth: label.implicitWidth + 18
+                                    implicitHeight: 22
+                                    radius: 11
+                                    color: press.hovered ? Theme.hairline(0.22) : Theme.hairline(0.12)
+
+                                    Text {
+                                        id: label
+                                        anchors.centerIn: parent
+                                        text: parent.modelData.text
+                                        color: Theme.text
+                                        font.family: "SF Pro Display"
+                                        font.pixelSize: 11
+                                    }
+
+                                    // stops the body tap underneath from also firing
+                                    TapHandler {
+                                        gesturePolicy: TapHandler.WithinBounds
+                                        onTapped: parent.modelData.invoke()
+                                    }
+
+                                    HoverHandler {
+                                        id: press
+                                    }
+                                }
+                            }
+
+                            Item {
+                                Layout.fillWidth: true
+                            }
                         }
                     }
                 }

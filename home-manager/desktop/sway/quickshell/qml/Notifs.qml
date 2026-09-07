@@ -73,6 +73,32 @@ Singleton {
         return hours < 24 ? hours + "h" : Math.floor(hours / 24) + "d";
     }
 
+    // the server advertises actions over dbus, so a click has to actually
+    // reach one: the default action is what the sending app expects a tap on
+    // the body to mean, and only with none does the tap just get rid of it
+    function activate(n): void {
+        const acts = n.actions;
+        for (let i = 0; i < acts.length; i++) {
+            if (acts[i].identifier === "default") {
+                acts[i].invoke();
+                if (!n.resident)
+                    n.dismiss();
+                return;
+            }
+        }
+        n.dismiss();
+    }
+
+    // an action that is not the default is a button, not a body tap
+    function buttons(n) {
+        const out = [];
+        const acts = n.actions;
+        for (let i = 0; i < acts.length; i++)
+            if (acts[i].identifier !== "default")
+                out.push(acts[i]);
+        return out;
+    }
+
     NotificationServer {
         id: server
 

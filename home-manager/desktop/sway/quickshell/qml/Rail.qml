@@ -124,7 +124,14 @@ PanelWindow {
         return fetchedArt === "" ? "" : "file://" + fetchedArt;
     }
 
-    onHasTrackChanged: rail.lookUp()
+    // hasTrack stays true across a track change, and metadata lands field by field
+    readonly property string coverKey: hasTrack
+        && player.trackArtUrl === ""
+        && player.trackArtist !== ""
+        ? player.trackArtist + "\n" + player.trackAlbum
+        : ""
+
+    onCoverKeyChanged: rail.lookUp()
 
     function control(what): void {
         if (!player)
@@ -139,8 +146,11 @@ PanelWindow {
 
     function lookUp(): void {
         fetchedArt = "";
-        if (!hasTrack || player.trackArtUrl !== "" || player.trackArtist === "")
+        // the command is ignored while the previous lookup is still running
+        cover.running = false;
+        if (coverKey === "")
             return;
+        cover.key = coverKey;
         cover.command = [Theme.coverFetch, player.trackArtist, player.trackAlbum];
         cover.running = true;
     }
@@ -157,8 +167,13 @@ PanelWindow {
 
     Process {
         id: cover
+        property string key: ""
         stdout: StdioCollector {
-            onStreamFinished: rail.fetchedArt = text.trim()
+            // a lookup that outlived its track must not overwrite the current art
+            onStreamFinished: {
+                if (cover.key === rail.coverKey)
+                    rail.fetchedArt = text.trim();
+            }
         }
     }
 

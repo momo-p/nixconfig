@@ -28,6 +28,7 @@ PanelWindow {
     onVisibleChanged: {
         if (!visible) {
             expanded = false;
+            railGrid.shown = new Date();
             railGrid.selected = 0;
         } else {
             rail.probe();

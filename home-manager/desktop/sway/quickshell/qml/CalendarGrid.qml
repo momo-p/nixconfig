@@ -36,10 +36,7 @@ ColumnLayout {
     }
 
     function isToday(d) {
-        const n = new Date();
-        return d === n.getDate()
-            && shown.getMonth() === n.getMonth()
-            && shown.getFullYear() === n.getFullYear();
+        return d !== 0 && dateKey(d) === Sys.today;
     }
 
     GridLayout {

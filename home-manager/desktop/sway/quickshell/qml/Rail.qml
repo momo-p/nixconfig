@@ -116,6 +116,48 @@ PanelWindow {
 
     readonly property bool hasTrack: player && player.trackTitle !== ""
 
+    // firefox publishes mpris:length for a moment and drops it from the next
+    // metadata update, where an unsupported length reports the current position
+    property real trackLength: 0
+
+    function grabLength(): void {
+        if (player && player.lengthSupported && player.length > 0)
+            trackLength = player.length;
+    }
+
+    Connections {
+        target: rail.player
+        ignoreUnknownSignals: true
+
+        function onLengthSupportedChanged(): void {
+            rail.grabLength();
+        }
+
+        function onLengthChanged(): void {
+            rail.grabLength();
+        }
+
+        function onPostTrackChanged(): void {
+            rail.trackLength = 0;
+            rail.grabLength();
+        }
+    }
+
+    readonly property bool progressKnown: player && trackLength > 0
+
+    readonly property real progress: {
+        rail.tick;
+        return progressKnown ? Math.min(1, player.position / trackLength) : 0;
+    }
+
+    readonly property string elapsed: {
+        rail.tick;
+        if (!player)
+            return "";
+        const s = Math.max(0, Math.round(player.position));
+        return Math.floor(s / 60) + ":" + (s % 60 < 10 ? "0" : "") + (s % 60);
+    }
+
     property int tick: 0
     property string fetchedArt: ""
     readonly property string art: {
@@ -646,21 +688,25 @@ PanelWindow {
                         Layout.topMargin: 3
                         Layout.preferredHeight: 2
                         radius: 1
-                        visible: rail.hasTrack
+                        visible: rail.progressKnown
                         color: Theme.hairline(0.22)
 
                         Rectangle {
-                            width: {
-                                const p = rail.player;
-                                if (!p || !p.length)
-                                    return 0;
-                                rail.tick;
-                                return parent.width * Math.min(1, p.position / p.length);
-                            }
+                            width: parent.width * rail.progress
                             height: parent.height
                             radius: 1
                             color: Theme.accent
                         }
+                    }
+
+                    Text {
+                        Layout.fillWidth: true
+                        Layout.topMargin: 1
+                        visible: rail.hasTrack && !rail.progressKnown
+                        text: rail.elapsed
+                        color: Theme.subtext
+                        font.family: "SF Pro Display"
+                        font.pixelSize: 10
                     }
                 }
 

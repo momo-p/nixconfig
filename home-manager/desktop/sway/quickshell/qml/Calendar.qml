@@ -10,7 +10,7 @@ PanelWindow {
 
     readonly property int agendaDay: grid.selected > 0
         ? grid.selected
-        : grid.hovered > 0 ? grid.hovered : new Date().getDate()
+        : grid.hovered > 0 ? grid.hovered : Sys.now.getDate()
     readonly property var agendaRows: Agenda.on(grid.dateKey(agendaDay))
 
     WlrLayershell.namespace: "quickshell-popup"

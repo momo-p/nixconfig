@@ -126,11 +126,18 @@ Singleton {
     property string generation: ""
     property string genAge: ""
 
+    // a new Date() in a binding never re-runs, so the day would freeze at startup
+    SystemClock {
+        id: clock
+        precision: SystemClock.Minutes
+    }
+
+    readonly property date now: clock.date
+
     readonly property string today: {
-        const d = new Date();
-        const m = d.getMonth() + 1;
-        const day = d.getDate();
-        return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+        const m = now.getMonth() + 1;
+        const day = now.getDate();
+        return now.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
     }
 
     Process {

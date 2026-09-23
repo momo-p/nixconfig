@@ -68,13 +68,15 @@ Singleton {
         return mainScreen;
     }
 
+    // I3.focusedMonitor outlives the monitor it points at, so reading it can
+    // fault; the model only ever holds live ones and focus is derived from it
     readonly property var focusedScreen: {
-        const mon = I3.focusedMonitor;
-        if (!mon)
-            return mainScreen;
-        for (const s of Quickshell.screens)
-            if (s.name === mon.name)
-                return s;
+        for (const m of I3.monitors.values) {
+            if (!m.focused)
+                continue;
+            const s = screenNamed(m.name);
+            return s ? s : mainScreen;
+        }
         return mainScreen;
     }
 

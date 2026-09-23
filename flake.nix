@@ -60,6 +60,11 @@
       };
     };
 
+    agent-styles = {
+      url = "github:momo-p/agent-styles";
+      flake = false;
+    };
+
     systems.url = "github:nix-systems/default-linux";
   };
 

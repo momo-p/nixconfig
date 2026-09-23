@@ -1,15 +1,27 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: let
   statusline = pkgs.writeShellApplication {
     name = "claude-statusline";
     runtimeInputs = with pkgs; [coreutils jq git];
     text = builtins.readFile ./claude-statusline.sh;
   };
+  styles = inputs.agent-styles;
 in {
+  home.packages = [pkgs.gitleaks];
+
   programs.claude-code = {
     enable = true;
     package = pkgs.claude-code;
 
-    settings = {
+    context = builtins.readFile "${styles}/AGENTS.md";
+    hooksDir = "${styles}/hooks";
+    skills.humanizer = "${styles}/skills/humanizer";
+
+    settings = lib.recursiveUpdate (builtins.fromJSON (builtins.readFile "${styles}/settings.json")) {
       model = "opus";
       theme = "dark";
       agentPushNotifEnabled = true;

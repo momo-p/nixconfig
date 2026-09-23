@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "agent-styles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790126731,
+        "narHash": "sha256-NhdqH6OsrG00HLYaroWaGDHuWrW9U436oC3R37WUQkA=",
+        "owner": "momo-p",
+        "repo": "agent-styles",
+        "rev": "9914485c070d541e666ab26bb2f75be10abe81a9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "momo-p",
+        "repo": "agent-styles",
+        "type": "github"
+      }
+    },
     "apple-fonts": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -467,6 +483,7 @@
     },
     "root": {
       "inputs": {
+        "agent-styles": "agent-styles",
         "apple-fonts": "apple-fonts",
         "auto-cpufreq": "auto-cpufreq",
         "disko": "disko",

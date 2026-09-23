@@ -18,6 +18,7 @@
     ../../modules/gaming
     ../../modules/obs.nix
     ../../modules/usb-hdd-power.nix
+    ../../modules/altserver.nix
     ../../services/podman.nix
     ../../modules/sops.nix
 

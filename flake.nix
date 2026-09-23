@@ -52,6 +52,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    vesktop-dnd-inbox = {
+      url = "github:momo-p/vesktop-dnd-inbox";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
+
     systems.url = "github:nix-systems/default-linux";
   };
 

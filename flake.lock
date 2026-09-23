@@ -479,6 +479,7 @@
         "sops-nix": "sops-nix",
         "stylix": "stylix",
         "systems": "systems_3",
+        "vesktop-dnd-inbox": "vesktop-dnd-inbox",
         "yanis": "yanis"
       }
     },
@@ -746,6 +747,29 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "vesktop-dnd-inbox": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790124522,
+        "narHash": "sha256-NA/eqGBkDweksH9e34AB0bYPF/ZyWYhkQ/SGmLDf1Zw=",
+        "owner": "momo-p",
+        "repo": "vesktop-dnd-inbox",
+        "rev": "a0644df378182869e966a81f880102305fdeff88",
+        "type": "github"
+      },
+      "original": {
+        "owner": "momo-p",
+        "repo": "vesktop-dnd-inbox",
         "type": "github"
       }
     },

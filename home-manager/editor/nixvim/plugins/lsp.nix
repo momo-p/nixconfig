@@ -1,36 +1,19 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: let
+  vue-language-server = pkgs.vue-language-server.override {
+    nodejs-slim_latest = pkgs.nodejs-slim;
+  };
+in {
   programs.nixvim.plugins = {
     lsp = {
       enable = true;
       inlayHints = true;
       servers = {
-        ts_ls = {
-          enable = true;
-          filetypes = [
-            "typescript"
-            "javascript"
-            "javascriptreact"
-            "typescriptreact"
-            "vue"
-          ];
-          extraOptions = {
-            init_options = {
-              plugins = lib.mkForce [
-                {
-                  name = "@vue/typescript-plugin";
-                  location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server";
-                  languages = ["vue"];
-                }
-              ];
-            };
-          };
-        };
+        ts_ls.enable = true;
         svelte.enable = true;
-        vue_ls.enable = true;
+        vue_ls = {
+          enable = true;
+          package = vue-language-server;
+        };
         nil_ls.enable = true;
         clangd.enable = true;
         gopls = {

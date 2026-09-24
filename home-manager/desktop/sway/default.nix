@@ -16,6 +16,8 @@
   # quickshell keys instances by the literal path the shell was started with
   qsIpc = "${pkgs.quickshell}/bin/quickshell ipc -p ${config.xdg.configFile."quickshell".source}";
 
+  cursor = import ../cursor/switcher.nix {inherit config pkgs;};
+
   dirs = [
     ["Left" "left"]
     ["Right" "right"]
@@ -100,6 +102,7 @@
         ["${modifier}+Print" "exec grimshot save area ~/Pictures/shot-$(date +%Y%m%d-%H%M%S).png" "Screenshot area to file"]
         ["${modifier}+w" "exec ${rofi} -show wallpaper" "Wallpaper picker"]
         ["${modifier}+Shift+w" "exec ${pkgs.wpaperd}/bin/wpaperctl next" "Next wallpaper"]
+        ["${modifier}+c" "exec ${rofi} -show cursor" "Cursor picker"]
         ["${modifier}+Shift+l" "exec ${pkgs.swaylock-plugin}/bin/swaylock-plugin" "Lock screen"]
         ["${modifier}+r" "reload" "Reload sway"]
       ];
@@ -195,6 +198,7 @@ in {
       startup = [
         {command = "exec ${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store";}
         {command = "exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
+        {command = "exec ${cursor} --restore";}
       ];
 
       bars = [];

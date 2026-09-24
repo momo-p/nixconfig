@@ -52,6 +52,8 @@
     fi
   '';
 
+  cursor = import ../cursor/switcher.nix {inherit config pkgs;};
+
   keys = pkgs.writeShellScript "rofi-keys" ''
     [ "$#" -gt 0 ] && exit 0
     printf '\0no-custom\x1ftrue\n'
@@ -66,7 +68,7 @@
 
   rofi-theme = {
     configuration = {
-      modi = "drun,run,filebrowser,window,clip:${clip},keysheet:${keys},power:${power},wallpaper:${wallpaper}";
+      modi = "drun,run,filebrowser,window,clip:${clip},keysheet:${keys},power:${power},wallpaper:${wallpaper},cursor:${cursor}";
       show-icons = true;
       display-drun = "";
       display-run = "";
@@ -75,6 +77,7 @@
       display-clip = "";
       display-keysheet = "";
       display-wallpaper = "";
+      display-cursor = "";
       display-power = "";
       drun-display-format = "{name}";
       window-format = "{w} · {c} · {t}";

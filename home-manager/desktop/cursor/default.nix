@@ -12,4 +12,10 @@
       ln -s ${./chino} $out/share/icons/${name}
     '';
   };
+
+  home.packages = with pkgs; [
+    bibata-cursors
+    phinger-cursors
+    capitaine-cursors
+  ];
 }

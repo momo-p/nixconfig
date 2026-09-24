@@ -65,6 +65,11 @@
       flake = false;
     };
 
+    impeccable-flutter = {
+      url = "github:momo-p/impeccable-flutter";
+      flake = false;
+    };
+
     systems.url = "github:nix-systems/default-linux";
   };
 

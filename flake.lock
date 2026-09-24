@@ -295,6 +295,22 @@
         "type": "github"
       }
     },
+    "impeccable-flutter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790172267,
+        "narHash": "sha256-lidg/EUGfICcNKgqi9AGNjCBjSO+Tl4zoz1yUT49qDI=",
+        "owner": "momo-p",
+        "repo": "impeccable-flutter",
+        "rev": "cff8e398c63dc48190f8aa904604be412a21bab8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "momo-p",
+        "repo": "impeccable-flutter",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -488,6 +504,7 @@
         "auto-cpufreq": "auto-cpufreq",
         "disko": "disko",
         "home-manager": "home-manager",
+        "impeccable-flutter": "impeccable-flutter",
         "lanzaboote": "lanzaboote",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",

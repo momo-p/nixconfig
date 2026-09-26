@@ -20,7 +20,9 @@ in {
 
   programs.claude-code = {
     enable = true;
-    package = pkgs.claude-code;
+    package = pkgs.claude-code.override {
+      manifest = lib.importJSON ./claude-manifest.zst.json;
+    };
 
     context = builtins.readFile "${styles}/AGENTS.md";
     hooksDir = "${styles}/hooks";

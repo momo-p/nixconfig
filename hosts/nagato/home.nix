@@ -11,6 +11,7 @@
     ../../home-manager/editor/vscodium
     ../../home-manager/editor/ignore
     ../../home-manager/desktop
+    ../../home-manager/development/android.nix
     ../../home-manager/development/hoppscotch.nix
     ../../home-manager/cli
     ../../home-manager/gaming

@@ -20,7 +20,7 @@
     "application/x-extension-xht" = browser;
 
     "audio/*" = ["mpv.desktop"];
-    "video/*" = ["mpv.dekstop"];
+    "video/*" = ["mpv.desktop"];
     "image/*" = ["viewnior.desktop"];
     "image/png" = ["viewnior.desktop"];
     "image/jpg" = ["viewnior.desktop"];

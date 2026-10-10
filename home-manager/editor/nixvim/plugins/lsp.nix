@@ -1,8 +1,4 @@
-{pkgs, ...}: let
-  vue-language-server = pkgs.vue-language-server.override {
-    nodejs-slim_latest = pkgs.nodejs-slim;
-  };
-in {
+{pkgs, ...}: {
   programs.nixvim.plugins = {
     lsp = {
       enable = true;
@@ -12,7 +8,7 @@ in {
         svelte.enable = true;
         vue_ls = {
           enable = true;
-          package = vue-language-server;
+          package = pkgs.vue-language-server;
         };
         nil_ls.enable = true;
         clangd.enable = true;

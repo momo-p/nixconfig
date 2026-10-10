@@ -107,6 +107,23 @@
   in {
     formatter = forEachSystem (pkgs: pkgs.alejandra);
 
+    apps = forEachSystem (pkgs: {
+      update-claude = {
+        type = "app";
+        program = nixpkgs.lib.getExe (pkgs.writeShellApplication {
+          name = "update-claude";
+          runtimeInputs = with pkgs; [curl git];
+          text = ''
+            base=https://downloads.claude.ai/claude-code-releases
+            version=$(curl -fsSL "$base/latest")
+            curl -fsSL "$base/$version/manifest.zst.json" \
+              -o "$(git rev-parse --show-toplevel)/home-manager/editor/ignore/claude-manifest.zst.json"
+            echo "claude-code manifest set to $version"
+          '';
+        });
+      };
+    });
+
     nixosConfigurations = {
       nagato = nixpkgs.lib.nixosSystem {
         modules = withSecureBootModules [

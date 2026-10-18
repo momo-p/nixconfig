@@ -21,6 +21,7 @@
     ../../modules/altserver.nix
     ../../services/podman.nix
     ../../modules/sops.nix
+    ../../modules/keyd.nix
 
     ./hardware-configuration.nix
     ./disk-config.nix

@@ -98,6 +98,7 @@
       name = "Screen";
       keys = [
         ["Print" "exec grimshot copy area" "Screenshot area"]
+        ["${modifier}+Shift+s" "exec grimshot copy area" "Screenshot area"]
         ["Shift+Print" "exec grimshot copy screen" "Screenshot screen"]
         ["${modifier}+Print" "exec grimshot save area ~/Pictures/shot-$(date +%Y%m%d-%H%M%S).png" "Screenshot area to file"]
         ["${modifier}+w" "exec ${rofi} -show wallpaper" "Wallpaper picker"]

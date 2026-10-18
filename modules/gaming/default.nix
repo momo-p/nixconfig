@@ -5,5 +5,6 @@
     ./gamescope.nix
     ./minecraft.nix
     ./heroic.nix
+    ./osu.nix
   ];
 }

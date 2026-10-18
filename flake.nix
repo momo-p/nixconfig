@@ -70,6 +70,9 @@
       flake = false;
     };
 
+    # nixpkgs not followed so nix-gaming.cachix.org hits
+    nix-gaming.url = "github:fufexan/nix-gaming";
+
     systems.url = "github:nix-systems/default-linux";
   };
 

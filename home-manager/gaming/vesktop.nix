@@ -11,6 +11,7 @@ in {
     package = inputs.vesktop-dnd-inbox.packages.${pkgs.stdenv.hostPlatform.system}.vesktop;
 
     settings = {
+      arRPC = true;
       customTitleBar = false;
       tray = false;
       splashBackground = base00;

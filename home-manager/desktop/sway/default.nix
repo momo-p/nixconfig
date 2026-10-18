@@ -11,6 +11,16 @@
   terminal = "kitty";
   rofi = "${pkgs.rofi}/bin/rofi";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
+  # captures the whole output to a tmp file, crops/edits it in satty; saving pins the result
+  annotate = pkgs.writeShellScript "screenshot-annotate" ''
+    dir=$(mktemp -d)
+    trap 'rm -rf "$dir"' EXIT
+    ${pkgs.sway-contrib.grimshot}/bin/grimshot save "$1" "$dir/shot.png" || exit
+    ${pkgs.satty}/bin/satty --filename "$dir/shot.png" --output-filename "$dir/edited.png" --app-id com.gabm.satty --initial-tool crop \
+      --copy-command ${pkgs.wl-clipboard}/bin/wl-copy --actions-on-enter save-to-clipboard --early-exit
+    [ -f "$dir/edited.png" ] || exit 0
+    ${pkgs.swayimg}/bin/swayimg --appid screenshot-pin -e 'swayimg.text.visible = false' "$dir/edited.png"
+  '';
   menu = "${rofi} -show drun";
 
   # quickshell keys instances by the literal path the shell was started with
@@ -97,9 +107,9 @@
     {
       name = "Screen";
       keys = [
-        ["Print" "exec grimshot copy area" "Screenshot area"]
-        ["${modifier}+Shift+s" "exec grimshot copy area" "Screenshot area"]
-        ["Shift+Print" "exec grimshot copy screen" "Screenshot screen"]
+        ["Print" "exec ${annotate} output" "Screenshot and edit"]
+        ["${modifier}+Shift+s" "exec ${annotate} output" "Screenshot and edit"]
+        ["Shift+Print" "exec ${annotate} screen" "Screenshot all screens and edit"]
         ["${modifier}+Print" "exec grimshot save area ~/Pictures/shot-$(date +%Y%m%d-%H%M%S).png" "Screenshot area to file"]
         ["${modifier}+w" "exec ${rofi} -show wallpaper" "Wallpaper picker"]
         ["${modifier}+Shift+w" "exec ${pkgs.wpaperd}/bin/wpaperctl next" "Next wallpaper"]
@@ -278,6 +288,9 @@ in {
 
       for_window [app_id="firefox-*" title="^Picture-in-Picture$"] \
         floating enable, move position 16 70, sticky enable
+
+      for_window [app_id="screenshot-pin"] floating enable, sticky enable, border none
+      for_window [app_id="com.gabm.satty"] floating enable, resize set 80 ppt 80 ppt, move position center
 
       for_window [class="steam" title="^Friends List$"] floating enable
       for_window [class="steam" title=".* - Chat"] floating enable

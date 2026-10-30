@@ -18,4 +18,6 @@
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHXeyWQOrmK7iqaikskN+iahSHa6wwKlEX4By0xLBr8d";
     };
   };
+
+  programs.gh.enable = true;
 }

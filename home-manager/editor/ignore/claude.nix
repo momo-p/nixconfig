@@ -16,7 +16,7 @@
     src = inputs.impeccable-flutter;
   };
 in {
-  home.packages = [pkgs.gitleaks impeccable-flutter];
+  home.packages = [pkgs.gitleaks pkgs.ast-grep impeccable-flutter];
 
   programs.claude-code = {
     enable = true;
@@ -28,6 +28,7 @@ in {
     hooksDir = "${styles}/hooks";
     skills = {
       humanizer = "${styles}/skills/humanizer";
+      slices = "${styles}/skills/slices";
       impeccable-flutter = "${inputs.impeccable-flutter}/skills/impeccable-flutter";
     };
 

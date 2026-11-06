@@ -41,6 +41,7 @@ in {
 
     vencord = {
       useSystem = true;
+      mutableSettings = true;
 
       settings = {
         plugins = {

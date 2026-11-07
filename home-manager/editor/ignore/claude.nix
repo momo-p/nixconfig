@@ -20,6 +20,7 @@ in {
 
   programs.claude-code = {
     enable = true;
+    mutableSettings = true;
     package = pkgs.claude-code.override {
       manifest = lib.importJSON ./claude-manifest.zst.json;
     };

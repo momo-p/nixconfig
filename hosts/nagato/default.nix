@@ -15,6 +15,7 @@
     ../../modules/1password.nix
     ../../modules/noisetorch.nix
     ../../modules/lact.nix
+    ../../modules/coolercontrol.nix
     ../../modules/gaming
     ../../modules/obs.nix
     ../../modules/usb-hdd-power.nix
@@ -31,8 +32,10 @@
   # boot.kernelPackages = pkgs.linuxPackages_6_6;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelModules = ["v4l2loopback"];
-  boot.extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
+  boot.kernelModules = ["v4l2loopback" "it87"];
+  # The in-tree it87 driver does not expose the IT8688E fan headers on this Gigabyte B550 board.
+  boot.extraModulePackages = [config.boot.kernelPackages.v4l2loopback config.boot.kernelPackages.it87];
+  boot.kernelParams = ["acpi_enforce_resources=lax"];
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=1 video_nr=1 card_label="OBS Virtual Camera" exclusive_caps=1
   '';

@@ -114,15 +114,15 @@
     "lf/colors" = {
       enable = true;
       source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/gokcehan/lf/r32/etc/colors.example";
+        url = "https://raw.githubusercontent.com/gokcehan/lf/r42/etc/colors.example";
         hash = "sha256-cYJlXuRjuotQ1aynPG5+UGK2nBBNg/6xRiGs2mBpKeY=";
       };
     };
     "lf/icons" = {
       enable = true;
       source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/gokcehan/lf/r32/etc/icons.example";
-        hash = "sha256-PZxDReQhwEeDRvSeLFhjGjRAy+Yc3GTXXL6OLP23gQQ=";
+        url = "https://raw.githubusercontent.com/gokcehan/lf/r42/etc/icons.example";
+        hash = "sha256-c0orDQO4hedh+xaNrovC0geh5iq2K+e+PZIL5abxnIk=";
       };
     };
   };

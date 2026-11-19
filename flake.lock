@@ -3,11 +3,11 @@
     "agent-styles": {
       "flake": false,
       "locked": {
-        "lastModified": 1793361985,
-        "narHash": "sha256-MVbGCeWyS461g2An2AXSx8quFKctk5CjlkIGMPL7Tzo=",
+        "lastModified": 1795063740,
+        "narHash": "sha256-hqOMU4l30mimJJm6mDfMJnJhiWIamtYcitnWEKXOo8w=",
         "owner": "momo-p",
         "repo": "agent-styles",
-        "rev": "2f1ccc7acff061e610c554b0199e52bc00642845",
+        "rev": "4f629f5f90b291917e3a3ba27c42fc0318f04569",
         "type": "github"
       },
       "original": {
